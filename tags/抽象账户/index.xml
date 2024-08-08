@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>抽象账户 on Nillnum</title>
+        <link>https://llwh2333.github.io/tags/%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7/</link>
+        <description>Recent content in 抽象账户 on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 17:54:47 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>zksync Era 官方文档抽象账户部分中文翻译</title>
+        <link>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</link>
+        <pubDate>Thu, 08 Aug 2024 17:54:47 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
+        <description>&lt;h1 id=&#34;zksync-era-中的抽象账户与-eip-4337-的抽象账户&#34;&gt;zksync Era 中的抽象账户与 EIP-4337 的抽象账户
+&lt;/h1&gt;&lt;p&gt;ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;实现层级
+&lt;ul&gt;
+&lt;li&gt;ZKsync 的账户抽象在协议层级（我的理解是从底层）进行集成；但&lt;code&gt;EIP-4337&lt;/code&gt; 避开了协议级别的实现（众所周知，&lt;code&gt;EIP-4337&lt;/code&gt;期望在应用层实现）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;账户类型
+&lt;ul&gt;
+&lt;li&gt;在 ZKsync Era 中，智能合约账户和&lt;code&gt;paymasters&lt;/code&gt;都是第一类型账户。在底层中，所有的账户（包括 EOA）的行为也和智能合约账户类似（都是合约函数的执行），同时所有的账户都支持使用&lt;code&gt;paymasters&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;交易处理
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;EIP-4337&lt;/code&gt;为智能合约账户引入了单独的交易流程：通过依赖于单独的内存池以及&lt;code&gt;Bundlers&lt;/code&gt;节点（能够打包用户操作，并将其发送给&lt;code&gt;EntryPoint&lt;/code&gt;合约 ）进行用户的操作，这使得出现了两个独立交易流程（一个是正常以太坊上的交易流程，一个是依靠&lt;code&gt;Bundlers&lt;/code&gt;等建立的交易流程）&lt;/li&gt;
+&lt;li&gt;ZKsync Era 上存在一个统一的内存池给账户（包括 EOA 和智能合约账户）交易使用。ZKsync Era 中 Operator （定序器）承当了&lt;code&gt;Bundlers&lt;/code&gt;的角色，对于用户（EOA 和合约账户一样）发起的交易将被发送到&lt;code&gt;Bootloader&lt;/code&gt;（类似于&lt;code&gt;EntryPoint&lt;/code&gt;合约的角色），从而产生一个&lt;code&gt;mempool&lt;/code&gt;与交易流。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Paymasters 支持：
+&lt;ul&gt;
+&lt;li&gt;ZKsync Era 通过单一的交易流程（不再像&lt;code&gt;EIP-4337&lt;/code&gt;中分为两个部分），允许 EOA 和智能合约账户从&lt;code&gt;paymasters&lt;/code&gt;中受益&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EIP-4337&lt;/code&gt;中对 EOA 而言并不支持&lt;code&gt;paymasters&lt;/code&gt;，因为&lt;code&gt;paymasters&lt;/code&gt;仅在与智能合约交互中实现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;介绍&#34;&gt;介绍
+&lt;/h1&gt;&lt;p&gt;以太坊中有两种类型的账户：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外部拥有账户（EOA，即用户使用私钥直接控制进行交易的账户）&lt;/li&gt;
+&lt;li&gt;合约账户（拥有代码的账户，不存在私钥，所以用户不能直接控制进行交易）
+在 ZKsync Era 中实现这样的账户：可以直接发起一笔交易（如 EOA 一般），也能在其中实现一些逻辑（即放入智能合约代码），这种账户称为抽象账户（AA 账户）。
+由于用户的账户可以是 AA 账户，所以可以对自己的账户进行编程，然后用户自己调用自己账户上的函数进行交易，因此，用户可以自定义签名算法、多签、支出限制等。同时，用户可以通过&lt;code&gt;paymasters&lt;/code&gt;来帮助交易，即交易的&lt;code&gt;gas&lt;/code&gt;由&lt;code&gt;paymasters&lt;/code&gt;付出（前提是用户在&lt;code&gt;paymasters&lt;/code&gt;有存款或授权一定数量的 ERC20 代币）。这使得用户在区块链上能有更好的体验了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;设计&#34;&gt;设计
+&lt;/h1&gt;&lt;p&gt;ZKsync 上的帐户抽象协议与 &lt;code&gt;EIP-4337&lt;/code&gt;非常相似，但为了效率和更好的用户体验，仍然有所不同。&lt;/p&gt;
+&lt;h2 id=&#34;nonce-的唯一性&#34;&gt;Nonce 的唯一性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当前的模型不允许自定义钱包同时发送多笔交易并保持确定的顺序&lt;/li&gt;
+&lt;li&gt;对于 EOA，Nonce 的计数会依次增长（每笔交易都会递增）；对于自定义账户，无法保证交易顺序&lt;/li&gt;
+&lt;li&gt;未来计划切换到可以在顺序或任意 Nonce 之间选择的模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每个区块中，对于每个交易都有一个重要的不变量，唯一的交易哈希值。虽然账户可以接收多个完全相同的交易，但对于抽象账户而言并不容易。尽管这些交易在技术上是合规的，但索引器和其他工具很难处理违反了哈希唯一的情况。&lt;/p&gt;
+&lt;p&gt;需要有一种的协议级别的方法，来保证交易哈希不重复的方法，最简单又便宜的方法就是让让交易对（发送者、Nonce）始终唯一。&lt;/p&gt;
+&lt;p&gt;就采用了以下协议：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个交易开始前，系统会通过&lt;code&gt;NonceHolder&lt;/code&gt;（会为每个账户记录使用过的 Nonce）检查 Nonce 是否已被使用&lt;/li&gt;
+&lt;li&gt;如果 Nonce 尚未使用，则开始对交易的验证（验证交易是否满足执行条件），在验证期间，提供的随机数被标记为&lt;code&gt;used&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;验证完成后，系统检查 Nonce 是否标记为已使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;用户可以使用一个任意的 256 bit 的数字作为 Nonce，并且可以在系统合约中对应的 key 下放置任意的非零值。但仅有协议层面支持，但在 server 端并不支持这么做，目前仅支持通过顺序使用 Nonce 值（使用&lt;code&gt;incrementMinNonceIfEquals&lt;/code&gt;方法，重新标记能使用的最低 Nonce）。&lt;/p&gt;
+&lt;h2 id=&#34;标准化交易哈希&#34;&gt;标准化交易哈希
+&lt;/h2&gt;&lt;p&gt;在未来，计划在 ZKsync 上支持高效的交易包含证明。这需要我们在&lt;code&gt;Bootloader&lt;/code&gt;中计算交易哈希。因为这种计算需要消耗&lt;code&gt;gas&lt;/code&gt;，所以将计算交易哈希交给 AA 方法的接口才公平（防止账户可能由于某些原因需要该值），这也是为何下面描述的&lt;code&gt;IAccount&lt;/code&gt;与&lt;code&gt;IPaymaster&lt;/code&gt;接口的所有的方法都包含交易哈希以及推荐的签名摘要（由 EOA 对本次交易进行签名的摘要）。&lt;/p&gt;
+&lt;h2 id=&#34;interface&#34;&gt;Interface
+&lt;/h2&gt;&lt;h3 id=&#34;iaccount-interface&#34;&gt;IAccount interface
+&lt;/h3&gt;&lt;p&gt;这个就是建议每个账户都需要实现的 IAccount interface。它包含五个接口：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;个人认为下面的”系统“通常指&lt;code&gt;Bootloader&lt;/code&gt;，但又有时候表示更大的概念，即整个 zksync 系统&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;validateTransaction&lt;/code&gt;：是必须实现的，系统需要它来确定 AA 逻辑是否同意继续进行交易。当交易不合规（如签名错误），该方法将会&lt;code&gt;revert&lt;/code&gt;；如果调用成功，则认为已实现的账户逻辑已同意交易，系统将继续进行交易。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;executeTransaction&lt;/code&gt;：是必须实现的，当用户支付费用（应该就是&lt;code&gt;gas&lt;/code&gt;费）后，系统将会调用。该函数会执行交易的实施。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;payForTransaction&lt;/code&gt;：是可选实现的，当交易没有&lt;code&gt;paymaster&lt;/code&gt;时，系统将会调用它。这个方法是由当前账户支付交易费用，如果当前账户永远不会支付任何费用，并且始终都会依赖&lt;code&gt;paymaster&lt;/code&gt;进行费用支付，那么可以不实现。这个方法将会发送至少&lt;code&gt;tx.gasprice * tx.gasLimit&lt;/code&gt;的 ETH 给&lt;code&gt;Bootloader&lt;/code&gt;（如果被调用的话）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;prepareForPaymaster&lt;/code&gt;：是可选实现的，如果交易有&lt;code&gt;paymaster&lt;/code&gt;代为支付交易费用，那么系统将会调用它。这个方法用来准备和&lt;code&gt;paymaster&lt;/code&gt;进行交互（最著名的示例就是使用 ERC20 让&lt;code&gt;paymaster&lt;/code&gt;代为支付交易费用）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;executeTransactionFromOutside&lt;/code&gt;：是可选实现的，但强烈推荐实现，因为在 priority 模式下的某些情况时（如 operator 没有响应），需要从你那来自”外部“的账户开始交易（即从 EOA 开始一个智能合约的交易，如以太坊上一样）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ipaymaster-interface&#34;&gt;IPaymaster interface
+&lt;/h3&gt;&lt;p&gt;与&lt;code&gt;EIP-4337&lt;/code&gt;相同，ZKsync 同样支持&lt;code&gt;paymaster&lt;/code&gt;：用于代付其他账户交易执行费用的账户。每个&lt;code&gt;paymaster&lt;/code&gt;都需要实现 IPaymaster interface，其包含以下两个方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;：是必须实现的，系统需要使用它来确认&lt;code&gt;paymaster&lt;/code&gt;是否同意代付这笔交易。如果同意，则这个方法至少发送&lt;code&gt;tx.gasprice * tx.gasLimit&lt;/code&gt;的 ETH 给 operator 。它需要返回&lt;code&gt;context&lt;/code&gt;来作为&lt;code&gt;postTransaction&lt;/code&gt;方法的调用参数之一。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;postTransaction&lt;/code&gt;：是可选实现的，在交易执行后被调用。与&lt;code&gt;EIP-4337&lt;/code&gt;不同，并不能保证会调用此方法，尤其是交易因为&lt;code&gt;out of gas&lt;/code&gt;错误而失败。其需要四个参数：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;还有一个变量&lt;code&gt;_suggestedSignedHash&lt;/code&gt;不知道为啥官方文档里不讲，表示交易哈希，由 EOA 进行签名&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;_context&lt;/code&gt;：&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;的返回&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;_txHash&lt;/code&gt;：交易本身&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;_txResult&lt;/code&gt;：指示交易是否执行成功&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;_maxRefundedGas&lt;/code&gt;：可以退还给&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;gas&lt;/code&gt;的最大数量上限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;transaction-结构体的保留字段&#34;&gt;Transaction 结构体的保留字段
+&lt;/h2&gt;&lt;p&gt;对于上面的每个方法都会接收 Transaction 结构，虽然大多数字段不言自明，但仍旧有 6 个&lt;code&gt;reserved&lt;/code&gt;字段（在下面结构中貌似被单独命名了出来，并没有如文档所讲放在&lt;code&gt;reserved&lt;/code&gt;中），不命名的原因在于：未来的某些交易类型中可能不需要他们。目前为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;reserved[0]&lt;/code&gt;：是 Nonce&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;reserved[1]&lt;/code&gt;：是随交易传递的&lt;code&gt;msg.value&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Transaction&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// The type of the transaction.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;txType&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;from&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gasLimit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gasPerPubdataByteLimit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;maxFeePerGas&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;maxPriorityFeePerGas&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;paymaster&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nonce&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserved&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;signature&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;factoryDeps&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;paymasterInput&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reservedDynamic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;交易流程&#34;&gt;交易流程
+&lt;/h2&gt;&lt;p&gt;每笔交易都会有如下流程处理&lt;/p&gt;
+&lt;h3 id=&#34;验证&#34;&gt;验证
+&lt;/h3&gt;&lt;p&gt;验证过程就是：系统确定交易是否能够执行。如果这笔交易在任何验证点失败，则不会向用户收取任何费用，并且交易不会包含在区块中（应该是指这笔交易不会有任何的记录，即相当于没有这笔交易）。&lt;/p&gt;
+&lt;p&gt;验证过程的步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Nonce 验证：验证交易的 Nonce 是否被使用过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;交易验证：调用账户上的&lt;code&gt;validateTransaction&lt;/code&gt;方法，检查交易是否合规。方法执行成功且没有 revert 则进行下一步&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标记 Nonce：验证通过后，标记交易的 Nonce 已经使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;费用处理：这个部分分为两种（根据是否使用&lt;code&gt;paymaster&lt;/code&gt;，但结果应该都是向&lt;code&gt;Bootloader&lt;/code&gt;支付费用）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Standard Transactions：在账户上使用&lt;code&gt;payForTransaction&lt;/code&gt;方法（账户自己付款），当此方法没有 revert ，则继续&lt;/li&gt;
+&lt;li&gt;Paymaster Transactions：首先交易发送者调用&lt;code&gt;prepareForPaymaster&lt;/code&gt;，成功执行后调用（应该是由系统调用）&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;函数。如果两个函数都没有 revert，则继续&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;资金验证：系统确定&lt;code&gt;Bootloader&lt;/code&gt;至少收到&lt;code&gt;tx.gasPrice * tx.gasLimit&lt;/code&gt;的 ETH。如果所需的资金已经保存了，则交易被视为已经验证，准备进行下一步&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;执行&#34;&gt;执行
+&lt;/h3&gt;&lt;p&gt;执行步骤负责执行实际的交易操作，并将任何为使用的&lt;code&gt;gas&lt;/code&gt;退还给用户，即使此步骤中出现 revert 情况，交易人就包含在区块中。&lt;/p&gt;
+&lt;p&gt;执行过程步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;交易执行：调用账户上的&lt;code&gt;executeTransaction&lt;/code&gt;方法，执行交易&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;paymaster&lt;/code&gt;的交易后处理（仅在涉及&lt;code&gt;paymaster&lt;/code&gt;时适用）：调用&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;postTransaction&lt;/code&gt;方法。这个方法通常将未使用的&lt;code&gt;gas&lt;/code&gt;退还给发送者（应该就是当前账户了），尤其是&lt;code&gt;paymaster&lt;/code&gt;采用的是 ERC20 代币作为代付费用（即向当前账户收取 ERC20 ，然后代付&lt;code&gt;gas&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;费用&#34;&gt;费用
+&lt;/h3&gt;&lt;p&gt;不同协议之间处理对于交易费的处理不同，如 &lt;code&gt;EIP-4337&lt;/code&gt; 和 ZKsync 之间。&lt;/p&gt;
+&lt;h4 id=&#34;eip-4337-的-gas-limit&#34;&gt;EIP-4337 的 Gas Limit
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;EIP-4337&lt;/code&gt;定义了三种&lt;code&gt;Gas Limit&lt;/code&gt;来管理不同交易阶段的成本（应该是指将不同阶段的&lt;code&gt;gas&lt;/code&gt;费用分开统计）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;verificationGas&lt;/code&gt;：包含交易验证所需的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;executionGas&lt;/code&gt;：交易执行所需的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;preVerificationGas&lt;/code&gt;：在主要验证前所需的&lt;code&gt;gas&lt;/code&gt;（这个不太能理解，但看下面的描述，是转账 ERC20 的费用？）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;zksync-era-中统一的-gas-limit&#34;&gt;ZKsync Era 中统一的 Gas Limit
+&lt;/h4&gt;&lt;p&gt;在 ZKsync Era 中，使用单个&lt;code&gt;Gas Limit&lt;/code&gt;字段处理所有与交易相关的成本，所以这个统一的&lt;code&gt;Gas Limit&lt;/code&gt;需要包含：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;交易验证&lt;/li&gt;
+&lt;li&gt;代支付逻辑费用（包括任意 ERC20 转账的费用）&lt;/li&gt;
+&lt;li&gt;交易本身的执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;估算-gas&#34;&gt;估算 Gas
+&lt;/h4&gt;&lt;p&gt;默认情况下，&lt;code&gt;estimateGas&lt;/code&gt;函数计算需要的&lt;code&gt;gas&lt;/code&gt;量，并包含一个常数。这个常数用于 EOA 交易的支付费用和签名验证（没看懂这句话）。&lt;/p&gt;
+&lt;h2 id=&#34;使用-systemcontractscaller-库&#34;&gt;使用 SystemContractsCaller 库
+&lt;/h2&gt;&lt;p&gt;为了安全起见，&lt;code&gt;NonceHolder&lt;/code&gt;（管理账户 Nonce）和&lt;code&gt;ContractDeployer&lt;/code&gt;（负责部署合约）的系统合约都只能在拥有&lt;code&gt;isSystem&lt;/code&gt;的特殊标志时调用。想要拥有此特殊标志来进行调用，需要使用 SystemContractsCaller 库中的&lt;code&gt;systemCall&lt;/code&gt;或&lt;code&gt;systemCallWithPropagatedRevert&lt;/code&gt;或&lt;code&gt;systemCallWithReturndata&lt;/code&gt;（后面两种内部都是调用了&lt;code&gt;systemCall&lt;/code&gt;）方法。&lt;/p&gt;
+&lt;p&gt;当开发自定义的账户时，基本上都必定使用这个库，因为这是调用&lt;code&gt;NonceHolder&lt;/code&gt;系统合约的非视图的唯一方法。此外，如果想允许用户自己部署自己的合约，则必须使用这个库。可以使用 EOA 账户的实现（默认账户实现，所有没有包含代码的账户默认继承的）作为参考。&lt;/p&gt;
+&lt;h1 id=&#34;扩展-eip-4337&#34;&gt;扩展 EIP-4337
+&lt;/h1&gt;&lt;p&gt;主要是 &lt;code&gt;EIP-4337&lt;/code&gt;对 ZKsync 原生帐户抽象的扩展概述。&lt;/p&gt;
+&lt;p&gt;为了向 operator 提供 Dos 保护，&lt;code&gt;EIP-4337&lt;/code&gt;对账户的验证步骤施加了多项限制（如不允许访问能够变化的信息，如当前块时间、数字、哈希）。其中大多数，尤其是那些和禁止操作码相关的内容，仍然具有意义，但为了用户有更好的体验，其中的一些限制已经取消&lt;/p&gt;
+&lt;h2 id=&#34;拓展允许的操作码&#34;&gt;拓展允许的操作码
+&lt;/h2&gt;&lt;p&gt;允许使用已部署的&lt;code&gt;call&lt;/code&gt;/&lt;code&gt;delegateCall&lt;/code&gt;/&lt;code&gt;staticcall&lt;/code&gt;合约。和以太坊不同，我们无法编辑已部署的代码或通过自毁删除合约，所以我们可以确保合约执行期间的代码是相同的。&lt;/p&gt;
+&lt;h2 id=&#34;扩展属于用户的-slots-集&#34;&gt;扩展属于用户的 slots 集
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这一部分就没看懂&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在原本的&lt;code&gt;EIP&lt;/code&gt;中，AA 的&lt;code&gt;validateTransaction&lt;/code&gt;步骤（检查交易是否合规）只允许读取自己存储的 slots 。但有些 slots 在语义上属于该用户，但实际上位于另一个合约的地址上，例如 ERC20 的余额。&lt;/p&gt;
+&lt;p&gt;此限制通过确保各个账户用于验证的 slots 不重叠来提供 DDos 安全性，因此他们不需要实际上属于账户的存储空间中。&lt;/p&gt;
+&lt;p&gt;为了能够在验证步骤中读取用户的 ERC20 余额或授权额度，在验证步骤中地址为 A 的账户将允许使用以下类型的 slots：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;属于地址 A 的 slots&lt;/li&gt;
+&lt;li&gt;任何其他地址上的 slots A（这个不懂）&lt;/li&gt;
+&lt;li&gt;然和其他地址上的&lt;code&gt;keccak256(A || X)&lt;/code&gt;类型的 slots（包阔&lt;code&gt;mapping(address =&amp;gt; value)&lt;/code&gt;，通常用于 ERC20 代币中的余额）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;未来会允许什么&#34;&gt;未来会允许什么？
+&lt;/h2&gt;&lt;p&gt;未来可能允许有时限的交易，例如允许检查&lt;code&gt;block.timestamp &amp;lt;= value&lt;/code&gt;是否返回&lt;code&gt;false&lt;/code&gt;等等。这将需要部署此类可信方法的库，但它将大大增强账户的功能。&lt;/p&gt;
+&lt;h1 id=&#34;建立智能账户&#34;&gt;建立智能账户
+&lt;/h1&gt;&lt;p&gt;想在 zksync 上构建自定义账户（应该就是合约账户，带有合约的抽象账户），开发人员必须实现特定的接口，并遵循推荐的账户部署和管理的最佳实践。&lt;/p&gt;
+&lt;h2 id=&#34;接口实现&#34;&gt;接口实现
+&lt;/h2&gt;&lt;p&gt;每个自定义账户都应该实现 IAccount interface（这个可以在 &lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;DefaultAccount.sol &lt;/a&gt;中找到示例）。&lt;/p&gt;
+&lt;p&gt;当外部地址调用时，此实现会返回空值，这可能不是您的自定义帐户所希望的行为。&lt;/p&gt;
+&lt;h2 id=&#34;eip-1271-集成&#34;&gt;EIP-1271 集成
+&lt;/h2&gt;&lt;p&gt;对于智能钱包，强烈鼓励实施&lt;code&gt;EIP-1271&lt;/code&gt;签名验证方案（让合约能够和 EOA 账户一样能够对消息进行签名，同时可以验证签名）。该标准得到了 ZKsync 团队的认可，并且是签名验证库的组成部分。&lt;/p&gt;
+&lt;h2 id=&#34;部署流程&#34;&gt;部署流程
+&lt;/h2&gt;&lt;p&gt;部署账户的逻辑与部署标准智能合约的过程类似，但为了区分不打算被视为账户的智能合约，需要使用&lt;code&gt;ContractDeployer&lt;/code&gt;系统合约的&lt;code&gt;createAccount&lt;/code&gt;/&lt;code&gt;create2Account&lt;/code&gt;方法，而不是使用&lt;code&gt;create&lt;/code&gt;/&lt;code&gt;create2&lt;/code&gt;（从代码中看没啥区别，因为&lt;code&gt;create&lt;/code&gt;中调用了&lt;code&gt;createAccount&lt;/code&gt;）。&lt;/p&gt;
+&lt;h3 id=&#34;使用-zksync-ethers-sdk-的示例-v5&#34;&gt;使用 zksync-ethers SDK 的示例 (v5)
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ContractFactory&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;zksync-ethers&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;contractFactory&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;ContractFactory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;abi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;bytecode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;initiator&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;createAccount&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;aa&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;contractFactory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;deploy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(...&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;aa&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;deployed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;验证步骤限制&#34;&gt;验证步骤限制
+&lt;/h2&gt;&lt;p&gt;目前自定义账户验证规则尚未完全强制执行，将来可能变化：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;账户只能与属于他们自己的 slots 进行交互&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;账户逻辑中禁止使用上下文变量（如&lt;code&gt;block.number&lt;/code&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;账户必须将 Nonce 加一，以保持哈希冲突的抵抗力&lt;/p&gt;
+&lt;p&gt;这些限制尚未在 电路/VM 级别强制执行，并且不适用于 L1-&amp;gt;L2 事务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;nonce-管理&#34;&gt;Nonce 管理
+&lt;/h2&gt;&lt;p&gt;交易和部署的 Nonce 都被整合到&lt;code&gt;NonceHolder&lt;/code&gt;中进行优化。使用&lt;code&gt;incrementMinNonceIfEquals&lt;/code&gt;函数安全的增加账户的 Nonce。&lt;/p&gt;
+&lt;h2 id=&#34;发送交易&#34;&gt;发送交易
+&lt;/h2&gt;&lt;p&gt;目前仅支持&lt;code&gt;EIP-712&lt;/code&gt;（对结构化数据进行哈希和签名的标准）格式的交易从自定义账户发送。交易必须指定&lt;code&gt;from&lt;/code&gt;字段作为账户地址，并在&lt;code&gt;customData&lt;/code&gt;中包含&lt;code&gt;customSignature&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;交易提交示例&#34;&gt;交易提交示例
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;utils&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;zksync-ethers&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// Here, `tx` is a `TransactionRequest` object from `zksync-ethers` SDK.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// `zksyncProvider` is the `Provider` object from `zksync-ethers` SDK connected to the ZKSync network.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;tx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;aaAddress&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;tx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;customData&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;tx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;customData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;customSignature&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;aaSignature&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;serializedTx&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;utils&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;serialize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;tx&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;sentTx&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;zksyncProvider&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sendTransaction&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;serializedTx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;paymasters&#34;&gt;Paymasters
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Paymasters&lt;/code&gt;时专门设计用来资助用户交易费用的账户，增强协议的可用性和灵活性，方便用户使用 ERC20 代币而不是 ETH 支付费用。&lt;/p&gt;
+&lt;h2 id=&#34;与-paymasters-交互&#34;&gt;与 Paymasters 交互
+&lt;/h2&gt;&lt;p&gt;要使用&lt;code&gt;paymaster&lt;/code&gt;，用户必须在其&lt;code&gt;EIP-712&lt;/code&gt;交易中指定非零的&lt;code&gt;paymaster&lt;/code&gt;地址，并在&lt;code&gt;paymasterInput&lt;/code&gt;字段中指定相关数据。&lt;/p&gt;
+&lt;h3 id=&#34;paymasters-验证规则&#34;&gt;Paymasters 验证规则
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;验证规则尚未完全强制执行&lt;/li&gt;
+&lt;li&gt;不遵守这些规则的&lt;code&gt;paymaster&lt;/code&gt;将来可能会停止正常运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了减少恶意&lt;code&gt;paymaster&lt;/code&gt;潜在的 Dos 攻击，使用了类似于&lt;code&gt;EIP-4337&lt;/code&gt;的声誉评分系统。但与&lt;code&gt;EIP-4337&lt;/code&gt;不同，zksync 中的&lt;code&gt;paymaster&lt;/code&gt;可以与任何存储 slots 交互，并且在特定条件下不会受到限制，如自上次成功验证以来经过的时间或连续的（consistent，可能也可以翻译为一致的） slots 访问模式&lt;/p&gt;
+&lt;h2 id=&#34;内置-paymasters-流程&#34;&gt;内置 Paymasters 流程
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;paymaster&lt;/code&gt;可以自动操作或需要用户交互，这取决于其设计。例如将 ERC20 代币兑换成 ETH 的&lt;code&gt;paymaster&lt;/code&gt;将要求用户授予必要限额。&lt;/p&gt;
+&lt;p&gt;账户抽象协议本身是通用的，允许账户和&lt;code&gt;paymaster&lt;/code&gt;实现任意交互。但默认账户（EOA）的代码不变，但人就希望他们能够参与自定义账户和&lt;code&gt;paymaster&lt;/code&gt;的生态中。这就是为什么对交易的&lt;code&gt;paymasterInput&lt;/code&gt;字段进行了标准化，以涵盖大多数常见的&lt;code&gt;paymaster&lt;/code&gt;功能用例。&lt;/p&gt;
+&lt;p&gt;你的账户可以自由选择实现或不实现这些流程的支持，但强烈建议保持 EOA 和自定义账户的接口相同。&lt;/p&gt;
+&lt;h3 id=&#34;一般-paymasters-流程&#34;&gt;一般 Paymasters 流程
+&lt;/h3&gt;&lt;p&gt;当&lt;code&gt;paymaster&lt;/code&gt;不需要用户执行任何初始操作时，使用此流程：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;paymasterInput&lt;/code&gt;字段必须为具有以下接口的函数的调用进行编码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;general&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;对于 EOA 账户，此输入通常不起作用，但&lt;code&gt;paymaster&lt;/code&gt;可以根据需求进行说明（不太清楚这个函数具体有什么作用）。&lt;/p&gt;
+&lt;h3 id=&#34;基于授权的-paymasters-流程&#34;&gt;基于授权的 Paymasters 流程
+&lt;/h3&gt;&lt;p&gt;当用户必须为&lt;code&gt;paymaster&lt;/code&gt;设置 token 限额时，此流程十分重要。&lt;code&gt;paymasterInput&lt;/code&gt;字段必须为对具有以下签名的函数的调用进行编码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;approvalBased&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_minAllowance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_innerInput&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;EOA 将确保支付给&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;_token&lt;/code&gt;的限额至少设为&lt;code&gt;_minAllowance&lt;/code&gt;。&lt;code&gt;_innerInput&lt;/code&gt;参数是一个额外的有效负载，可以发送给&lt;code&gt;paymaster&lt;/code&gt;，以实现任意逻辑（如可以由&lt;code&gt;paymaster&lt;/code&gt;验证的额外签名或密钥）。&lt;/p&gt;
+&lt;p&gt;如果正在开发&lt;code&gt;paymaster&lt;/code&gt;，则不应该相信交易的发送者会诚实行事（如通过&lt;code&gt;approvalBased&lt;/code&gt;流程提供所需的限额）。这些流程主要作为对 EOA 的指示，而&lt;code&gt;paymaster&lt;/code&gt;应始终仔细检查这些要求。&lt;/p&gt;
+&lt;h2 id=&#34;测试网-paymasters&#34;&gt;测试网 Paymasters
+&lt;/h2&gt;&lt;p&gt;为保证用户在测试网上体验到&lt;code&gt;paymaster&lt;/code&gt;，同样继续支持使用 ERC20 代币支付费用，Matter Labs 团队提供了测试网&lt;code&gt;paymaster&lt;/code&gt;，可以将 ERC20 代币与 ETH 以 1:1 的汇率（1 ERC20 代币等于 1 wei 的 ETH）支付费用。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;paymaster&lt;/code&gt;仅支持基于授权的&lt;code&gt;paymaster&lt;/code&gt;流程，并要求&lt;code&gt;token&lt;/code&gt;参数等于正在交换的&lt;code&gt;token&lt;/code&gt;，并且&lt;code&gt;minAllowance&lt;/code&gt;等于&lt;code&gt;tx.maxFeePerGas * tx.gasLimit&lt;/code&gt;。此外测试网&lt;code&gt;paymaster&lt;/code&gt;不适用&lt;code&gt;_innerInput&lt;/code&gt;参数，因此不应提供任何内容（空&lt;code&gt;bytes&lt;/code&gt;）。&lt;/p&gt;
+&lt;h2 id=&#34;与-paymasters-交互时估算-gas-费用&#34;&gt;与 Paymasters 交互时估算 Gas 费用
+&lt;/h2&gt;&lt;p&gt;由于额外的计算和操作，与&lt;code&gt;paymaster&lt;/code&gt;的交互通常比标准交易消耗更多的&lt;code&gt;gas&lt;/code&gt;，导致&lt;code&gt;gas&lt;/code&gt;增加的主要原因是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;内部计算：包括&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;和&lt;code&gt;postTransaction&lt;/code&gt;的内部操作。&lt;/li&gt;
+&lt;li&gt;资金转账：&lt;code&gt;paymaster&lt;/code&gt;将资金发送到&lt;code&gt;bootloader&lt;/code&gt;时消耗的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;ERC20 token 限额的管理：是可选项产生的&lt;code&gt;gas&lt;/code&gt;，如果用户使用 ERC20 代币补偿&lt;code&gt;paymaster&lt;/code&gt;，管理代币的限额会消耗额外的&lt;code&gt;gas&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;用于内部计算的&lt;code&gt;gas&lt;/code&gt;一般是最少的，具体取决于&lt;code&gt;paymaster&lt;/code&gt;的实现&lt;/li&gt;
+&lt;li&gt;转移资金的成本与用户能为类似交易支付的费用相当&lt;/li&gt;
+&lt;li&gt;管理 ERC20 限额会显著影响&lt;code&gt;gas&lt;/code&gt;的使用量，尤其是用户第一次设置限额。这个过程可能需要发布一个 32 byte 的存储密钥标识符，可能会以 50 gwei 的 L1 gas 价格使用多达 400k 的&lt;code&gt;gas&lt;/code&gt;。需要注意，虽然交易流程在执行结束时，将存储 slot 清空（因此”授予&lt;code&gt;X&lt;/code&gt;限额+&lt;code&gt;paymaster&lt;/code&gt;花费所有限额），但初始成本是在执行期间预先收取的，只有在交易结束时 slot 归零后才会退款给用户。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;准确估计-gas-的重要性&#34;&gt;准确估计 Gas 的重要性
+&lt;/h3&gt;&lt;p&gt;准确的估计&lt;code&gt;gas&lt;/code&gt;至关重要，尤其是对于涉及大量&lt;code&gt;pubdata&lt;/code&gt;的操作，例如写入存储。你应该在估算过程中包含&lt;code&gt;paymasterInput&lt;/code&gt;来保证准确考虑了&lt;code&gt;paymaster&lt;/code&gt;的参与。以下代码片段来自定义的&lt;code&gt;paymaster&lt;/code&gt;教程，演示了如何进行此估算：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;gasLimit&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;erc20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;estimateGas&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wallet&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;customData&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nx&#34;&gt;gasPerPubdata&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;utils.DEFAULT_GAS_PER_PUBDATA_LIMIT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nx&#34;&gt;paymasterParams&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;paymasterParams&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;此处&lt;code&gt;paymasterParams&lt;/code&gt;包括&lt;code&gt;paymaster&lt;/code&gt;的地址和他的输入。然而&lt;code&gt;paymasterInput&lt;/code&gt;通常包含难以提前预测的参数，例如用户所需的确切的代币数量。&lt;/p&gt;
+&lt;p&gt;此外，&lt;code&gt;paymaster&lt;/code&gt;可能需要验证价格数据或转换率，可能需要服务端的签名。&lt;/p&gt;
+&lt;h3 id=&#34;处理复杂的依赖关系&#34;&gt;处理复杂的依赖关系
+&lt;/h3&gt;&lt;p&gt;对于如涉及依赖交易内容的这些签名的这种复杂依赖关系，产生了挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;中返回&lt;code&gt;magic = 0&lt;/code&gt;可以模拟有效签名验证的&lt;code&gt;gas&lt;/code&gt;消耗。这确保了尽管交易会由于&lt;code&gt;magic = 0&lt;/code&gt;而在主网上失败，但仍旧可以估计出正确的&lt;code&gt;gas&lt;/code&gt;数量。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gas&lt;/code&gt;的估算本质上时对防止交易失败的最低&lt;code&gt;gas&lt;/code&gt;量的二分搜索。如果验证始终失败，那么&lt;code&gt;gas&lt;/code&gt;估计也会失败，因为系统将不断尝试增加&lt;code&gt;gas limit&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;提供授权估算的策略&#34;&gt;提供授权估算的策略
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;粗略估计：如果对于涉及的资金有一个大概的认识，用它来进行估计。由于缓冲已经包含在估计中，所以微小的差异通常不会导致交易失败。但如果用户的余额在估计和交易执行之间发生意外的变化，可能会出现差异&lt;/li&gt;
+&lt;li&gt;单独估计限额的设置：或者估算用户为交易的&lt;code&gt;gas&lt;/code&gt;单独设置的限额。将此估算添加到原始交易的估算的成本中。这种方法考虑了 Nonce 的更改和一般验证逻辑，但可能会带来明显的开销。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;每种方法都有其优点和缺点，选择正确的方法取决于交易的具体情况和&lt;code&gt;paymaster&lt;/code&gt;的需求。&lt;/p&gt;
+&lt;h1 id=&#34;签名验证&#34;&gt;签名验证
+&lt;/h1&gt;&lt;p&gt;推荐的签名验证方法。如果项目准备支持原生 AA ，那么强烈建议这么做，这将允许自主的成千上万用户（许多新钱包都默认是智能账户，为用户提供更加流畅的体验）。我们预计未来会有更多用户转向智能钱包。&lt;/p&gt;
+&lt;p&gt;建立的各种不同类型的帐户之间最显着的区别是不同的签名方案。我们希望帐户支持&lt;code&gt;EIP-1271&lt;/code&gt;标准。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/OpenZeppelin/openzeppelin-contracts/blob/5ed5a86d1d22f387ce69ab4e0ace405de8bc888d/contracts/utils/cryptography/SignatureChecker.sol#L22&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;code&gt;@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol&lt;/code&gt;&lt;/a&gt;库提供了一种验证不同账户实现的签名方法。当需要检查账户签名是否正确时，强烈建议使用这个库。&lt;/p&gt;
+&lt;h2 id=&#34;将库添加到项目中&#34;&gt;将库添加到项目中
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm add @openzeppelin/contracts
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;使用库的示例&#34;&gt;使用库的示例
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;pragma solidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;^&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SignatureChecker&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;contract&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;TestSignatureChecker&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;using&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SignatureChecker&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;isValidSignature&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;memory&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_signature&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;pure&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;isValidSignatureNow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_signature&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;验证-aa-签名&#34;&gt;验证 AA 签名
+&lt;/h2&gt;&lt;p&gt;不建议使用&lt;code&gt;ethers.js&lt;/code&gt;库来验证用户签名。官方 SDK 通过&lt;code&gt;utils&lt;/code&gt;提供了两种方法来验证账户的签名：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;async&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;isMessageSignatureCorrect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;address&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;message&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;ethers.Bytes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;signature&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;SignatureLike&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Promise&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;boolean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;async&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;isTypedDataSignatureCorrect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;address&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;domain&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;TypedDataDomain&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;types&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;Record&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;Array&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;TypedDataField&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;value&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;Record&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;string&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;any&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;signature&lt;/span&gt;: &lt;span class=&#34;kt&#34;&gt;SignatureLike&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Promise&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;boolean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;目前这些方法仅支持验证 ECDSA 签名，但很快将支持&lt;code&gt;EIP-1271&lt;/code&gt;签名验证。这两种方法都会返回&lt;code&gt;true&lt;/code&gt;或&lt;code&gt;false&lt;/code&gt;，具体取决于消息签名是否正确。&lt;/p&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ZKsync Era Protocol&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

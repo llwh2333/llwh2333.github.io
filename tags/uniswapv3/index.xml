@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>UniswapV3 on Nillnum</title>
+        <link>https://llwh2333.github.io/tags/uniswapv3/</link>
+        <description>Recent content in UniswapV3 on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 16:22:18 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/uniswapv3/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Uniswap V3 手续费收取</title>
+        <link>https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</link>
+        <pubDate>Thu, 08 Aug 2024 16:22:18 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
+        <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
+&lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
+&lt;h1 id=&#34;单位手续费&#34;&gt;单位手续费
+&lt;/h1&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;liquidityGross&lt;/code&gt;：当该&lt;code&gt;tick&lt;/code&gt;被设置为区间上限或下限时就会增加，当其为 0 时，表示该&lt;code&gt;tick&lt;/code&gt;没有人设置区间（计算区间流动性时忽略，当这个&lt;code&gt;tick&lt;/code&gt;不存在）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;liquidityNet&lt;/code&gt;：记录流动性的变化量，即一个$\Delta$值，每当穿过这个&lt;code&gt;tick&lt;/code&gt;值时需要改变的当前激活流动性大小（从&lt;code&gt;tick&lt;/code&gt;右边穿过加，反之减）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;liquidityNet&lt;/code&gt;计算方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注入流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;注入流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;移除流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;移除流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;通过上述变量，我们便获得了当前区间的激活流动性，根据交易中产生的手续费，我们可以得到因为这笔交易产生的&lt;strong&gt;每单位流动性手的续费收益&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;那么后续如何做呢？如果直接记录到各个提供者账上，那么需要遍历该区间所有提供者（可想而知这会产生多少&lt;code&gt;gas&lt;/code&gt;，没人会想承担这个成本的），这个思路没了。&lt;/p&gt;
+&lt;p&gt;无需遍历的方法便是：新产生的手续费收益会修改的只有全局总收益（所有区间相加的手续费收益总和），而想计算当前交易区间内收益：全局收益 - 区间外收益（每次交易不会影响这个值）。&lt;/p&gt;
+&lt;p&gt;当然上述只是一个思路，那么具体一点如何设计呢？&lt;/p&gt;
+&lt;p&gt;V3 中设置了一个变量&lt;code&gt;feeGrowthGlobal&lt;/code&gt;记录全局单位手续费收益，利用每个&lt;code&gt;tick&lt;/code&gt;记录该&lt;code&gt;tick&lt;/code&gt;外的手续费&lt;code&gt;feeGrowthOutside&lt;/code&gt;。这样一来我们就能得到范围内的手续费：&lt;code&gt;feeGrowthInside = feeGrowthGlobal - feeGrowthOutside&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;这里又有两个问题：如何为不同时间投入流动性的用户计算各自的收益？&lt;code&gt;tick&lt;/code&gt;如何记录外部手续费收益（怎么定义外部）？&lt;/p&gt;
+&lt;p&gt;首先是时间问题，投入流动性时，头寸记录当前区块手续费收益&lt;code&gt;feeGrowthInside&lt;/code&gt;，因为这是一个累加值，当取出时和当时的&lt;code&gt;feeGrowthInside&lt;/code&gt;比较增量，就知道该段时间内的收益了。&lt;/p&gt;
+&lt;p&gt;其次是外部收益记录问题，这里抛去了绝对的外部的定义（不再区分点的左边是外部还是右边是外部），而是通过当前价格点来调整这个外部值。假设当前价格点在&lt;code&gt;tick&lt;/code&gt;左边，&lt;code&gt;tick&lt;/code&gt;中记录了一个外部值，此时外部就是&lt;code&gt;tick&lt;/code&gt;的右边，里面的值就是&lt;code&gt;tick&lt;/code&gt;右边的收益。&lt;/p&gt;
+&lt;p&gt;当价格点穿过&lt;code&gt;tick&lt;/code&gt;时，&lt;code&gt;tick&lt;/code&gt;的左边就变为外部，&lt;code&gt;tick&lt;/code&gt;所记录的外部收益怎么算呢？&lt;code&gt;feeGrowthOutside(新的) = feeGrowthGlobal - feeGrowthOutside(旧的)&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;关于&lt;code&gt;tick&lt;/code&gt;添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。&lt;/p&gt;
+&lt;h1 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
+&lt;/h1&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
+&lt;p&gt;首先时原本的恒定乘积公式：$x * y = k = L^2$&lt;/p&gt;
+&lt;p&gt;用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
+图片参考：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;的图二图三&lt;/p&gt;
+&lt;p&gt;这就变成了一个新的公式（根据左加右减，上加下减）：$(x + x1) * (y + y1) = L^2$&lt;/p&gt;
+&lt;p&gt;我们根据公式 $y = p * x(p 为价格)$联合 $x * y =  L^2$ 得到 $x = L / \sqrt{p}\space;\space y = L *\sqrt{p}$，所以 $x_1 = L / \sqrt{p_{upper}}\space;\space y_1 = L *\sqrt{p_{lower}}$，所以我们可以得到&lt;/p&gt;
+&lt;p&gt;$$
+(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}}) = L^2
+\
+\space
+\
+\space
+\
+L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
+$$&lt;/p&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章：
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Uniswap V3 升级概述</title>
+        <link>https://llwh2333.github.io/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</link>
+        <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
+        <description>&lt;h1 id=&#34;主要更新点&#34;&gt;主要更新点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;分不同价格区间提供流动性&lt;/li&gt;
+&lt;li&gt;提供多个收费层级&lt;/li&gt;
+&lt;li&gt;高级预言机&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
+&lt;/h1&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;用户选择投入流动性到 1,000-2,000 美元的价格区间，那么只有价格在此范围内进行的交易产生的手续费，用户才有资格得到。因此用户需要选择交易最经常发生的价格区间才能获得最大的收益&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如此做法带来了什么好处呢？最直接是资金的利用率提升了：过去 V2 中池子中有部分不合理的价格也被强制分配了一部分流动性（如 &lt;code&gt;1 eth = 0.1$&lt;/code&gt;或者&lt;code&gt;1 eth = 10^18$&lt;/code&gt;），这无疑是对池子的资金的浪费，V3 通过用户指定流动性提供区间，提高了这个利用率（如果用户非要选择离谱的区间那用户就没办法获得手续费，毕竟那些区间没有交易产生）。&lt;/p&gt;
+&lt;p&gt;采用这种区间的方法就需要修改一些原本 V2 的设计了：首先就是 LP token。&lt;/p&gt;
+&lt;p&gt;在 V2 中采用的是 ERC20 代币作为 LP token，因为所有流动性添加用户添加的流动性是等价的（大家都是在零到正无穷这个区间添加流动性）。而到了 V3 就很明显的不一样了：每个用户选择的区间并不一定一样（也可以一样，但这种情况应该少数，即使是某些池子中大多一样，那也不影响），所以它们获得 LP token 无法等价起来，故采用 ERC721 来记录流动性提供者投入的流动性，而这个 LP token 也被称为&lt;strong&gt;头寸&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;对于用户选择的区间和当前池子的价格之间的大小关系不同，有不同的投入要求（此处假设价格点连续）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;价格大于区间：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：20&lt;/code&gt;、&lt;code&gt;1：30&lt;/code&gt;，那么此时想添加流动性，就只能添加代币&lt;code&gt;X&lt;/code&gt;。（可以理解为认为&lt;code&gt;X&lt;/code&gt;币会跌/&lt;code&gt;Y&lt;/code&gt;币会涨，设置一个订单，在此范围内逐渐卖出/买入代币，当然前提是超出你设置的区间后及时取回流动性，不然随着价格回来又会转换回来）&lt;/li&gt;
+&lt;li&gt;价格在区间内：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：5&lt;/code&gt;、&lt;code&gt;1：20&lt;/code&gt;，那么此时想添加流动性，需要同时注入两种代币&lt;/li&gt;
+&lt;li&gt;价格小于区间：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：5&lt;/code&gt;、&lt;code&gt;1：7&lt;/code&gt;，那么此时想添加流动性，就只能添加代币&lt;code&gt;Y&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其次的设计就是区间：区间的选择不能无限制，作为链上合约，实现不了这么复杂的事情。&lt;/p&gt;
+&lt;p&gt;V3 在价格这一射线上选择一系列不连续的价格点作为可以选择形成区间，这些价格点称为&lt;code&gt;tick&lt;/code&gt;，以此来减少计算关于流动性的计算，然后还设置了&lt;code&gt;tickspacing&lt;/code&gt;这一存在，要求两个&lt;code&gt;tick&lt;/code&gt;之间存在&lt;code&gt;tickspacing&lt;/code&gt;个&lt;code&gt;tick&lt;/code&gt;，而在 V3 中锁定唯一的代币对池子，需要通过：两种代币、&lt;code&gt;tickspacing&lt;/code&gt;这三个参数。&lt;code&gt;tick&lt;/code&gt;的大小是如何设置的呢？&lt;code&gt;tick&lt;/code&gt;本身是一个等幂数列 $p_i= {1.0001}^i$ ，其 i 的取值有范围&lt;code&gt;[-887272, 887272]&lt;/code&gt;。这使得在接&lt;code&gt;0-1&lt;/code&gt;的时候能提供一个很密集的&lt;code&gt;tick&lt;/code&gt;（很适合如稳定币对），远离 1 的时候能提供较分散的&lt;code&gt;tick&lt;/code&gt;给价格波动大的兑换合约（如两个山寨币对）。&lt;/p&gt;
+&lt;h1 id=&#34;多收费层级&#34;&gt;多收费层级
+&lt;/h1&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
+&lt;p&gt;不同的收费层级通过前面所讲的&lt;code&gt;tickspacing&lt;/code&gt;结合决定：手续费低，则币价相对稳定，&lt;code&gt;tickspacing&lt;/code&gt;小；反之手续费高，币价波动大，&lt;code&gt;tickspacing&lt;/code&gt;大。具体设置如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;费率&lt;/th&gt;
+&lt;th&gt;tickspacing&lt;/th&gt;
+&lt;th&gt;建议的使用范围&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0.05%&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;稳定币交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0.3%&lt;/td&gt;
+&lt;td&gt;60&lt;/td&gt;
+&lt;td&gt;适用大多数交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1%&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;波动极大的交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 V3 合约实现的时候为&lt;code&gt;tickspacing&lt;/code&gt;扩充留下了代码，可以后续添加。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;高级预言机&#34;&gt;高级预言机
+&lt;/h1&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
+&lt;p&gt;在 V3 中&lt;code&gt;tick&lt;/code&gt;的计算为$p_i= {1.0001}^i$，所以$i = \log _{1.0001} p_i$&lt;/p&gt;
+&lt;p&gt;V3 中计算的不再是价格累积值而是&lt;code&gt;tick&lt;/code&gt;累积值，所以$a_j = a_{j-1} + \Delta t * i$，其中 i 就是上面&lt;code&gt;tick&lt;/code&gt;中指代的那个 i 。当我们计算平均价格时&lt;/p&gt;
+&lt;p&gt;$$
+P_{t1,t2} = \frac{a_{t2} - a_{t1}}{t2 - t1} = \frac{\sum_{i =t1}^{t2}\log_{1.0001}P_i}{t2 - t1}=\log_{1.0001}{(\Pi _{i = t2}^{t_2} P_i)^{\frac{1}{t2 - t1}}}
+$$&lt;/p&gt;
+&lt;p&gt;最后面那一步转换便称为价格 的几何平均值形式（数学不好，没能理解这个转换）。剩下的计算和 V2 也很相似了&lt;/p&gt;
+&lt;p&gt;参考文章：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.web3idea.xyz/post/blockchain%2Fdefi%2FUniswap-v3%E8%AF%A6%E8%A7%A3%28%E4%BA%94%29:Oracle%E9%A2%84%E8%A8%80%E6%9C%BA#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%B9%B3%E5%9D%87%E5%80%BC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Uniswap v3 详解（五）：Oracle 预言机&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Oracle on Nillnum</title>
+        <link>https://llwh2333.github.io/tags/oracle/</link>
+        <description>Recent content in Oracle on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 19:39:32 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/oracle/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Uniswap V2 预言机</title>
+        <link>https://llwh2333.github.io/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</link>
+        <pubDate>Thu, 08 Aug 2024 19:39:32 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
+        <description>&lt;p&gt;V2 的预言机主要是通过计算时间加权平均价（TWAP, Time Weighted Average Price）来得到价格的。&lt;/p&gt;
+&lt;p&gt;称为时间加权是因为，计算价格时考虑了时间因素，价格的每次更新包含了上次价格时间累积值，本次价格时间累积值，中间间隔时间三个元素。&lt;/p&gt;
+&lt;h1 id=&#34;时间累积值&#34;&gt;时间累积值
+&lt;/h1&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
+&lt;p&gt;$$
+a_i = a_{i-1} + \Delta t * {p_{i-1}}
+$$&lt;/p&gt;
+&lt;p&gt;其中 $a_i$ 指第 i 个价格时间累积值，$a_0$ 为 0 ，$\Delta t$ 指两个值之间经过的时间，$p_{i-1}$ 指$a_{i-1}$所在区块最后一笔交易的价格。&lt;/p&gt;
+&lt;h1 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
+&lt;/h1&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
+&lt;h1 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
+&lt;/h1&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
+&lt;p&gt;滑动时间窗口可以分为两个部分：时间窗口、滑动。&lt;/p&gt;
+&lt;p&gt;时间窗口，和上面一样指选择一个$\Delta T$值来计算时间段内的平均价格。&lt;/p&gt;
+&lt;p&gt;滑动，指不再是间隔$\Delta T$时间计算一次，而是另外设置间隔$\Delta n$时间计算一次，即每间隔$\Delta n$时间滑动一次时间窗口。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

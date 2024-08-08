@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="以太坊中外部账户EOA可以创建账户，同样智能合约也可以创建账户。智能合约创建账户的方法有两种： creat creat2 1 creat 使用creat就是直接new一个合约即">
+<title>合约内的合约创建</title>
+
+<link rel='canonical' href='https://llwh2333.github.io/p/%E5%90%88%E7%BA%A6%E5%86%85%E7%9A%84%E5%90%88%E7%BA%A6%E5%88%9B%E5%BB%BA/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="合约内的合约创建">
+<meta property='og:description' content="以太坊中外部账户EOA可以创建账户，同样智能合约也可以创建账户。智能合约创建账户的方法有两种： creat creat2 1 creat 使用creat就是直接new一个合约即">
+<meta property='og:url' content='https://llwh2333.github.io/p/%E5%90%88%E7%BA%A6%E5%86%85%E7%9A%84%E5%90%88%E7%BA%A6%E5%88%9B%E5%BB%BA/'>
+<meta property='og:site_name' content='Nillnum'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Solidity' /><meta property='article:published_time' content='2024-08-08T16:03:11&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T16:03:11&#43;08:00'/>
+<meta name="twitter:title" content="合约内的合约创建">
+<meta name="twitter:description" content="以太坊中外部账户EOA可以创建账户，同样智能合约也可以创建账户。智能合约创建账户的方法有两种： creat creat2 1 creat 使用creat就是直接new一个合约即">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15415685995576500094.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nillnum</a></h1>
+            <h2 class="site-description">永远热情，永远年轻</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/llwh2333'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%90%88%E7%BA%A6%E5%86%85%E7%9A%84%E5%90%88%E7%BA%A6%E5%88%9B%E5%BB%BA/">合约内的合约创建</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 08,  2024</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>以太坊中外部账户<code>EOA</code>可以创建账户，同样智能合约也可以创建账户。智能合约创建账户的方法有两种：</p>
+<ul>
+<li><code>creat</code></li>
+<li><code>creat2</code></li>
+</ul>
+<h1 id="1-creat">1 creat
+</h1><p>使用<code>creat</code>就是直接<code>new</code>一个合约即可，使用<code>create</code>创建的地址的计算方法是对：部署者地址和<code>nonce</code>（部署者发送交易的总数）进行哈希计算。使用方法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="n">Contract</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Contract</span><span class="p">{</span><span class="nb">value</span><span class="o">:</span> <span class="n">_value</span><span class="p">}(</span><span class="n">params</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Contract 是要创建的合约名（两个 Contract 都是）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// x 是返回的合约对象（地址）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 如果构造函数是 payable，可以创建时转入 _value 数量的 ETH
+</span></span></span><span class="line"><span class="cl"><span class="c1">// params 是新合约构造函数的参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="err">新地址</span> <span class="o">=</span> <span class="n">hash</span><span class="p">(</span><span class="err">创建者地址</span><span class="p">,</span> <span class="n">nonce</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>使用<code>creat</code>同样也需要知道需要创建合约的代码</p>
+</blockquote>
+<h1 id="2-creat2">2 creat2
+</h1><p>使用<code>creat2</code>的目的是为了让合约地址独立于未来的事件（不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上）。地址计算方法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="err">新地址</span> <span class="o">=</span> <span class="n">hash</span><span class="p">(</span><span class="s">&#34;0xFF&#34;</span><span class="p">,</span><span class="err">创建者地址</span><span class="p">,</span> <span class="n">salt</span><span class="p">,</span> <span class="n">hash</span><span class="p">(</span><span class="n">bytecode</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 0xFF 一个常数，避免和 CREATE 冲突
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 创建者地址
+</span></span></span><span class="line"><span class="cl"><span class="c1">// salt 由创建者提供的数值
+</span></span></span><span class="line"><span class="cl"><span class="c1">// bytecode 待部署合约的字节码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 计算如下（貌似还是可以直接在合约中使用）：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">predictedAddress</span> <span class="o">=</span> <span class="kt">address</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint160</span><span class="p">(</span>	<span class="c1">// 再转为 uint160（address 类型为 uint160 的长度）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="kt">uint</span><span class="p">(</span>	<span class="c1">// 先转为 uint256
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="nb">keccak256</span><span class="p">(</span>	<span class="c1">// 对所有输入进行哈希
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				<span class="nb">abi</span><span class="p">.</span><span class="nb">encodePacked</span><span class="p">(</span>	<span class="c1">// 进行编码打包
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>					<span class="kt">bytes1</span><span class="p">(</span><span class="mh">0xff</span><span class="p">),</span>	<span class="c1">// 固定的字节
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                	<span class="kt">address</span><span class="p">(</span><span class="nb">this</span><span class="p">),</span>	<span class="c1">// 部署者的地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                	<span class="n">salt</span><span class="p">,</span>	<span class="c1">// 由部署者自己决定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                	<span class="nb">keccak256</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nc">Pair</span><span class="p">).</span><span class="nb">creationCode</span><span class="p">)</span>	<span class="c1">// 访问 Pair 的内存字节数组，creationCode 只能在内联汇编中使用。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            	<span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用<code>creat2</code>的方法如下（只是多添加了一个<code>salt</code>参数）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="n">Contract</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Contract</span><span class="p">{</span><span class="n">salt</span><span class="o">:</span> <span class="n">_salt</span><span class="p">,</span> <span class="nb">value</span><span class="o">:</span> <span class="n">_value</span><span class="p">}(</span><span class="n">params</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 在汇编中调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">assembly</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 1：0 表示发送的 wei 数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 2、3： 表示字节码在内存中的位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 4：表示盐值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">addr</span> <span class="o">:=</span> <span class="n">create2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">bytecode</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">),</span> <span class="nf">mload</span><span class="p">(</span><span class="n">bytecode</span><span class="p">),</span> <span class="n">salt</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="3-总结">3 总结
+</h1><p>对于<code>creat</code>和<code>creat2</code>来说，两者间除了<code>creat2</code>可以提前计算出将要部署的合约的地址外，没有什么区别。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/solidity/">Solidity</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Nillnum
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

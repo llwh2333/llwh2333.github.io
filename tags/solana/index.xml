@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Solana on Nillnum</title>
+        <link>https://llwh2333.github.io/tags/solana/</link>
+        <description>Recent content in Solana on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 17:57:49 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/solana/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Solana 中的账户类型</title>
+        <link>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</link>
+        <pubDate>Thu, 08 Aug 2024 17:57:49 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</guid>
+        <description>&lt;p&gt;总的来说 Solana 的账户类型可以分为三种类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;程序账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;程序账户就是可以运行代码的账户，其中并不存储数据，可以看作 windows 上的 exe 文件，相当于一个只读的存在，仅负责执行逻辑。最明显的特征就是&lt;code&gt;executable&lt;/code&gt;值为&lt;code&gt;true&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据账户就是存储数据的账户，但其并不能运行代码，可以通过可执行账户修改其中的数据。最明显的特征就是&lt;code&gt;executable&lt;/code&gt;值为&lt;code&gt;false&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;原生账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Solana 中包含少量的原生程序，既属于&lt;code&gt;validator&lt;/code&gt;实现的一部分，也为网络提供各种核心功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Solana&lt;/code&gt;在账户的属性中存在一些固定的属性：&lt;code&gt;data&lt;/code&gt;（存放数据或代码）、&lt;code&gt;executable&lt;/code&gt;、&lt;code&gt;lamports&lt;/code&gt;（SOL 余额）、&lt;code&gt;owner&lt;/code&gt;（账户的所有者）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;此外，还有其它类型的账户，但都可以归类为上述的账户类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;钱包账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主要就是用户使用的账户，对于每一个拥有公私钥的账户，都可以认为是一个钱包账户（感觉本质上是一个数据账户，但不存储任何数据），用户通过私钥对消息进行签名，表示这个账户（公钥地址）的所有权，来进行操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;系统账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是由 Solana 系统程序管理的账户，用于执行网络的基础操作（创建账户、转账等操作）。由于每个新账户都是由系统账户创建的（系统账户执行基础操作），所以 Owner 都是系统账户&lt;/li&gt;
+&lt;li&gt;用户通过钱包账户向系统程序发送交易请求，就可以创建新的系统账户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代币账户&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Solana&lt;/code&gt;中除了&lt;code&gt;SOL&lt;/code&gt;这个原生代笔是所有账户都可以直接持有，如果用户想持有一个&lt;code&gt;SPL&lt;/code&gt;代笔（用户发行的其他代币），就需要一个代币账户，每一种代币都需要一个代币账户（代币账户中存在&lt;code&gt;mint&lt;/code&gt;表示这个代币账户保存的是哪个代币的数量）（所以这个应该也算得上是数据账户、&lt;code&gt;PDA&lt;/code&gt;账户）&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;程序衍生地址（&lt;code&gt;PDA&lt;/code&gt;）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在&lt;code&gt;Solana&lt;/code&gt;中，由于程序账户本身不存储任何数据，只执行逻辑，所以对于需要加载的数据，就存放在&lt;code&gt;PDA&lt;/code&gt;中，&lt;code&gt;PDA&lt;/code&gt;可以被程序账户通过&lt;code&gt;seed&lt;/code&gt;（由程序账户设置）和程序账户的&lt;code&gt;programeid&lt;/code&gt;寻找到对应的&lt;code&gt;PDA&lt;/code&gt;地址，然后提取涉及的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://solanacookbook.com/zh/core-concepts/accounts.html#%E7%BB%BC%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Solana 秘籍&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

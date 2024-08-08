@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Rollup on Nillnum</title>
+        <link>https://llwh2333.github.io/tags/rollup/</link>
+        <description>Recent content in Rollup on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 17:51:01 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/rollup/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Rollup 介绍</title>
+        <link>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</link>
+        <pubDate>Thu, 08 Aug 2024 17:51:01 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</guid>
+        <description>&lt;p&gt;Rollup 可以说是根据 Plasma 的方案升级而来：在主链上部署 Rollup 合约记录链下状态并且负责验证提交的链下状态，Rollup 链上的运营商则是负责维护好链下的状态。&lt;/p&gt;
+&lt;p&gt;对于 Rollup 用户而言，其与主链的交互在两个时候：进入（将 L1 的资产存入 L2）与退出（从 L2 中取出资产到 L1 中），其余时候是在 Rollup 上进行的，而在 Rollup 上进行交易的花费小于直接在主链上进行交易的花费，同时也能减轻主链的负担（Rollup 会将多个 Rollup 的交易打包一起交给主链，相当于 N 个交易合并为 1 个交易）。&lt;/p&gt;
+&lt;p&gt;其总体流程就是：用户在 Rollup 上产生交易（这会修改账户的状态，例如余额减少），Rollup 上的运营商将交易纳入区块，最终生成对应的默克尔树，并将汇总交易（batch，压缩后的交易集合）与交易后的状态（state root，默克尔树根）记录在链上（即主链上预先部署好的智能合约），并由链上负责验证。&lt;/p&gt;
+&lt;p&gt;其中如何实现验证根据不同的思路有了不同的方向：ZK Rollup（提交状态时验证）、Optimistic Rollup（提交状态后验证）。&lt;/p&gt;
+&lt;p&gt;前者的思路是有效证明（证明区块是有效的），通过名为零知识证明的方法提交一个区块的证明，这个证明可以在不泄露交易内容的情况下证明交易的状态变更的正确，链上的合约在通过默克尔树、证明进行验证，通过验证就固定了链下的状态变更（这就表示 ZK Rollup 的上主链时间需要看 ZK 证明的生成速度）。&lt;/p&gt;
+&lt;p&gt;后者的思路是欺诈证明，其假设区块是 Optimistic（乐观）的，即假设区块中没有欺诈区块，然后设置一个争议期，在争议期内任何用户都可以对这个区块发起挑战（认为这个区块有问题），提交自己的欺诈证明。如果争议期内没有人提出挑战，那么区块则会通过状态变更（这就表示交易真正的上链时间就是争议期时间长度）。&lt;/p&gt;
+&lt;h1 id=&#34;optimistic-rollup&#34;&gt;Optimistic Rollup
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;OR 并没有节省交易的存储消耗，因为其将交易和交易结果一并上传到链上，这正是为了保证数据可用性的问题（Plasma 放弃的原因正是因为交易全部存储在链下，导致了数据可用性问题）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;目前 Optimistic Rollup 的方案的落地并不只一个，而是有着众多的 OR 项目，主要是因为各个项目对于方案里面的部分偏具体的部分有不同的实现思路，因此产生了不同的项目。&lt;/p&gt;
+&lt;p&gt;目前主要的 Optimistic Rollup 项目有：Arbitrum、Optimism、opBNB 和 COMBO 这几个项目。&lt;/p&gt;
+&lt;h2 id=&#34;optimism&#34;&gt;Optimism
+&lt;/h2&gt;&lt;p&gt;Optimism 是一个 EVM 等效的 Optimism Rollup 链（简称 OP）。其中主要包含两类节点：sequencer（排序器）和 verifier（验证器）。&lt;/p&gt;
+&lt;p&gt;两者负责不同的任务：sequencer 负责将用户提交的交易进行处理，排序，然后提交给 L1 ，verifier 负责对于提交到 L1 上的状态根，汇总交易进行验证，如果验证为有问题则会提交对应的欺诈证明，sequencer 会因此需要重新计算对应的状态根。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Optimism 和 Arbitrum 的区别主要提现在对争议（挑战的验证方法不同）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;对于争议的处理，Optimism 主要依靠欺诈证明，需要证明就需要重新执行该交易以证明交易结果的正确，为了实现这个重放 Optimism 实现了 OVM 来处理，在 OVM 1.0 中 采用的是非交互式欺诈证明，而 OVM 2.0 中采用的是交互式欺诈证明（Arbitrum 也式非交互式）。&lt;/p&gt;
+&lt;h2 id=&#34;arbitrum&#34;&gt;Arbitrum
+&lt;/h2&gt;&lt;p&gt;Arbitrum 与 Optimism 很相似，主要区别在于争议处理（就是上面的那个证明挑战方式，Arbitrum 采用了交互式的方法）。&lt;/p&gt;
+&lt;p&gt;在这个交互式证明挑战中，将整个块上的交易分为 k 个部分（每个部分都有一个起点与端点），然后挑战者与被挑战者相互交流这 k 个部分确认争议点在哪个部分，然后继续缩小，直到确认具体的哪一条指令是两者的争议，然后交由 L1 合约判定。&lt;/p&gt;
+&lt;p&gt;目前 Arbitrum 项目包含了几个具体的项目：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Arbitrum One ：基于 Optimistic Rollup 技术，主要面向 Defi 和 NFT。&lt;/li&gt;
+&lt;li&gt;Arbitrum Nova：采用了 ZK-Rollup 技术，主要用户高吞入量的应用（如游戏、社交等应用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;zk-rollup&#34;&gt;ZK Rollup
+&lt;/h1&gt;&lt;p&gt;前面讲过了，ZK Rollup 是通过零知识证明的方式进行打包验证的，其与 Optimistic Rollup 的不同点是这个验证，在 ZKR 中，提交到链上的信息有：状态 A 和 B、零知识证明、汇总交易，这些信息表示：状态 A 在经过这些汇总交易之后会变成状态 B，你可以通过验证零知识证明来证实。因此在 ZKR 中没有等待时间（Optimistic Rollup 有等待时间），ZKR 现在没有完全击败 OR 的原因在于生成 ZK 证明的时间。&lt;/p&gt;
+&lt;p&gt;目前主流的零知识证明算法有：Bullet proof、zk-SNARK、zk-STARK&lt;/p&gt;
+&lt;p&gt;而主要的 ZKR 的项目有：zkSync、StarkWare 、Polygon（zkEVM）、Scroll、Aztec&lt;/p&gt;
+&lt;p&gt;在介绍各个项目前，先了解下目前对于以太坊兼容性 zkEVM（可以执行与以太坊虚拟机 (EVM) 相同的高级编程语言或低级字节码的虚拟机，并使用零知识证明 ZKP 证明此代码，这些类型的虚拟机更准确的名称是有效性证明生成 EVM）的类型。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下面是由 Vitalik 提出的分类方法&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一类：完全等同于以太坊的 ZKR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在所有部分完整复制以太坊（目前没有任何 zkEVM 实现了）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二类：完全等同于 EVM 的 ZKR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;等效于 EVM ，但非完全等效于以太坊，能完全兼容现有应用，但对以太坊进行了微小的修改，以使开发更加容易（Scroll、Polygon（zkEVM）都是理论上如此）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三类：几乎等同于 EVM 的 ZKR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比起第二类牺牲了更加多的等效性，证明生成的更快（Scroll、Polygon（zkEVM）实践上属于此类）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第四类：高级语言等效&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;能够接收用 Solidity 语言写的合约，转换为另一种语言（自定义、适用于 zk 的）。（zkSync、StarkNet）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;zksync&#34;&gt;zkSync
+&lt;/h2&gt;&lt;p&gt;zkSync 有两个版本：zkSync 1.0 （zkSync Lite）和 zkSync 2.0 （zkSync Era）。在 zkSync 1.0 中其只支持简单交易，zkSync 2.0 则在外观与使用都类似于以太坊，其智能合约采用 Solidity/Vyper 编写的，并且可以使用与其他 EVM 兼容链相同的客户端来调用，采用的零知识证明算法是：zk-SNARK。&lt;/p&gt;
+&lt;p&gt;zkSync 2.0 有以下特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是一种通用协议&lt;/li&gt;
+&lt;li&gt;强大的 LLVM 编译器，兼容支持 Solidity 语言（第四类 ZK Evm）&lt;/li&gt;
+&lt;li&gt;以 ETH 支付 gas 费&lt;/li&gt;
+&lt;li&gt;原生账户抽象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;starkware&#34;&gt;StarkWare
+&lt;/h2&gt;&lt;p&gt;StarkNet 则是前面第四类 ZK Rollup，其采用的是 zk-STARK 的零知识证明算法，被认为比 SNARK（zkSync 采用的） 更有效和可扩展，但可能需要更复杂的技术设置。&lt;/p&gt;
+&lt;p&gt;StarkNet 中支持智能合约，但需要采用 Cairo 语言编写，作为第四类 ZK Rollup，其并不会在 EVM 中执行，而是在自己建立的 VM 中执行，使用自定义的字节码。&lt;/p&gt;
+&lt;h2 id=&#34;scroll&#34;&gt;Scroll
+&lt;/h2&gt;&lt;p&gt;Scroll 是实现了与 EVM 等效的 ZK Rollup，这意味着我们可以很轻松的将以太坊上的程序迁移到 Scroll 中（即不需要更改太多的代码）。其计划通过构建 1:1 opcode 映射来实现支持 EVM opcode 从而直接接受 EVM opcode 而无需编译器。&lt;/p&gt;
+&lt;p&gt;Scroll 的架构包括一个集中式序列化节点和一个分散的证明网络。&lt;/p&gt;
+&lt;p&gt;集中式序列化节点负责对交易进行排序、创建区块，并将交易数据作为 calldata 提交到以太坊上的 Rollup 合约以供数据可用性。Scroll 计划逐步去中心化序列化节点。&lt;/p&gt;
+&lt;p&gt;同时，一个名为 Roller 的分散式证明生成器会产生证明并将其发布到 L1 网络上，利用分布式计算能力。Rollers 是随机选择的，可以在不同的 Rollers 上并行生成不同块的多个证明以增加速度。&lt;/p&gt;
+&lt;h2 id=&#34;polygonzkevm&#34;&gt;Polygon（zkEVM）
+&lt;/h2&gt;&lt;p&gt;Polygon zkEVM 是 Polygon 收购了 Hermez Network 开始开发一个结合了 STARK 和 SNARK 的安全性和效率的 EVM 等效系统。其使用自定义的语言 zkASM 来解释 zkEVM 代码。&lt;/p&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://decert.me/tutorial/layer2/src/rollup-all/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;第六章：Layer2 实现方式之 Rollup&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/2392&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;什么是 Rollup？&amp;ndash;上篇&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/2423&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;什么是 Rollup？&amp;ndash;下篇（zk-rollup）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/2637&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;白话 Rollup&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.aicoin.com/article/374547.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Layer2 赛道分析：Optimistic Rollup 技术为基础的项目探讨与市场对比&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://decert.me/tutorial/layer2/src/arbitrum&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;第十四章：Optimistic Rollup 代表项目 arbitrum&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://decert.me/tutorial/layer2/src/optimistim-metis-boba&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;第十五章：Optimistic Rollup 代表项目 optimistim(Boba, Metis&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://community.dorahacks.io/t/optimism-rollup/236&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Optimism Rollup - Dora Dōjo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/basic/27-Arbitrum-layer2/README-CN.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Arbitrum&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.techflowpost.com/article/detail_11625.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;zkEVM 方案一览：简析 zkSync、StarkNet、Polygon zkEVM 、Scroll&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.techflowpost.com/article/detail_11448.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;全方位解读 Arbitrum 及其生态，何以成为 Layer2 领跑者？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.techflowpost.com/article/detail_12482.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;一览 7 大主要的 L2 网络：它们各自有哪些优势和潜力？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3804&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;zkSync 2.0: zkEVM 的公共测试网已上线！&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
