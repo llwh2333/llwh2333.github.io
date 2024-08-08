@@ -14,15 +14,15 @@
         
         <guid>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;Uniswap V2 可以分为两个部分：&lt;code&gt;core&lt;/code&gt;部分、&lt;code&gt;periphery&lt;/code&gt;部分。&lt;code&gt;core&lt;/code&gt;部分提供实际的逻辑实现，&lt;code&gt;periphery&lt;/code&gt;部分提供和&lt;code&gt;core&lt;/code&gt;的交互（感觉就是对其的封装）。&lt;/p&gt;
-&lt;h1 id=&#34;core-部分&#34;&gt;core 部分
-&lt;/h1&gt;&lt;p&gt;主要有&lt;/p&gt;
+&lt;h2 id=&#34;core-部分&#34;&gt;core 部分
+&lt;/h2&gt;&lt;p&gt;主要有&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Factory&lt;/code&gt;：工厂合约，用于创建&lt;code&gt;Pair&lt;/code&gt;合约&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Pair&lt;/code&gt;：负责核心逻辑，如&lt;code&gt;swap&lt;/code&gt;/&lt;code&gt;mint&lt;/code&gt;/&lt;code&gt;burn&lt;/code&gt;，价格预言机等功能，其本身是一个&lt;code&gt;ERC20&lt;/code&gt;合约，继承&lt;code&gt;UniswapV2ERC20&lt;/code&gt;(Factory 只允许创建唯一的交易对)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2ERC20&lt;/code&gt;：这是一个扩展的&lt;code&gt;ERC20&lt;/code&gt;实现，用于实现&lt;code&gt;LPToken&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;uniswapv2factory&#34;&gt;UniswapV2Factory
-&lt;/h2&gt;&lt;p&gt;主要功能是创建&lt;code&gt;Pair&lt;/code&gt;合约，所以主要关注的也就是&lt;code&gt;createPair&lt;/code&gt;方法：&lt;/p&gt;
+&lt;h3 id=&#34;uniswapv2factory&#34;&gt;UniswapV2Factory
+&lt;/h3&gt;&lt;p&gt;主要功能是创建&lt;code&gt;Pair&lt;/code&gt;合约，所以主要关注的也就是&lt;code&gt;createPair&lt;/code&gt;方法：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括逻辑：检查是否存在&lt;code&gt;token&lt;/code&gt;对的&lt;code&gt;Pair&lt;/code&gt;合约，然后利用&lt;code&gt;creat2&lt;/code&gt;计算出新合约地址，赋值给对应索引，然后创建。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -72,8 +72,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;uniswapv2erc20&#34;&gt;UniswapV2ERC20
-&lt;/h2&gt;&lt;p&gt;实现了&lt;code&gt;LPToken&lt;/code&gt;，一个标准的&lt;code&gt;ERC20&lt;/code&gt;代币，唯一不同的是实现了 EIP-2612 以支持转账的离线授权。&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;uniswapv2erc20&#34;&gt;UniswapV2ERC20
+&lt;/h3&gt;&lt;p&gt;实现了&lt;code&gt;LPToken&lt;/code&gt;，一个标准的&lt;code&gt;ERC20&lt;/code&gt;代币，唯一不同的是实现了 EIP-2612 以支持转账的离线授权。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括： owner 对 spender 授权（&lt;code&gt;approve&lt;/code&gt;）消息产生了&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;三个元素，根据原本属性（函数的几个输入）计算数据摘要，通过其与&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;还原出签名者地址，与 owner 一致（即要求签名消息为 owner 发出）执行 approve。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -119,8 +119,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;uniswapv2pair&#34;&gt;UniswapV2Pair
-&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;`Pair`合约主要实现了四个方法：
+&lt;/div&gt;&lt;h3 id=&#34;uniswapv2pair&#34;&gt;UniswapV2Pair
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`Pair`合约主要实现了四个方法：
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;mint&lt;/code&gt;：用于添加流动性，会被路由合约调用。&lt;/li&gt;
@@ -431,15 +431,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h1 id=&#34;periphery-部分&#34;&gt;periphery 部分
-&lt;/h1&gt;&lt;p&gt;&lt;code&gt;periphery&lt;/code&gt;模块提供了和 &lt;code&gt;UniswapV2&lt;/code&gt;进行交互的外围合约，包含了以下主要合约：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;periphery-部分&#34;&gt;periphery 部分
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;periphery&lt;/code&gt;模块提供了和 &lt;code&gt;UniswapV2&lt;/code&gt;进行交互的外围合约，包含了以下主要合约：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Router02&lt;/code&gt;：最新版的路由合约，相比&lt;code&gt;UniswapV2Router01&lt;/code&gt;增加了对&lt;code&gt;FeeOnTransfer&lt;/code&gt;代币的支持；实现&lt;code&gt;Uniswap v2&lt;/code&gt;最常用的接口，比如添加/移除流动性，使用代币 A 交换代币 B，使用&lt;code&gt;ETH&lt;/code&gt;交换代币等，用来提升用户的体验。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV1Router01&lt;/code&gt;：旧版本&lt;code&gt;Router&lt;/code&gt;实现，与&lt;code&gt;Router02&lt;/code&gt;类似，但不支持&lt;code&gt;FeeOnTransferTokens&lt;/code&gt;，目前已不使用&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Migrator&lt;/code&gt;：用于迁移流动性（从&lt;code&gt;v1&lt;/code&gt;迁移到&lt;code&gt;v2&lt;/code&gt;合约）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;uniswapv2router02&#34;&gt;UniswapV2Router02
-&lt;/h2&gt;&lt;p&gt;是与用户进行交互的入口，主要提供了添加流动性、移除流动性和兑换的系列接口，并提供了几个查询接口&lt;/p&gt;
+&lt;h3 id=&#34;uniswapv2router02&#34;&gt;UniswapV2Router02
+&lt;/h3&gt;&lt;p&gt;是与用户进行交互的入口，主要提供了添加流动性、移除流动性和兑换的系列接口，并提供了几个查询接口&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括添加流动性：计算最终需要两种代币数量，然后将两种代币转入合约对中，调用合约对的&lt;code&gt;mint&lt;/code&gt;函数铸造对应的 LP 给添加者。&lt;/p&gt;
 &lt;p&gt;计算过程：获取代币对合约中库存量：如果为空表示新合约，那么最终数量等于期望数量；反之计算出结果&lt;code&gt;(amountAMin = mountA &amp;amp;&amp;amp; amountBMin &amp;lt;= mountB &amp;lt;= amountBDesired) || (amountAMin &amp;lt;= mountA &amp;lt;= amountADesired &amp;amp;&amp;amp; mountB = amountBDesired)&lt;/code&gt;&lt;/p&gt;
@@ -651,16 +651,16 @@
         <guid>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
         <description>&lt;p&gt;V2 的预言机主要是通过计算时间加权平均价（TWAP, Time Weighted Average Price）来得到价格的。&lt;/p&gt;
 &lt;p&gt;称为时间加权是因为，计算价格时考虑了时间因素，价格的每次更新包含了上次价格时间累积值，本次价格时间累积值，中间间隔时间三个元素。&lt;/p&gt;
-&lt;h1 id=&#34;时间累积值&#34;&gt;时间累积值
-&lt;/h1&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
+&lt;h2 id=&#34;时间累积值&#34;&gt;时间累积值
+&lt;/h2&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
 &lt;p&gt;$$
 a_i = a_{i-1} + \Delta t * {p_{i-1}}
 $$&lt;/p&gt;
 &lt;p&gt;其中 $a_i$ 指第 i 个价格时间累积值，$a_0$ 为 0 ，$\Delta t$ 指两个值之间经过的时间，$p_{i-1}$ 指$a_{i-1}$所在区块最后一笔交易的价格。&lt;/p&gt;
-&lt;h1 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
-&lt;/h1&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
-&lt;h1 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
-&lt;/h1&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
+&lt;h2 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
+&lt;/h2&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
+&lt;h2 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
+&lt;/h2&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
 &lt;p&gt;滑动时间窗口可以分为两个部分：时间窗口、滑动。&lt;/p&gt;
 &lt;p&gt;时间窗口，和上面一样指选择一个$\Delta T$值来计算时间段内的平均价格。&lt;/p&gt;
 &lt;p&gt;滑动，指不再是间隔$\Delta T$时间计算一次，而是另外设置间隔$\Delta n$时间计算一次，即每间隔$\Delta n$时间滑动一次时间窗口。&lt;/p&gt;
