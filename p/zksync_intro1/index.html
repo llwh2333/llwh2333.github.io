@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成">
-<title>Layer 2 拓展简单认识</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有">
+<title>ZKsync_intro1</title>
 
-<link rel='canonical' href='http://localhost:1313/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/'>
+<link rel='canonical' href='http://localhost:1313/p/zksync_intro1/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Layer 2 拓展简单认识">
-<meta property='og:description' content="区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成">
-<meta property='og:url' content='http://localhost:1313/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/'>
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="ZKsync_intro1">
+<meta property='og:description' content="zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有">
+<meta property='og:url' content='http://localhost:1313/p/zksync_intro1/'>
 <meta property='og:site_name' content='Nillnum'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Layer2' /><meta property='article:published_time' content='2024-08-08T17:48:46&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T17:48:46&#43;08:00'/>
-<meta name="twitter:title" content="Layer 2 拓展简单认识">
-<meta name="twitter:description" content="区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Layer2' /><meta property='article:tag' content='ZKsync' /><meta property='article:tag' content='ZK' /><meta property='article:published_time' content='2024-08-08T21:09:27&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T21:09:27&#43;08:00'/>
+<meta name="twitter:title" content="ZKsync_intro1">
+<meta name="twitter:description" content="zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有">
     <link rel="shortcut icon" href="/favicon.ico" />
 
   
@@ -190,39 +190,7 @@
     </ol>
 </aside>
 
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-<section class="widget archives">
-    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-</div>
-    <h2 class="widget-title section-title">目录</h2>
-
-    <div class="widget--toc"><nav id="TableOfContents">
-  <ol>
-    <li><a href="#侧链">侧链</a></li>
-    <li><a href="#状态通道">状态通道</a></li>
-    <li><a href="#plasma">Plasma</a></li>
-    <li><a href="#rollup">Rollup</a></li>
-    <li><a href="#参考文章">参考文章</a></li>
-  </ol>
-</nav></div>
-</section>
-
-
-            
-        
-    </aside>
-
+    
 
             <main class="main full-width">
     <article class="main-article">
@@ -233,7 +201,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/">Layer 2 拓展简单认识</a>
+            <a href="/p/zksync_intro1/">ZKsync_intro1</a>
         </h2>
     
         
@@ -271,83 +239,70 @@
     <section class="article-content">
     
     
-    <p>区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成交的速度开始跟不上了，其中 <code>Crypto Kitties</code>一度让以太坊不堪重负，交易拥堵。对于不修改区块链本身代码，而在现有的链本身上面搭建东西从而达成拓展的方法就是 Layer2 拓展。这种思路目的就是为了在尽可能保证去中心化和安全性的情况下提高可拓展性。</p>
-<p>根据实现的设计方向出现了一些分支：侧链、状态通道（<code>State Channel</code>）、<code>Plasma</code>、<code>Rollup</code>。</p>
-<h2 id="侧链">侧链
-</h2><p>侧链就是建立一个独立的区块链，这个链有独立的共识机制（即主链是什么共识机制与侧链无关），其通过双向锚定进行沟通，对于主链而言，它是感知不到侧链的存在的，而侧链又具有一定的独立性（主链崩溃并不会影响他的运行，只会影响他的价值）。</p>
-<p>双向锚定就是两个链之间的一个沟通，通过一方销毁代币，另一方生成等值代币，从而实现资产的跨链转移。</p>
-<p>对于侧链这一概念是需要搭配主链才有的（即有两条链才能称得上主链和侧链），单独看链是没有侧链这一说法的。如我们复制以太坊代码搭建一条链，和真正的以太坊之间搭建起一个双向锚定，那么自建的链就可以称为侧链（我感觉因为其价值低所以才称作侧链），真以太坊链就是主链。</p>
-<h2 id="状态通道">状态通道
-</h2><p>状态通道这个方法就像在两个用户之间建立一个账本一样：创建初记录两者状态，一系列交易后，又得到一个两者状态的最终情况，销毁账本的时候上传这个最终情况的状态。</p>
-<p>举个例子就是，A 和 B 之间有一系列交易：</p>
-<ol>
-<li>A -&gt; B（10 ETH）</li>
-<li>B -&gt; A（2 BTC）</li>
-<li>A -&gt; B（5 WETH）</li>
-<li>B -&gt; A （30 ETH）</li>
-</ol>
-<p>状态通道就是记录 A 和 B 交易开始时候的余额情况，然后根据交易不断修改双方状态，当关闭时返回交易完成的状态，让区块链根据状态通道返回的结果进行这场交易的结算。</p>
-<p>在这个过程中只有开启交易（启动状态通道）和结算交易（销毁状态通道）是在链上进行的，而中间的一系列交易在链下进行的，这使得，这种方法适合交易对象固定且交易频率高的用户，这样能为用户省下大量交易费用，同样让主网上的交易大大减少。</p>
-<p>但同样存在一些缺点，最明显的就是智能合约问题，这种方法只能转账交易，无法实现智能合约的交互，此外还有其他缺点如：拓展性差、参与双方需要保持在线等缺点。</p>
-<h2 id="plasma">Plasma
-</h2><p>在 Plasma 中，就是通过创建不同的子链（用于支持不同的业务需求），然后将主链上的交易执行交给子链进行，交易数据也会存储在子链上，但会定期将子链的状态根上传到 L1 主链上，从而实现链的扩容（链下）。</p>
-<p>在上面的描述中，主要有几个问题：如何将交易执行交给子链、子链如何保证能将正确的状态同步到主链当中。</p>
-<p>首先是交易执行如何交给子链。首先就是 Plasma 在主链上部署一系列智能合约用于锁定用户在在主链上的数字资产与保存、验证子链状态（默克尔树根）。用户将自己的资产发送给 Plasma 的智能合约，然后子链就会产生等值的资产给这个用户。用户就可以在子链上进行交易，如此就实现了将交易执行交给子链。</p>
-<p>其次是子链如何保证能将正确的状态同步到主链当中的问题，这其实包含了几个子问题：</p>
+    <p>zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有以下特点：</p>
 <ul>
-<li>如何验证子链中出现恶意行为</li>
-<li>如何保证子链中出现恶意行为时，保证用户不会受到损失</li>
-<li>如何惩罚出现的恶意行为</li>
+<li>可靠的安全性（继承自以太坊的安全性），对第三方零依赖（这个没看懂）</li>
+<li>无需许可的 EVM 兼容智能合约（不理解无需许可的意思）</li>
+<li>保留关键的 EVM 功能，如智能合约的可组合性</li>
+<li>标准的 web3 API</li>
+<li>通过交易输出，即状态差异进行状态更新（这中方式更加节省成本）</li>
+<li>原生的抽象账户</li>
 </ul>
-<p>验证子链中出现的恶意行为首先是需要理解什么是子链中的恶意行为。在子链中能出现的作恶者有两个：用户 Alice 和运营者 Operator（负责创建和发布区块）。</p>
-<p>当 Alice 想作恶时（实现双花），他想以自己账户余额更多时的状态进行提款，意图忽视后来的交易，以此向主链提出退出 Plasma 子链（需要包含一笔退出押金）。主链接收申请后放入列表，等待争议期结束。在争议期期间 Bob 发现了 Alice 的恶意行为，对于 Alice 的余额发起争议（Challenge，提交该笔余额被花费的证明），当主链验证发现 Bob 的争议是正确的，那么 Alice 的提款失败，同时他的退出押金被发送给 Bob。</p>
-<p>当 Operator 想作恶时，主要就是发布了恶意区块（没有正确履行自己的义务），这可能有下面的情况</p>
+<h1 id="1-总体">1 总体
+</h1><p>对于 zksync 的架构组成，可以分为几个部分：</p>
 <ul>
-<li>Operator 发布区块中包含这样的交易：Alice 向 Bob 转账 1 token，实际上 Alice 余额为 0</li>
-<li>Operator 发布无效区块进行数据可用性攻击</li>
-<li>Operator 故意排除拖延某些交易</li>
-</ul>
-<blockquote>
-<p>Plasma 的安全性主要依靠争议（用户提供欺诈证明，主链来进行裁决）保证，欺诈证明的提供需要链下完整的区块，而一旦 Operator 拒绝提供完整区块，那么欺诈证明就无法生成了， Operator 甚至能盗取用户财产。</p>
-<p>例如：Operator 私自把 Alice 的币转给 Bob ，再从 Bob 处转给 Eve，最后 Eve 进行提款（实际上 Bob 和 Eve 都是 Operator 的账户）。其中 Bob 转给 Eve 的交易可以公开展示，但对于 Alice 转给 BoB 的交易数据扣留，那么人们就无法证明 Eve 的资金有问题，因为 Eve 的资金有问题需要溯源证明 Alice 转账给 Bob 的交易有问题（需要指出这笔交易的数字签名有问题），而 Operator 并没有发布完整的区块（我的理解是默克尔树叶子节点对应的交易的完整数据没有全部展示），人们就无法证明这个 Alice 给 Bob 的交易有问题。</p>
-</blockquote>
-<p>对于这些 Operator 作恶，就需要用户及时退出了（官方作恶，只能跑路了）。</p>
-<p>通过以上描述，优点无需描述了（就是链下扩容的那些优点），缺点就是：</p>
+<li>
+<p>zkSync 智能合约：</p>
 <ul>
-<li>挑战期，这个既给了解决恶意交易的办法，但也使得正常用户的体验很差了</li>
-<li>运营者， Plasma 链中子链状态同步到主链上依靠一个运营商，而运营者可以轻松的进行数据可用性攻击</li>
-<li>用户在线，Plasma 要求交易资产的所有者在场</li>
+<li>zksync 部署了 Solidity 合约在 L1（以太坊）网络上，作为 ZK Rollup 的链上部分组件。负责管理用户的 balance（余额）并验证证明者提交的零知识证明与更新状态，同时实现以太坊与 zksync 的交互（存款、取款、跨层消息传递）</li>
 </ul>
-<h2 id="rollup">Rollup
-</h2><p>在上面的描述中，我们可以知道 Plasma 存在着众多问题，所以在此基础上又出现了 Rollup 这一改进方法。Rollup 的设计方向和 Plasma 很相似：通过将大量交易数据打包（rollup）并与状态根一起提交到以太坊主网，以此让以太坊对提交状态验证提高交易吞吐量和降低交易费用。</p>
-<p>个人感觉 Rollup 和 Plasma 的区别就是增加了打包（Rollup）这个部分，并因此以太坊的对于子链的验证方法也有了一些改变。</p>
-<p>目前对于 Rollup 的实现又分为两个路线：OP（Optimistic Rollup）、ZK（Zero Knowledge Rollup）。首先我们知道 Rollup 最需要解决的就是数据可用性的问题和交易有效性问题，解决这两个问题就保证了 Rollup 的安全性。而 OP、ZK 就是用于解决这个问题的。</p>
-<p>OP 则是采用乐观验证机制，其假设提交的数据都是正确的，然后这次状态的提交存在一个质疑期，用户可以提交欺诈证明来质疑这次状态，证明成功，链上智能合约将会回滚不正确的区块。ZK 则是采用了零知识证明的方法，只有链上的智能合约检查提交的数据和零知识证明，检查通过后，状态提交则认为是有效的。</p>
-<h2 id="参考文章">参考文章
-</h2><p><a class="link" href="https://learnblockchain.cn/article/8405"  target="_blank" rel="noopener"
-    >以太坊 Layer2 扩容方案之 State Channel</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/8406"  target="_blank" rel="noopener"
-    >以太坊 Layer2 扩容方案之 Sidechain</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/8407"  target="_blank" rel="noopener"
-    >以太坊 Layer2 扩容方案之 Plasma</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/8408"  target="_blank" rel="noopener"
-    >以太坊 Layer2 扩容方案之 Rollup</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/8409"  target="_blank" rel="noopener"
-    >以太坊 Layer2 扩容方案之 Validium</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/1169"  target="_blank" rel="noopener"
-    >Validium 与 Layer 2 的设计空间</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/4497"  target="_blank" rel="noopener"
-    >Web3 系列教程之进阶篇&mdash;1. Layer 2</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/1840"  target="_blank" rel="noopener"
-    >Rollup 为何能成为当下最火的 Layer2 方案</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/1037"  target="_blank" rel="noopener"
-    >以太坊扩容方案 Rollup 学习指南</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/7808"  target="_blank" rel="noopener"
-    >以太坊 Layer2：Rollup 战争</a></p>
-<p><a class="link" href="https://m.theblockbeats.info/news/29699"  target="_blank" rel="noopener"
-    >系统解读 ZK-Rollup、Optimism-Rollup 以及 Plasma</a></p>
-<p><a class="link" href="https://learnblockchain.cn/article/8695"  target="_blank" rel="noopener"
-    >DA 与欺诈证明：Plasma 不支持智能合约的原因</a></p>
+</li>
+<li>
+<p>zkSync Prover：</p>
+<ul>
+<li>Prover 是一个按需的 worker（需求量大（即 Server 负载高）的时候有多个，不需要（即没有交易输入）的时候没有），可以为一个有效区块生成零知识证明 proof，以此证明链下处理的交易的正确性，然后将证明交给 Server，由 Server 交给链上合约，保证合约只接收有效的交易。</li>
+<li>由于生成零知识证明 proof 需要大量的计算，所以作为 Prover 的机器需要有强大的 CPU 与大量的 RAM。</li>
+</ul>
+</li>
+<li>
+<p>zkSync Server（服务程序）：</p>
+<ul>
+<li>
+<p>Server 就是 zksync 的网络节点，负责维护链下状态，将交易聚合为 batches，将密封的 batches 发送到链上。具体而言具有以下功能：</p>
+<ul>
+<li>监测智能合约的链上操作（如存款，取款）</li>
+<li>接收 zksync 交易</li>
+<li>生成 zksync 的区块</li>
+<li>为有效区块发出 proof 生成申请</li>
+<li>将数据发布到 zksync 的合约上</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ZK Circuits（应该就是具体的 ZKEVM 吧）：</p>
+<ul>
+<li>Circuits 的这些电路时复杂的数学结构，代表了可验证的计算逻辑。其负责确定什么可以被验证为有效的 proof。对于 zksync ，Circuits 定义了 EraVM 运行的计算规则，定义了交易的执行方法。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img.learnblockchain.cn/attachments/2024/07/bO9n12XX6695524e1d5c3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240715143431-myf3tqd.png"
+	
+	
+></p>
+<h1 id="2-参考文章">2 参考文章
+</h1><p><a class="link" href="https://docs.zksync.io/build/developer-reference/protocol"  target="_blank" rel="noopener"
+    >ZKsync Era Protocol</a></p>
+<p><a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning-ZKsync"  target="_blank" rel="noopener"
+    >Dapp-Learning ZKsync Era Tutorial</a></p>
+<p><a class="link" href="https://community.dorahacks.io/t/zksync-2023-01-31/294"  target="_blank" rel="noopener"
+    >zkSync 学习记录 2023.01.31</a></p>
 
 </section>
 
@@ -357,6 +312,10 @@
     <section class="article-tags">
         
             <a href="/tags/layer2/">Layer2</a>
+        
+            <a href="/tags/zksync/">ZKsync</a>
+        
+            <a href="/tags/zk/">ZK</a>
         
     </section>
 
@@ -394,6 +353,28 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/zksync_intro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ZKsync_intro</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     

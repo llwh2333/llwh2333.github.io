@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>CompoundV2 on Nillnum</title>
-        <link>https://llwh2333.github.io/tags/compoundv2/</link>
+        <link>http://localhost:1313/tags/compoundv2/</link>
         <description>Recent content in CompoundV2 on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 17:41:45 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/compoundv2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 17:41:45 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/compoundv2/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Compound V2 逻辑整理</title>
-        <link>https://llwh2333.github.io/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <link>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
         <pubDate>Thu, 08 Aug 2024 17:41:45 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <guid>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Compound V2 也和 Aave V2 很相似，有部分区别，但感觉是很多地方相似的，采用的设计逻辑都是由很多相似的地方的。下面依旧从行为的方面进行介绍。&lt;/p&gt;
 &lt;h1 id=&#34;借贷&#34;&gt;借贷
 &lt;/h1&gt;&lt;p&gt;Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。&lt;/p&gt;

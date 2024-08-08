@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Error on Nillnum</title>
-        <link>https://llwh2333.github.io/tags/error/</link>
+        <link>http://localhost:1313/tags/error/</link>
         <description>Recent content in Error on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 16:12:08 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/error/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 16:12:08 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/error/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>异常处理的简单认识</title>
-        <link>https://llwh2333.github.io/p/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</link>
+        <link>http://localhost:1313/p/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</link>
         <pubDate>Thu, 08 Aug 2024 16:12:08 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</guid>
+        <guid>http://localhost:1313/p/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</guid>
         <description>&lt;p&gt;关于错误，是每个编程语言避不开的部分。在&lt;code&gt;solidity&lt;/code&gt;中一旦出现异常，则当前交易将会回滚（即相当于没有发生过，除了你的 gas 被消耗了）。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;solidity&lt;/code&gt;里抛出异常的方法有三种：&lt;/p&gt;
 &lt;ul&gt;

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代">
 <title>Uniswap V3 手续费收取</title>
 
-<link rel='canonical' href='https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/'>
+<link rel='canonical' href='http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/'>
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Uniswap V3 手续费收取">
 <meta property='og:description' content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代">
-<meta property='og:url' content='https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/'>
+<meta property='og:url' content='http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/'>
 <meta property='og:site_name' content='Nillnum'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='UniswapV3' /><meta property='article:tag' content='Defi' /><meta property='article:tag' content='Fee' /><meta property='article:published_time' content='2024-08-08T16:22:18&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T16:22:18&#43;08:00'/>
 <meta name="twitter:title" content="Uniswap V3 手续费收取">
@@ -190,7 +190,37 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+<section class="widget archives">
+    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+</div>
+    <h2 class="widget-title section-title">目录</h2>
+
+    <div class="widget--toc"><nav id="TableOfContents">
+  <ol>
+    <li><a href="#单位手续费">单位手续费</a></li>
+    <li><a href="#lp-提供者的流动性">LP 提供者的流动性</a></li>
+    <li><a href="#参考文章">参考文章：</a></li>
+  </ol>
+</nav></div>
+</section>
+
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
@@ -241,8 +271,8 @@
     
     <p>V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。</p>
 <p>在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。</p>
-<h1 id="单位手续费">单位手续费
-</h1><p>想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在<code>tick</code>上设置了两个变量<code>liquidityGross</code>、<code>liquidityNet</code>（计算区间内流动性就是计算两个<code>tick</code>间的流动性）。</p>
+<h2 id="单位手续费">单位手续费
+</h2><p>想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在<code>tick</code>上设置了两个变量<code>liquidityGross</code>、<code>liquidityNet</code>（计算区间内流动性就是计算两个<code>tick</code>间的流动性）。</p>
 <ul>
 <li><code>liquidityGross</code>：当该<code>tick</code>被设置为区间上限或下限时就会增加，当其为 0 时，表示该<code>tick</code>没有人设置区间（计算区间流动性时忽略，当这个<code>tick</code>不存在）。</li>
 <li><code>liquidityNet</code>：记录流动性的变化量，即一个$\Delta$值，每当穿过这个<code>tick</code>值时需要改变的当前激活流动性大小（从<code>tick</code>右边穿过加，反之减）。</li>
@@ -269,8 +299,8 @@
 <p>把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。</p>
 </blockquote>
 <p>关于<code>tick</code>添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。</p>
-<h1 id="lp-提供者的流动性">LP 提供者的流动性
-</h1><p>对于 LP 提供者提供的流动性是怎么定量计算的呢？</p>
+<h2 id="lp-提供者的流动性">LP 提供者的流动性
+</h2><p>对于 LP 提供者提供的流动性是怎么定量计算的呢？</p>
 <p>首先时原本的恒定乘积公式：$x * y = k = L^2$</p>
 <p>用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
 图片参考：<a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
@@ -286,8 +316,8 @@
 \
 L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
 $$</p>
-<h1 id="参考文章">参考文章：
-</h1><p><a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
+<h2 id="参考文章">参考文章：
+</h2><p><a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
     >Understand UniswapV3 whitepaper</a></p>
 
 </section>

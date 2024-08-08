@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="ABI (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。说人话就是：给智能合约阅读的编码标准。 为了应对智能合约中不同的情况，">
 <title>ABI 编码</title>
 
-<link rel='canonical' href='https://llwh2333.github.io/p/abi-%E7%BC%96%E7%A0%81/'>
+<link rel='canonical' href='http://localhost:1313/p/abi-%E7%BC%96%E7%A0%81/'>
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="ABI 编码">
 <meta property='og:description' content="ABI (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。说人话就是：给智能合约阅读的编码标准。 为了应对智能合约中不同的情况，">
-<meta property='og:url' content='https://llwh2333.github.io/p/abi-%E7%BC%96%E7%A0%81/'>
+<meta property='og:url' content='http://localhost:1313/p/abi-%E7%BC%96%E7%A0%81/'>
 <meta property='og:site_name' content='Nillnum'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Solidity' /><meta property='article:tag' content='ABI' /><meta property='article:published_time' content='2024-08-08T16:09:24&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T16:09:24&#43;08:00'/>
 <meta name="twitter:title" content="ABI 编码">
@@ -190,7 +190,40 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+<section class="widget archives">
+    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+</div>
+    <h2 class="widget-title section-title">目录</h2>
+
+    <div class="widget--toc"><nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-abiencode">1 abi.encode</a></li>
+    <li><a href="#2-abiencodepacked">2 abi.encodePacked</a></li>
+    <li><a href="#3-abiencodewithsignature">3 abi.encodeWithSignature</a></li>
+    <li><a href="#4-abiencodewithselector">4 abi.encodeWithSelector</a></li>
+    <li><a href="#5-abidecode">5 abi.decode</a></li>
+    <li><a href="#6-总结">6 总结</a></li>
+  </ol>
+</nav></div>
+</section>
+
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
@@ -251,8 +284,8 @@
 <ul>
 <li><code>abi.decode</code></li>
 </ul>
-<h1 id="1-abiencode">1 abi.encode
-</h1><p><code>abi.encode</code>会根据给定的 ABI 规则进行编码（将每个参数填充为 32 字节的数据，并拼接在一起）。当我们与合约进行交互时，使用的就是<code>abi.encode</code>。使用方法如下：</p>
+<h2 id="1-abiencode">1 abi.encode
+</h2><p><code>abi.encode</code>会根据给定的 ABI 规则进行编码（将每个参数填充为 32 字节的数据，并拼接在一起）。当我们与合约进行交互时，使用的就是<code>abi.encode</code>。使用方法如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -268,11 +301,11 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>返回值为<code>bytes</code>类型。</p>
-<h1 id="2-abiencodepacked">2 abi.encodePacked
-</h1><p>由<code>abi.encode</code>的编码规则可以看出，其中很容易浪费的空间。当我们想节省空间，并不与合约进行交互时，就可以使用<code>abi.encodePacked</code>。<code>abi.encodePacked</code>会使用参数所需的最低空间编码（如<code>uint8</code>参数就不会占用 32 字节那么大的空间了），使用方法同<code>abi.encode</code>。</p>
+<h2 id="2-abiencodepacked">2 abi.encodePacked
+</h2><p>由<code>abi.encode</code>的编码规则可以看出，其中很容易浪费的空间。当我们想节省空间，并不与合约进行交互时，就可以使用<code>abi.encodePacked</code>。<code>abi.encodePacked</code>会使用参数所需的最低空间编码（如<code>uint8</code>参数就不会占用 32 字节那么大的空间了），使用方法同<code>abi.encode</code>。</p>
 <p>返回值为<code>bytes</code>类型。</p>
-<h1 id="3-abiencodewithsignature">3 abi.encodeWithSignature
-</h1><p><code>abi.encodeWithSignature</code>的规则和<code>abi.encode</code>类似（每个参数都时 32 字节），但区别在于<code>Signature</code>（函数签名）这个上。<code>abi.encodeWithSignature</code>的第一个参数要求是函数签名，调用其他合约时可以使用，例子如下：</p>
+<h2 id="3-abiencodewithsignature">3 abi.encodeWithSignature
+</h2><p><code>abi.encodeWithSignature</code>的规则和<code>abi.encode</code>类似（每个参数都时 32 字节），但区别在于<code>Signature</code>（函数签名）这个上。<code>abi.encodeWithSignature</code>的第一个参数要求是函数签名，调用其他合约时可以使用，例子如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -286,8 +319,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>返回值为<code>bytes</code>类型。返回结果相当于原本<code>abi.encode</code>例子中的结果加上函数选择器 32 字节化结果。</p>
-<h1 id="4-abiencodewithselector">4 abi.encodeWithSelector
-</h1><p>与<code>abi.encodeWithSignature</code>功能类似，只不过第一个参数为函数选择器，为函数签名<code>Keccak</code>哈希结果的前 4 个字节。</p>
+<h2 id="4-abiencodewithselector">4 abi.encodeWithSelector
+</h2><p>与<code>abi.encodeWithSignature</code>功能类似，只不过第一个参数为函数选择器，为函数签名<code>Keccak</code>哈希结果的前 4 个字节。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -301,8 +334,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>返回值为<code>bytes</code>类型。返回的结果与<code>abi.encodeWithSignature</code>中一致（对于相同的函数）。</p>
-<h1 id="5-abidecode">5 abi.decode
-</h1><p><code>abi.decode</code>用于解码<code>abi.encode</code>生成的二进制编码，将它还原成原本的参数。使用方法如下：</p>
+<h2 id="5-abidecode">5 abi.decode
+</h2><p><code>abi.decode</code>用于解码<code>abi.encode</code>生成的二进制编码，将它还原成原本的参数。使用方法如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -315,8 +348,8 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h1 id="6-总结">6 总结
-</h1><p>最基本的<code>ABI</code>编码方法就是<code>abi.decode</code>，但为了节省空间（在不与合约交互时）设计了<code>abi.encodePacked</code>。</p>
+</div><h2 id="6-总结">6 总结
+</h2><p>最基本的<code>ABI</code>编码方法就是<code>abi.decode</code>，但为了节省空间（在不与合约交互时）设计了<code>abi.encodePacked</code>。</p>
 <p>为了快捷计算所需要的合约交互编码结果，设计了<code>abi.encodeWithSignature</code>和<code>abi.encodeWithSignature</code>，其中前者填入的是函数签名字符串参数，后者使用的是函数选择器，但输出结果一致。</p>
 
 </section>

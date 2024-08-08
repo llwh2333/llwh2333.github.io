@@ -2,16 +2,16 @@
 <html lang="zh-cn" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="zksync Era 中的抽象账户与 EIP-4337 的抽象账户 ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同： 实现层级 ZKsync 的账户抽象">
-<title>zksync Era 官方文档抽象账户部分中文翻译</title>
+<title>ZKsync_Era_AA_translantion</title>
 
-<link rel='canonical' href='http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/'>
+<link rel='canonical' href='http://localhost:1313/p/zksync_era_aa_translantion/'>
 
-<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="zksync Era 官方文档抽象账户部分中文翻译">
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="ZKsync_Era_AA_translantion">
 <meta property='og:description' content="zksync Era 中的抽象账户与 EIP-4337 的抽象账户 ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同： 实现层级 ZKsync 的账户抽象">
-<meta property='og:url' content='http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/'>
+<meta property='og:url' content='http://localhost:1313/p/zksync_era_aa_translantion/'>
 <meta property='og:site_name' content='Nillnum'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Layer2' /><meta property='article:tag' content='ZKsync' /><meta property='article:tag' content='ZK' /><meta property='article:tag' content='抽象账户' /><meta property='article:tag' content='Account Abstraction' /><meta property='article:published_time' content='2024-08-08T17:54:47&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T17:54:47&#43;08:00'/>
-<meta name="twitter:title" content="zksync Era 官方文档抽象账户部分中文翻译">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='' /><meta property='article:published_time' content='2024-08-08T21:12:45&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T21:12:45&#43;08:00'/>
+<meta name="twitter:title" content="ZKsync_Era_AA_translantion">
 <meta name="twitter:description" content="zksync Era 中的抽象账户与 EIP-4337 的抽象账户 ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同： 实现层级 ZKsync 的账户抽象">
     <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -194,8 +194,9 @@
         
             
                 
-<section class="widget archives">
-    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <line x1="5" y1="9" x2="19" y2="9" />
   <line x1="5" y1="15" x2="19" y2="15" />
@@ -204,94 +205,91 @@
 </svg>
 
 
-</div>
-    <h2 class="widget-title section-title">目录</h2>
 
-    <div class="widget--toc"><nav id="TableOfContents">
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
   <ol>
-    <li><a href="#zksync-era-中的抽象账户与-eip-4337-的抽象账户">zksync Era 中的抽象账户与 EIP-4337 的抽象账户</a></li>
-    <li><a href="#介绍">介绍</a></li>
-    <li><a href="#设计">设计</a>
+    <li><a href="#nonce-的唯一性">Nonce 的唯一性</a></li>
+    <li><a href="#标准化交易哈希">标准化交易哈希</a></li>
+    <li><a href="#interface">Interface</a>
       <ol>
-        <li><a href="#nonce-的唯一性">Nonce 的唯一性</a></li>
-        <li><a href="#标准化交易哈希">标准化交易哈希</a></li>
-        <li><a href="#interface">Interface</a>
-          <ol>
-            <li><a href="#iaccount-interface">IAccount interface</a></li>
-            <li><a href="#ipaymaster-interface">IPaymaster interface</a></li>
-          </ol>
-        </li>
-        <li><a href="#transaction-结构体的保留字段">Transaction 结构体的保留字段</a></li>
-        <li><a href="#交易流程">交易流程</a>
-          <ol>
-            <li><a href="#验证">验证</a></li>
-            <li><a href="#执行">执行</a></li>
-            <li><a href="#费用">费用</a></li>
-          </ol>
-        </li>
-        <li><a href="#使用-systemcontractscaller-库">使用 SystemContractsCaller 库</a></li>
+        <li><a href="#iaccount-interface">IAccount interface</a></li>
+        <li><a href="#ipaymaster-interface">IPaymaster interface</a></li>
       </ol>
     </li>
-    <li><a href="#扩展-eip-4337">扩展 EIP-4337</a>
+    <li><a href="#transaction-结构体的保留字段">Transaction 结构体的保留字段</a></li>
+    <li><a href="#交易流程">交易流程</a>
       <ol>
-        <li><a href="#拓展允许的操作码">拓展允许的操作码</a></li>
-        <li><a href="#扩展属于用户的-slots-集">扩展属于用户的 slots 集</a></li>
-        <li><a href="#未来会允许什么">未来会允许什么？</a></li>
-      </ol>
-    </li>
-    <li><a href="#建立智能账户">建立智能账户</a>
-      <ol>
-        <li><a href="#接口实现">接口实现</a></li>
-        <li><a href="#eip-1271-集成">EIP-1271 集成</a></li>
-        <li><a href="#部署流程">部署流程</a>
+        <li><a href="#验证">验证</a></li>
+        <li><a href="#执行">执行</a></li>
+        <li><a href="#费用">费用</a>
           <ol>
-            <li><a href="#使用-zksync-ethers-sdk-的示例-v5">使用 zksync-ethers SDK 的示例 (v5)</a></li>
-          </ol>
-        </li>
-        <li><a href="#验证步骤限制">验证步骤限制</a></li>
-        <li><a href="#nonce-管理">Nonce 管理</a></li>
-        <li><a href="#发送交易">发送交易</a>
-          <ol>
-            <li><a href="#交易提交示例">交易提交示例</a></li>
+            <li><a href="#eip-4337-的-gas-limit">EIP-4337 的 Gas Limit</a></li>
+            <li><a href="#zksync-era-中统一的-gas-limit">ZKsync Era 中统一的 Gas Limit</a></li>
+            <li><a href="#估算-gas">估算 Gas</a></li>
           </ol>
         </li>
       </ol>
     </li>
-    <li><a href="#paymasters">Paymasters</a>
-      <ol>
-        <li><a href="#与-paymasters-交互">与 Paymasters 交互</a>
-          <ol>
-            <li><a href="#paymasters-验证规则">Paymasters 验证规则</a></li>
-          </ol>
-        </li>
-        <li><a href="#内置-paymasters-流程">内置 Paymasters 流程</a>
-          <ol>
-            <li><a href="#一般-paymasters-流程">一般 Paymasters 流程</a></li>
-            <li><a href="#基于授权的-paymasters-流程">基于授权的 Paymasters 流程</a></li>
-          </ol>
-        </li>
-        <li><a href="#测试网-paymasters">测试网 Paymasters</a></li>
-        <li><a href="#与-paymasters-交互时估算-gas-费用">与 Paymasters 交互时估算 Gas 费用</a>
-          <ol>
-            <li><a href="#准确估计-gas-的重要性">准确估计 Gas 的重要性</a></li>
-            <li><a href="#处理复杂的依赖关系">处理复杂的依赖关系</a></li>
-            <li><a href="#提供授权估算的策略">提供授权估算的策略</a></li>
-          </ol>
-        </li>
-      </ol>
-    </li>
-    <li><a href="#签名验证">签名验证</a>
-      <ol>
-        <li><a href="#将库添加到项目中">将库添加到项目中</a></li>
-        <li><a href="#使用库的示例">使用库的示例</a></li>
-        <li><a href="#验证-aa-签名">验证 AA 签名</a></li>
-      </ol>
-    </li>
-    <li><a href="#参考文章">参考文章</a></li>
+    <li><a href="#使用-systemcontractscaller-库">使用 SystemContractsCaller 库</a></li>
   </ol>
-</nav></div>
-</section>
 
+  <ol>
+    <li><a href="#拓展允许的操作码">拓展允许的操作码</a></li>
+    <li><a href="#扩展属于用户的-slots-集">扩展属于用户的 slots 集</a></li>
+    <li><a href="#未来会允许什么">未来会允许什么？</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#接口实现">接口实现</a></li>
+    <li><a href="#eip-1271-集成">EIP-1271 集成</a></li>
+    <li><a href="#部署流程">部署流程</a>
+      <ol>
+        <li><a href="#使用-zksync-ethers-sdk-的示例-v5">使用 zksync-ethers SDK 的示例 (v5)</a></li>
+      </ol>
+    </li>
+    <li><a href="#验证步骤限制">验证步骤限制</a></li>
+    <li><a href="#nonce-管理">Nonce 管理</a></li>
+    <li><a href="#发送交易">发送交易</a>
+      <ol>
+        <li><a href="#交易提交示例">交易提交示例</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#与-paymasters-交互">与 Paymasters 交互</a>
+      <ol>
+        <li><a href="#paymasters-验证规则">Paymasters 验证规则</a></li>
+      </ol>
+    </li>
+    <li><a href="#内置-paymasters-流程">内置 Paymasters 流程</a>
+      <ol>
+        <li><a href="#一般-paymasters-流程">一般 Paymasters 流程</a></li>
+        <li><a href="#基于授权的-paymasters-流程">基于授权的 Paymasters 流程</a></li>
+      </ol>
+    </li>
+    <li><a href="#测试网-paymasters">测试网 Paymasters</a></li>
+    <li><a href="#与-paymasters-交互时估算-gas-费用">与 Paymasters 交互时估算 Gas 费用</a>
+      <ol>
+        <li><a href="#准确估计-gas-的重要性">准确估计 Gas 的重要性</a></li>
+        <li><a href="#处理复杂的依赖关系">处理复杂的依赖关系</a></li>
+        <li><a href="#提供授权估算的策略">提供授权估算的策略</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#将库添加到项目中">将库添加到项目中</a></li>
+    <li><a href="#使用库的示例">使用库的示例</a></li>
+    <li><a href="#验证-aa-签名">验证 AA 签名</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
 
             
         
@@ -307,7 +305,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/">zksync Era 官方文档抽象账户部分中文翻译</a>
+            <a href="/p/zksync_era_aa_translantion/">ZKsync_Era_AA_translantion</a>
         </h2>
     
         
@@ -345,8 +343,8 @@
     <section class="article-content">
     
     
-    <h2 id="zksync-era-中的抽象账户与-eip-4337-的抽象账户">zksync Era 中的抽象账户与 EIP-4337 的抽象账户
-</h2><p>ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：</p>
+    <h1 id="zksync-era-中的抽象账户与-eip-4337-的抽象账户">zksync Era 中的抽象账户与 EIP-4337 的抽象账户
+</h1><p>ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：</p>
 <ol>
 <li>实现层级
 <ul>
@@ -371,18 +369,18 @@
 </ul>
 </li>
 </ol>
-<h2 id="介绍">介绍
-</h2><p>以太坊中有两种类型的账户：</p>
+<h1 id="介绍">介绍
+</h1><p>以太坊中有两种类型的账户：</p>
 <ul>
 <li>外部拥有账户（EOA，即用户使用私钥直接控制进行交易的账户）</li>
 <li>合约账户（拥有代码的账户，不存在私钥，所以用户不能直接控制进行交易）
 在 ZKsync Era 中实现这样的账户：可以直接发起一笔交易（如 EOA 一般），也能在其中实现一些逻辑（即放入智能合约代码），这种账户称为抽象账户（AA 账户）。
 由于用户的账户可以是 AA 账户，所以可以对自己的账户进行编程，然后用户自己调用自己账户上的函数进行交易，因此，用户可以自定义签名算法、多签、支出限制等。同时，用户可以通过<code>paymasters</code>来帮助交易，即交易的<code>gas</code>由<code>paymasters</code>付出（前提是用户在<code>paymasters</code>有存款或授权一定数量的 ERC20 代币）。这使得用户在区块链上能有更好的体验了。</li>
 </ul>
-<h2 id="设计">设计
-</h2><p>ZKsync 上的帐户抽象协议与 <code>EIP-4337</code>非常相似，但为了效率和更好的用户体验，仍然有所不同。</p>
-<h3 id="nonce-的唯一性">Nonce 的唯一性
-</h3><ul>
+<h1 id="设计">设计
+</h1><p>ZKsync 上的帐户抽象协议与 <code>EIP-4337</code>非常相似，但为了效率和更好的用户体验，仍然有所不同。</p>
+<h2 id="nonce-的唯一性">Nonce 的唯一性
+</h2><ul>
 <li>当前的模型不允许自定义钱包同时发送多笔交易并保持确定的顺序</li>
 <li>对于 EOA，Nonce 的计数会依次增长（每笔交易都会递增）；对于自定义账户，无法保证交易顺序</li>
 <li>未来计划切换到可以在顺序或任意 Nonce 之间选择的模型</li>
@@ -396,11 +394,11 @@
 <li>验证完成后，系统检查 Nonce 是否标记为已使用。</li>
 </ul>
 <p>用户可以使用一个任意的 256 bit 的数字作为 Nonce，并且可以在系统合约中对应的 key 下放置任意的非零值。但仅有协议层面支持，但在 server 端并不支持这么做，目前仅支持通过顺序使用 Nonce 值（使用<code>incrementMinNonceIfEquals</code>方法，重新标记能使用的最低 Nonce）。</p>
-<h3 id="标准化交易哈希">标准化交易哈希
-</h3><p>在未来，计划在 ZKsync 上支持高效的交易包含证明。这需要我们在<code>Bootloader</code>中计算交易哈希。因为这种计算需要消耗<code>gas</code>，所以将计算交易哈希交给 AA 方法的接口才公平（防止账户可能由于某些原因需要该值），这也是为何下面描述的<code>IAccount</code>与<code>IPaymaster</code>接口的所有的方法都包含交易哈希以及推荐的签名摘要（由 EOA 对本次交易进行签名的摘要）。</p>
-<h3 id="interface">Interface
-</h3><h4 id="iaccount-interface">IAccount interface
-</h4><p>这个就是建议每个账户都需要实现的 IAccount interface。它包含五个接口：</p>
+<h2 id="标准化交易哈希">标准化交易哈希
+</h2><p>在未来，计划在 ZKsync 上支持高效的交易包含证明。这需要我们在<code>Bootloader</code>中计算交易哈希。因为这种计算需要消耗<code>gas</code>，所以将计算交易哈希交给 AA 方法的接口才公平（防止账户可能由于某些原因需要该值），这也是为何下面描述的<code>IAccount</code>与<code>IPaymaster</code>接口的所有的方法都包含交易哈希以及推荐的签名摘要（由 EOA 对本次交易进行签名的摘要）。</p>
+<h2 id="interface">Interface
+</h2><h3 id="iaccount-interface">IAccount interface
+</h3><p>这个就是建议每个账户都需要实现的 IAccount interface。它包含五个接口：</p>
 <blockquote>
 <p>个人认为下面的”系统“通常指<code>Bootloader</code>，但又有时候表示更大的概念，即整个 zksync 系统</p>
 </blockquote>
@@ -411,8 +409,8 @@
 <li><code>prepareForPaymaster</code>：是可选实现的，如果交易有<code>paymaster</code>代为支付交易费用，那么系统将会调用它。这个方法用来准备和<code>paymaster</code>进行交互（最著名的示例就是使用 ERC20 让<code>paymaster</code>代为支付交易费用）。</li>
 <li><code>executeTransactionFromOutside</code>：是可选实现的，但强烈推荐实现，因为在 priority 模式下的某些情况时（如 operator 没有响应），需要从你那来自”外部“的账户开始交易（即从 EOA 开始一个智能合约的交易，如以太坊上一样）。</li>
 </ul>
-<h4 id="ipaymaster-interface">IPaymaster interface
-</h4><p>与<code>EIP-4337</code>相同，ZKsync 同样支持<code>paymaster</code>：用于代付其他账户交易执行费用的账户。每个<code>paymaster</code>都需要实现 IPaymaster interface，其包含以下两个方法：</p>
+<h3 id="ipaymaster-interface">IPaymaster interface
+</h3><p>与<code>EIP-4337</code>相同，ZKsync 同样支持<code>paymaster</code>：用于代付其他账户交易执行费用的账户。每个<code>paymaster</code>都需要实现 IPaymaster interface，其包含以下两个方法：</p>
 <ul>
 <li>
 <p><code>validateAndPayForPaymasterTransaction</code>：是必须实现的，系统需要使用它来确认<code>paymaster</code>是否同意代付这笔交易。如果同意，则这个方法至少发送<code>tx.gasprice * tx.gasLimit</code>的 ETH 给 operator 。它需要返回<code>context</code>来作为<code>postTransaction</code>方法的调用参数之一。</p>
@@ -430,8 +428,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="transaction-结构体的保留字段">Transaction 结构体的保留字段
-</h3><p>对于上面的每个方法都会接收 Transaction 结构，虽然大多数字段不言自明，但仍旧有 6 个<code>reserved</code>字段（在下面结构中貌似被单独命名了出来，并没有如文档所讲放在<code>reserved</code>中），不命名的原因在于：未来的某些交易类型中可能不需要他们。目前为：</p>
+<h2 id="transaction-结构体的保留字段">Transaction 结构体的保留字段
+</h2><p>对于上面的每个方法都会接收 Transaction 结构，虽然大多数字段不言自明，但仍旧有 6 个<code>reserved</code>字段（在下面结构中貌似被单独命名了出来，并没有如文档所讲放在<code>reserved</code>中），不命名的原因在于：未来的某些交易类型中可能不需要他们。目前为：</p>
 <ul>
 <li><code>reserved[0]</code>：是 Nonce</li>
 <li><code>reserved[1]</code>：是随交易传递的<code>msg.value</code></li>
@@ -480,10 +478,10 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="交易流程">交易流程
-</h3><p>每笔交易都会有如下流程处理</p>
-<h4 id="验证">验证
-</h4><p>验证过程就是：系统确定交易是否能够执行。如果这笔交易在任何验证点失败，则不会向用户收取任何费用，并且交易不会包含在区块中（应该是指这笔交易不会有任何的记录，即相当于没有这笔交易）。</p>
+</div><h2 id="交易流程">交易流程
+</h2><p>每笔交易都会有如下流程处理</p>
+<h3 id="验证">验证
+</h3><p>验证过程就是：系统确定交易是否能够执行。如果这笔交易在任何验证点失败，则不会向用户收取任何费用，并且交易不会包含在区块中（应该是指这笔交易不会有任何的记录，即相当于没有这笔交易）。</p>
 <p>验证过程的步骤：</p>
 <ol>
 <li>
@@ -506,41 +504,41 @@
 <p>资金验证：系统确定<code>Bootloader</code>至少收到<code>tx.gasPrice * tx.gasLimit</code>的 ETH。如果所需的资金已经保存了，则交易被视为已经验证，准备进行下一步</p>
 </li>
 </ol>
-<h4 id="执行">执行
-</h4><p>执行步骤负责执行实际的交易操作，并将任何为使用的<code>gas</code>退还给用户，即使此步骤中出现 revert 情况，交易人就包含在区块中。</p>
+<h3 id="执行">执行
+</h3><p>执行步骤负责执行实际的交易操作，并将任何为使用的<code>gas</code>退还给用户，即使此步骤中出现 revert 情况，交易人就包含在区块中。</p>
 <p>执行过程步骤：</p>
 <ol>
 <li>交易执行：调用账户上的<code>executeTransaction</code>方法，执行交易</li>
 <li><code>paymaster</code>的交易后处理（仅在涉及<code>paymaster</code>时适用）：调用<code>paymaster</code>的<code>postTransaction</code>方法。这个方法通常将未使用的<code>gas</code>退还给发送者（应该就是当前账户了），尤其是<code>paymaster</code>采用的是 ERC20 代币作为代付费用（即向当前账户收取 ERC20 ，然后代付<code>gas</code>）。</li>
 </ol>
-<h4 id="费用">费用
-</h4><p>不同协议之间处理对于交易费的处理不同，如 <code>EIP-4337</code> 和 ZKsync 之间。</p>
-<h5 id="eip-4337-的-gas-limit">EIP-4337 的 Gas Limit
-</h5><p><code>EIP-4337</code>定义了三种<code>Gas Limit</code>来管理不同交易阶段的成本（应该是指将不同阶段的<code>gas</code>费用分开统计）：</p>
+<h3 id="费用">费用
+</h3><p>不同协议之间处理对于交易费的处理不同，如 <code>EIP-4337</code> 和 ZKsync 之间。</p>
+<h4 id="eip-4337-的-gas-limit">EIP-4337 的 Gas Limit
+</h4><p><code>EIP-4337</code>定义了三种<code>Gas Limit</code>来管理不同交易阶段的成本（应该是指将不同阶段的<code>gas</code>费用分开统计）：</p>
 <ul>
 <li><code>verificationGas</code>：包含交易验证所需的<code>gas</code></li>
 <li><code>executionGas</code>：交易执行所需的<code>gas</code></li>
 <li><code>preVerificationGas</code>：在主要验证前所需的<code>gas</code>（这个不太能理解，但看下面的描述，是转账 ERC20 的费用？）</li>
 </ul>
-<h5 id="zksync-era-中统一的-gas-limit">ZKsync Era 中统一的 Gas Limit
-</h5><p>在 ZKsync Era 中，使用单个<code>Gas Limit</code>字段处理所有与交易相关的成本，所以这个统一的<code>Gas Limit</code>需要包含：</p>
+<h4 id="zksync-era-中统一的-gas-limit">ZKsync Era 中统一的 Gas Limit
+</h4><p>在 ZKsync Era 中，使用单个<code>Gas Limit</code>字段处理所有与交易相关的成本，所以这个统一的<code>Gas Limit</code>需要包含：</p>
 <ul>
 <li>交易验证</li>
 <li>代支付逻辑费用（包括任意 ERC20 转账的费用）</li>
 <li>交易本身的执行</li>
 </ul>
-<h5 id="估算-gas">估算 Gas
-</h5><p>默认情况下，<code>estimateGas</code>函数计算需要的<code>gas</code>量，并包含一个常数。这个常数用于 EOA 交易的支付费用和签名验证（没看懂这句话）。</p>
-<h3 id="使用-systemcontractscaller-库">使用 SystemContractsCaller 库
-</h3><p>为了安全起见，<code>NonceHolder</code>（管理账户 Nonce）和<code>ContractDeployer</code>（负责部署合约）的系统合约都只能在拥有<code>isSystem</code>的特殊标志时调用。想要拥有此特殊标志来进行调用，需要使用 SystemContractsCaller 库中的<code>systemCall</code>或<code>systemCallWithPropagatedRevert</code>或<code>systemCallWithReturndata</code>（后面两种内部都是调用了<code>systemCall</code>）方法。</p>
+<h4 id="估算-gas">估算 Gas
+</h4><p>默认情况下，<code>estimateGas</code>函数计算需要的<code>gas</code>量，并包含一个常数。这个常数用于 EOA 交易的支付费用和签名验证（没看懂这句话）。</p>
+<h2 id="使用-systemcontractscaller-库">使用 SystemContractsCaller 库
+</h2><p>为了安全起见，<code>NonceHolder</code>（管理账户 Nonce）和<code>ContractDeployer</code>（负责部署合约）的系统合约都只能在拥有<code>isSystem</code>的特殊标志时调用。想要拥有此特殊标志来进行调用，需要使用 SystemContractsCaller 库中的<code>systemCall</code>或<code>systemCallWithPropagatedRevert</code>或<code>systemCallWithReturndata</code>（后面两种内部都是调用了<code>systemCall</code>）方法。</p>
 <p>当开发自定义的账户时，基本上都必定使用这个库，因为这是调用<code>NonceHolder</code>系统合约的非视图的唯一方法。此外，如果想允许用户自己部署自己的合约，则必须使用这个库。可以使用 EOA 账户的实现（默认账户实现，所有没有包含代码的账户默认继承的）作为参考。</p>
-<h2 id="扩展-eip-4337">扩展 EIP-4337
-</h2><p>主要是 <code>EIP-4337</code>对 ZKsync 原生帐户抽象的扩展概述。</p>
+<h1 id="扩展-eip-4337">扩展 EIP-4337
+</h1><p>主要是 <code>EIP-4337</code>对 ZKsync 原生帐户抽象的扩展概述。</p>
 <p>为了向 operator 提供 Dos 保护，<code>EIP-4337</code>对账户的验证步骤施加了多项限制（如不允许访问能够变化的信息，如当前块时间、数字、哈希）。其中大多数，尤其是那些和禁止操作码相关的内容，仍然具有意义，但为了用户有更好的体验，其中的一些限制已经取消</p>
-<h3 id="拓展允许的操作码">拓展允许的操作码
-</h3><p>允许使用已部署的<code>call</code>/<code>delegateCall</code>/<code>staticcall</code>合约。和以太坊不同，我们无法编辑已部署的代码或通过自毁删除合约，所以我们可以确保合约执行期间的代码是相同的。</p>
-<h3 id="扩展属于用户的-slots-集">扩展属于用户的 slots 集
-</h3><blockquote>
+<h2 id="拓展允许的操作码">拓展允许的操作码
+</h2><p>允许使用已部署的<code>call</code>/<code>delegateCall</code>/<code>staticcall</code>合约。和以太坊不同，我们无法编辑已部署的代码或通过自毁删除合约，所以我们可以确保合约执行期间的代码是相同的。</p>
+<h2 id="扩展属于用户的-slots-集">扩展属于用户的 slots 集
+</h2><blockquote>
 <p>这一部分就没看懂</p>
 </blockquote>
 <p>在原本的<code>EIP</code>中，AA 的<code>validateTransaction</code>步骤（检查交易是否合规）只允许读取自己存储的 slots 。但有些 slots 在语义上属于该用户，但实际上位于另一个合约的地址上，例如 ERC20 的余额。</p>
@@ -551,20 +549,20 @@
 <li>任何其他地址上的 slots A（这个不懂）</li>
 <li>然和其他地址上的<code>keccak256(A || X)</code>类型的 slots（包阔<code>mapping(address =&gt; value)</code>，通常用于 ERC20 代币中的余额）</li>
 </ul>
-<h3 id="未来会允许什么">未来会允许什么？
-</h3><p>未来可能允许有时限的交易，例如允许检查<code>block.timestamp &lt;= value</code>是否返回<code>false</code>等等。这将需要部署此类可信方法的库，但它将大大增强账户的功能。</p>
-<h2 id="建立智能账户">建立智能账户
-</h2><p>想在 zksync 上构建自定义账户（应该就是合约账户，带有合约的抽象账户），开发人员必须实现特定的接口，并遵循推荐的账户部署和管理的最佳实践。</p>
-<h3 id="接口实现">接口实现
-</h3><p>每个自定义账户都应该实现 IAccount interface（这个可以在 <a class="link" href="https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol"  target="_blank" rel="noopener"
+<h2 id="未来会允许什么">未来会允许什么？
+</h2><p>未来可能允许有时限的交易，例如允许检查<code>block.timestamp &lt;= value</code>是否返回<code>false</code>等等。这将需要部署此类可信方法的库，但它将大大增强账户的功能。</p>
+<h1 id="建立智能账户">建立智能账户
+</h1><p>想在 zksync 上构建自定义账户（应该就是合约账户，带有合约的抽象账户），开发人员必须实现特定的接口，并遵循推荐的账户部署和管理的最佳实践。</p>
+<h2 id="接口实现">接口实现
+</h2><p>每个自定义账户都应该实现 IAccount interface（这个可以在 <a class="link" href="https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol"  target="_blank" rel="noopener"
     >DefaultAccount.sol </a>中找到示例）。</p>
 <p>当外部地址调用时，此实现会返回空值，这可能不是您的自定义帐户所希望的行为。</p>
-<h3 id="eip-1271-集成">EIP-1271 集成
-</h3><p>对于智能钱包，强烈鼓励实施<code>EIP-1271</code>签名验证方案（让合约能够和 EOA 账户一样能够对消息进行签名，同时可以验证签名）。该标准得到了 ZKsync 团队的认可，并且是签名验证库的组成部分。</p>
-<h3 id="部署流程">部署流程
-</h3><p>部署账户的逻辑与部署标准智能合约的过程类似，但为了区分不打算被视为账户的智能合约，需要使用<code>ContractDeployer</code>系统合约的<code>createAccount</code>/<code>create2Account</code>方法，而不是使用<code>create</code>/<code>create2</code>（从代码中看没啥区别，因为<code>create</code>中调用了<code>createAccount</code>）。</p>
-<h4 id="使用-zksync-ethers-sdk-的示例-v5">使用 zksync-ethers SDK 的示例 (v5)
-</h4><div class="highlight"><div class="chroma">
+<h2 id="eip-1271-集成">EIP-1271 集成
+</h2><p>对于智能钱包，强烈鼓励实施<code>EIP-1271</code>签名验证方案（让合约能够和 EOA 账户一样能够对消息进行签名，同时可以验证签名）。该标准得到了 ZKsync 团队的认可，并且是签名验证库的组成部分。</p>
+<h2 id="部署流程">部署流程
+</h2><p>部署账户的逻辑与部署标准智能合约的过程类似，但为了区分不打算被视为账户的智能合约，需要使用<code>ContractDeployer</code>系统合约的<code>createAccount</code>/<code>create2Account</code>方法，而不是使用<code>create</code>/<code>create2</code>（从代码中看没啥区别，因为<code>create</code>中调用了<code>createAccount</code>）。</p>
+<h3 id="使用-zksync-ethers-sdk-的示例-v5">使用 zksync-ethers SDK 的示例 (v5)
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
@@ -580,8 +578,8 @@
 </span></span><span class="line"><span class="cl"><span class="k">await</span> <span class="nx">aa</span><span class="p">.</span><span class="nx">deployed</span><span class="p">();</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="验证步骤限制">验证步骤限制
-</h3><p>目前自定义账户验证规则尚未完全强制执行，将来可能变化：</p>
+</div><h2 id="验证步骤限制">验证步骤限制
+</h2><p>目前自定义账户验证规则尚未完全强制执行，将来可能变化：</p>
 <ul>
 <li>
 <p>账户只能与属于他们自己的 slots 进行交互</p>
@@ -594,12 +592,12 @@
 <p>这些限制尚未在 电路/VM 级别强制执行，并且不适用于 L1-&gt;L2 事务。</p>
 </li>
 </ul>
-<h3 id="nonce-管理">Nonce 管理
-</h3><p>交易和部署的 Nonce 都被整合到<code>NonceHolder</code>中进行优化。使用<code>incrementMinNonceIfEquals</code>函数安全的增加账户的 Nonce。</p>
-<h3 id="发送交易">发送交易
-</h3><p>目前仅支持<code>EIP-712</code>（对结构化数据进行哈希和签名的标准）格式的交易从自定义账户发送。交易必须指定<code>from</code>字段作为账户地址，并在<code>customData</code>中包含<code>customSignature</code>。</p>
-<h4 id="交易提交示例">交易提交示例
-</h4><div class="highlight"><div class="chroma">
+<h2 id="nonce-管理">Nonce 管理
+</h2><p>交易和部署的 Nonce 都被整合到<code>NonceHolder</code>中进行优化。使用<code>incrementMinNonceIfEquals</code>函数安全的增加账户的 Nonce。</p>
+<h2 id="发送交易">发送交易
+</h2><p>目前仅支持<code>EIP-712</code>（对结构化数据进行哈希和签名的标准）格式的交易从自定义账户发送。交易必须指定<code>from</code>字段作为账户地址，并在<code>customData</code>中包含<code>customSignature</code>。</p>
+<h3 id="交易提交示例">交易提交示例
+</h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -629,22 +627,22 @@
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">sentTx</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">zksyncProvider</span><span class="p">.</span><span class="nx">sendTransaction</span><span class="p">(</span><span class="nx">serializedTx</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="paymasters">Paymasters
-</h2><p><code>Paymasters</code>时专门设计用来资助用户交易费用的账户，增强协议的可用性和灵活性，方便用户使用 ERC20 代币而不是 ETH 支付费用。</p>
-<h3 id="与-paymasters-交互">与 Paymasters 交互
-</h3><p>要使用<code>paymaster</code>，用户必须在其<code>EIP-712</code>交易中指定非零的<code>paymaster</code>地址，并在<code>paymasterInput</code>字段中指定相关数据。</p>
-<h4 id="paymasters-验证规则">Paymasters 验证规则
-</h4><ul>
+</div><h1 id="paymasters">Paymasters
+</h1><p><code>Paymasters</code>时专门设计用来资助用户交易费用的账户，增强协议的可用性和灵活性，方便用户使用 ERC20 代币而不是 ETH 支付费用。</p>
+<h2 id="与-paymasters-交互">与 Paymasters 交互
+</h2><p>要使用<code>paymaster</code>，用户必须在其<code>EIP-712</code>交易中指定非零的<code>paymaster</code>地址，并在<code>paymasterInput</code>字段中指定相关数据。</p>
+<h3 id="paymasters-验证规则">Paymasters 验证规则
+</h3><ul>
 <li>验证规则尚未完全强制执行</li>
 <li>不遵守这些规则的<code>paymaster</code>将来可能会停止正常运行</li>
 </ul>
 <p>为了减少恶意<code>paymaster</code>潜在的 Dos 攻击，使用了类似于<code>EIP-4337</code>的声誉评分系统。但与<code>EIP-4337</code>不同，zksync 中的<code>paymaster</code>可以与任何存储 slots 交互，并且在特定条件下不会受到限制，如自上次成功验证以来经过的时间或连续的（consistent，可能也可以翻译为一致的） slots 访问模式</p>
-<h3 id="内置-paymasters-流程">内置 Paymasters 流程
-</h3><p><code>paymaster</code>可以自动操作或需要用户交互，这取决于其设计。例如将 ERC20 代币兑换成 ETH 的<code>paymaster</code>将要求用户授予必要限额。</p>
+<h2 id="内置-paymasters-流程">内置 Paymasters 流程
+</h2><p><code>paymaster</code>可以自动操作或需要用户交互，这取决于其设计。例如将 ERC20 代币兑换成 ETH 的<code>paymaster</code>将要求用户授予必要限额。</p>
 <p>账户抽象协议本身是通用的，允许账户和<code>paymaster</code>实现任意交互。但默认账户（EOA）的代码不变，但人就希望他们能够参与自定义账户和<code>paymaster</code>的生态中。这就是为什么对交易的<code>paymasterInput</code>字段进行了标准化，以涵盖大多数常见的<code>paymaster</code>功能用例。</p>
 <p>你的账户可以自由选择实现或不实现这些流程的支持，但强烈建议保持 EOA 和自定义账户的接口相同。</p>
-<h4 id="一般-paymasters-流程">一般 Paymasters 流程
-</h4><p>当<code>paymaster</code>不需要用户执行任何初始操作时，使用此流程：</p>
+<h3 id="一般-paymasters-流程">一般 Paymasters 流程
+</h3><p>当<code>paymaster</code>不需要用户执行任何初始操作时，使用此流程：</p>
 <p><code>paymasterInput</code>字段必须为具有以下接口的函数的调用进行编码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -655,8 +653,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>对于 EOA 账户，此输入通常不起作用，但<code>paymaster</code>可以根据需求进行说明（不太清楚这个函数具体有什么作用）。</p>
-<h4 id="基于授权的-paymasters-流程">基于授权的 Paymasters 流程
-</h4><p>当用户必须为<code>paymaster</code>设置 token 限额时，此流程十分重要。<code>paymasterInput</code>字段必须为对具有以下签名的函数的调用进行编码：</p>
+<h3 id="基于授权的-paymasters-流程">基于授权的 Paymasters 流程
+</h3><p>当用户必须为<code>paymaster</code>设置 token 限额时，此流程十分重要。<code>paymasterInput</code>字段必须为对具有以下签名的函数的调用进行编码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -675,11 +673,11 @@
 </div>
 </div><p>EOA 将确保支付给<code>paymaster</code>的<code>_token</code>的限额至少设为<code>_minAllowance</code>。<code>_innerInput</code>参数是一个额外的有效负载，可以发送给<code>paymaster</code>，以实现任意逻辑（如可以由<code>paymaster</code>验证的额外签名或密钥）。</p>
 <p>如果正在开发<code>paymaster</code>，则不应该相信交易的发送者会诚实行事（如通过<code>approvalBased</code>流程提供所需的限额）。这些流程主要作为对 EOA 的指示，而<code>paymaster</code>应始终仔细检查这些要求。</p>
-<h3 id="测试网-paymasters">测试网 Paymasters
-</h3><p>为保证用户在测试网上体验到<code>paymaster</code>，同样继续支持使用 ERC20 代币支付费用，Matter Labs 团队提供了测试网<code>paymaster</code>，可以将 ERC20 代币与 ETH 以 1:1 的汇率（1 ERC20 代币等于 1 wei 的 ETH）支付费用。</p>
+<h2 id="测试网-paymasters">测试网 Paymasters
+</h2><p>为保证用户在测试网上体验到<code>paymaster</code>，同样继续支持使用 ERC20 代币支付费用，Matter Labs 团队提供了测试网<code>paymaster</code>，可以将 ERC20 代币与 ETH 以 1:1 的汇率（1 ERC20 代币等于 1 wei 的 ETH）支付费用。</p>
 <p><code>paymaster</code>仅支持基于授权的<code>paymaster</code>流程，并要求<code>token</code>参数等于正在交换的<code>token</code>，并且<code>minAllowance</code>等于<code>tx.maxFeePerGas * tx.gasLimit</code>。此外测试网<code>paymaster</code>不适用<code>_innerInput</code>参数，因此不应提供任何内容（空<code>bytes</code>）。</p>
-<h3 id="与-paymasters-交互时估算-gas-费用">与 Paymasters 交互时估算 Gas 费用
-</h3><p>由于额外的计算和操作，与<code>paymaster</code>的交互通常比标准交易消耗更多的<code>gas</code>，导致<code>gas</code>增加的主要原因是：</p>
+<h2 id="与-paymasters-交互时估算-gas-费用">与 Paymasters 交互时估算 Gas 费用
+</h2><p>由于额外的计算和操作，与<code>paymaster</code>的交互通常比标准交易消耗更多的<code>gas</code>，导致<code>gas</code>增加的主要原因是：</p>
 <ol>
 <li>内部计算：包括<code>paymaster</code>的<code>validateAndPayForPaymasterTransaction</code>和<code>postTransaction</code>的内部操作。</li>
 <li>资金转账：<code>paymaster</code>将资金发送到<code>bootloader</code>时消耗的<code>gas</code></li>
@@ -690,8 +688,8 @@
 <li>转移资金的成本与用户能为类似交易支付的费用相当</li>
 <li>管理 ERC20 限额会显著影响<code>gas</code>的使用量，尤其是用户第一次设置限额。这个过程可能需要发布一个 32 byte 的存储密钥标识符，可能会以 50 gwei 的 L1 gas 价格使用多达 400k 的<code>gas</code>。需要注意，虽然交易流程在执行结束时，将存储 slot 清空（因此”授予<code>X</code>限额+<code>paymaster</code>花费所有限额），但初始成本是在执行期间预先收取的，只有在交易结束时 slot 归零后才会退款给用户。</li>
 </ul>
-<h4 id="准确估计-gas-的重要性">准确估计 Gas 的重要性
-</h4><p>准确的估计<code>gas</code>至关重要，尤其是对于涉及大量<code>pubdata</code>的操作，例如写入存储。你应该在估算过程中包含<code>paymasterInput</code>来保证准确考虑了<code>paymaster</code>的参与。以下代码片段来自定义的<code>paymaster</code>教程，演示了如何进行此估算：</p>
+<h3 id="准确估计-gas-的重要性">准确估计 Gas 的重要性
+</h3><p>准确的估计<code>gas</code>至关重要，尤其是对于涉及大量<code>pubdata</code>的操作，例如写入存储。你应该在估算过程中包含<code>paymasterInput</code>来保证准确考虑了<code>paymaster</code>的参与。以下代码片段来自定义的<code>paymaster</code>教程，演示了如何进行此估算：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -712,25 +710,25 @@
 </div>
 </div><p>此处<code>paymasterParams</code>包括<code>paymaster</code>的地址和他的输入。然而<code>paymasterInput</code>通常包含难以提前预测的参数，例如用户所需的确切的代币数量。</p>
 <p>此外，<code>paymaster</code>可能需要验证价格数据或转换率，可能需要服务端的签名。</p>
-<h4 id="处理复杂的依赖关系">处理复杂的依赖关系
-</h4><p>对于如涉及依赖交易内容的这些签名的这种复杂依赖关系，产生了挑战：</p>
+<h3 id="处理复杂的依赖关系">处理复杂的依赖关系
+</h3><p>对于如涉及依赖交易内容的这些签名的这种复杂依赖关系，产生了挑战：</p>
 <ul>
 <li>从<code>validateAndPayForPaymasterTransaction</code>中返回<code>magic = 0</code>可以模拟有效签名验证的<code>gas</code>消耗。这确保了尽管交易会由于<code>magic = 0</code>而在主网上失败，但仍旧可以估计出正确的<code>gas</code>数量。</li>
 <li><code>gas</code>的估算本质上时对防止交易失败的最低<code>gas</code>量的二分搜索。如果验证始终失败，那么<code>gas</code>估计也会失败，因为系统将不断尝试增加<code>gas limit</code>。</li>
 </ul>
-<h4 id="提供授权估算的策略">提供授权估算的策略
-</h4><ol>
+<h3 id="提供授权估算的策略">提供授权估算的策略
+</h3><ol>
 <li>粗略估计：如果对于涉及的资金有一个大概的认识，用它来进行估计。由于缓冲已经包含在估计中，所以微小的差异通常不会导致交易失败。但如果用户的余额在估计和交易执行之间发生意外的变化，可能会出现差异</li>
 <li>单独估计限额的设置：或者估算用户为交易的<code>gas</code>单独设置的限额。将此估算添加到原始交易的估算的成本中。这种方法考虑了 Nonce 的更改和一般验证逻辑，但可能会带来明显的开销。</li>
 </ol>
 <p>每种方法都有其优点和缺点，选择正确的方法取决于交易的具体情况和<code>paymaster</code>的需求。</p>
-<h2 id="签名验证">签名验证
-</h2><p>推荐的签名验证方法。如果项目准备支持原生 AA ，那么强烈建议这么做，这将允许自主的成千上万用户（许多新钱包都默认是智能账户，为用户提供更加流畅的体验）。我们预计未来会有更多用户转向智能钱包。</p>
+<h1 id="签名验证">签名验证
+</h1><p>推荐的签名验证方法。如果项目准备支持原生 AA ，那么强烈建议这么做，这将允许自主的成千上万用户（许多新钱包都默认是智能账户，为用户提供更加流畅的体验）。我们预计未来会有更多用户转向智能钱包。</p>
 <p>建立的各种不同类型的帐户之间最显着的区别是不同的签名方案。我们希望帐户支持<code>EIP-1271</code>标准。</p>
 <p><a class="link" href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/5ed5a86d1d22f387ce69ab4e0ace405de8bc888d/contracts/utils/cryptography/SignatureChecker.sol#L22"  target="_blank" rel="noopener"
     ><code>@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol</code></a>库提供了一种验证不同账户实现的签名方法。当需要检查账户签名是否正确时，强烈建议使用这个库。</p>
-<h3 id="将库添加到项目中">将库添加到项目中
-</h3><div class="highlight"><div class="chroma">
+<h2 id="将库添加到项目中">将库添加到项目中
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
@@ -738,8 +736,8 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm add @openzeppelin/contracts
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="使用库的示例">使用库的示例
-</h3><div class="highlight"><div class="chroma">
+</div><h2 id="使用库的示例">使用库的示例
+</h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -775,8 +773,8 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="验证-aa-签名">验证 AA 签名
-</h3><p>不建议使用<code>ethers.js</code>库来验证用户签名。官方 SDK 通过<code>utils</code>提供了两种方法来验证账户的签名：</p>
+</div><h2 id="验证-aa-签名">验证 AA 签名
+</h2><p>不建议使用<code>ethers.js</code>库来验证用户签名。官方 SDK 通过<code>utils</code>提供了两种方法来验证账户的签名：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -810,9 +808,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>目前这些方法仅支持验证 ECDSA 签名，但很快将支持<code>EIP-1271</code>签名验证。这两种方法都会返回<code>true</code>或<code>false</code>，具体取决于消息签名是否正确。</p>
-<h2 id="参考文章">参考文章
-</h2><p><a class="link" href="https://docs.zksync.io/build/developer-reference/protocol"  target="_blank" rel="noopener"
-    >ZKsync Era Protocol</a></p>
+<h1 id="参考文章">参考文章
+</h1><p>[ZKsync Era Protocol](</p>
 
 </section>
 
@@ -820,16 +817,6 @@
     <footer class="article-footer">
     
     <section class="article-tags">
-        
-            <a href="/tags/layer2/">Layer2</a>
-        
-            <a href="/tags/zksync/">ZKsync</a>
-        
-            <a href="/tags/zk/">ZK</a>
-        
-            <a href="/tags/%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7/">抽象账户</a>
-        
-            <a href="/tags/account-abstraction/">Account Abstraction</a>
         
     </section>
 
@@ -867,41 +854,6 @@
     
 
     
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/p/zksync-era-l1%E5%90%88%E7%BA%A6/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">zksync Era L1合约</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/zksync-%E4%BB%8B%E7%BB%8D/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">zksync 介绍</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
 
      
     

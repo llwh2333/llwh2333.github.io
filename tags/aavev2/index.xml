@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>AaveV2 on Nillnum</title>
-        <link>https://llwh2333.github.io/tags/aavev2/</link>
+        <link>http://localhost:1313/tags/aavev2/</link>
         <description>Recent content in AaveV2 on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 16:25:27 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/aavev2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 16:25:27 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/aavev2/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Aave V2 逻辑整理</title>
-        <link>https://llwh2333.github.io/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <link>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
         <pubDate>Thu, 08 Aug 2024 16:25:27 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <guid>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Aave 就相当于去中心化交易所中的一个银行，在其中用户可以进行一系列的资金操作，下面基于行为的角度对其两个功能进行阐述：借贷、存款。&lt;/p&gt;
 &lt;h1 id=&#34;借贷&#34;&gt;借贷
 &lt;/h1&gt;&lt;p&gt;在 Aave 中借贷有两种方式：借款（有抵押物的）、闪电贷（无抵押物的）。&lt;/p&gt;

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>ZKsync on Nillnum</title>
-        <link>https://llwh2333.github.io/tags/zksync/</link>
+        <link>http://localhost:1313/tags/zksync/</link>
         <description>Recent content in ZKsync on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 17:54:47 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/zksync/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 17:54:47 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/zksync/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>zksync Era 官方文档抽象账户部分中文翻译</title>
-        <link>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</link>
+        <link>http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</link>
         <pubDate>Thu, 08 Aug 2024 17:54:47 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
+        <guid>http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
         <description>&lt;h1 id=&#34;zksync-era-中的抽象账户与-eip-4337-的抽象账户&#34;&gt;zksync Era 中的抽象账户与 EIP-4337 的抽象账户
 &lt;/h1&gt;&lt;p&gt;ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：&lt;/p&gt;
 &lt;ol&gt;
@@ -485,10 +485,10 @@
         </item>
         <item>
         <title>zksync Era L1合约</title>
-        <link>https://llwh2333.github.io/p/zksync-era-l1%E5%90%88%E7%BA%A6/</link>
+        <link>http://localhost:1313/p/zksync-era-l1%E5%90%88%E7%BA%A6/</link>
         <pubDate>Thu, 08 Aug 2024 17:53:30 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/zksync-era-l1%E5%90%88%E7%BA%A6/</guid>
+        <guid>http://localhost:1313/p/zksync-era-l1%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;zksync Era 在 L1 有部署智能合约，以实现 L1 上的修改。部署的合约有：DiamondInit、DiamondProxy、DiamondUpgrade、ExecutorFacet、GettersFacet、MailboxFacet、Verifier、ValidatorTimelock、AllowList。&lt;/p&gt;
 &lt;p&gt;通过上述合约，可以看的出来 zksync Era 的链上合约部分采用的是钻石代理方法，同时也有一些其他的合约辅助。&lt;/p&gt;
 &lt;h1 id=&#34;diamond-部分&#34;&gt;Diamond 部分
@@ -738,10 +738,10 @@
         </item>
         <item>
         <title>zksync 介绍</title>
-        <link>https://llwh2333.github.io/p/zksync-%E4%BB%8B%E7%BB%8D/</link>
+        <link>http://localhost:1313/p/zksync-%E4%BB%8B%E7%BB%8D/</link>
         <pubDate>Thu, 08 Aug 2024 17:52:10 +0800</pubDate>
         
-        <guid>https://llwh2333.github.io/p/zksync-%E4%BB%8B%E7%BB%8D/</guid>
+        <guid>http://localhost:1313/p/zksync-%E4%BB%8B%E7%BB%8D/</guid>
         <description>&lt;p&gt;zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有以下特点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;可靠的安全性（继承自以太坊的安全性），对第三方零依赖（这个没看懂）&lt;/li&gt;
