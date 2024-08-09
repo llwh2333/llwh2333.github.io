@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Defi on Nillnum</title>
+        <link>http://localhost:1313/categories/defi/</link>
+        <description>Recent content in Defi on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 19:44:44 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/defi/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Uniswap V2 主要合约</title>
+        <link>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</link>
+        <pubDate>Thu, 08 Aug 2024 19:44:44 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</guid>
+        <description>&lt;p&gt;Uniswap V2 可以分为两个部分：&lt;code&gt;core&lt;/code&gt;部分、&lt;code&gt;periphery&lt;/code&gt;部分。&lt;code&gt;core&lt;/code&gt;部分提供实际的逻辑实现，&lt;code&gt;periphery&lt;/code&gt;部分提供和&lt;code&gt;core&lt;/code&gt;的交互（感觉就是对其的封装）。&lt;/p&gt;
+&lt;h2 id=&#34;core-部分&#34;&gt;core 部分
+&lt;/h2&gt;&lt;p&gt;主要有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;UniswapV2Factory&lt;/code&gt;：工厂合约，用于创建&lt;code&gt;Pair&lt;/code&gt;合约&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UniswapV2Pair&lt;/code&gt;：负责核心逻辑，如&lt;code&gt;swap&lt;/code&gt;/&lt;code&gt;mint&lt;/code&gt;/&lt;code&gt;burn&lt;/code&gt;，价格预言机等功能，其本身是一个&lt;code&gt;ERC20&lt;/code&gt;合约，继承&lt;code&gt;UniswapV2ERC20&lt;/code&gt;(Factory 只允许创建唯一的交易对)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UniswapV2ERC20&lt;/code&gt;：这是一个扩展的&lt;code&gt;ERC20&lt;/code&gt;实现，用于实现&lt;code&gt;LPToken&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;uniswapv2factory&#34;&gt;UniswapV2Factory
+&lt;/h3&gt;&lt;p&gt;主要功能是创建&lt;code&gt;Pair&lt;/code&gt;合约，所以主要关注的也就是&lt;code&gt;createPair&lt;/code&gt;方法：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一句话概括逻辑：检查是否存在&lt;code&gt;token&lt;/code&gt;对的&lt;code&gt;Pair&lt;/code&gt;合约，然后利用&lt;code&gt;creat2&lt;/code&gt;计算出新合约地址，赋值给对应索引，然后创建。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;createPair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 判断合约的 tokenA 与 tokenB 是否一致。（两个相同的币不能生成 pair 合约）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: IDENTICAL_ADDRESSES&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 排序token。（防止生成 B-A 和 A-B 这样的两个实际一样的 pair 合约）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: ZERO_ADDRESS&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 检查是否已经存在
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getPair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: PAIR_EXISTS&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;memory&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bytecode&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;UniswapV2Pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;creationCode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;salt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;keccak256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;abi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;encodePacked&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;assembly&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;create2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytecode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;mload&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytecode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;salt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;IUniswapV2Pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;initialize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;getPair&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;getPair&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// populate mapping in the reverse direction
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;allPairs&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;push&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PairCreated&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;allPairs&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;uniswapv2erc20&#34;&gt;UniswapV2ERC20
+&lt;/h3&gt;&lt;p&gt;实现了&lt;code&gt;LPToken&lt;/code&gt;，一个标准的&lt;code&gt;ERC20&lt;/code&gt;代币，唯一不同的是实现了 EIP-2612 以支持转账的离线授权。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一句话概括： owner 对 spender 授权（&lt;code&gt;approve&lt;/code&gt;）消息产生了&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;三个元素，根据原本属性（函数的几个输入）计算数据摘要，通过其与&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;还原出签名者地址，与 owner 一致（即要求签名消息为 owner 发出）执行 approve。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;permit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;owner&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;spender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint8&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 线下签署的交易，当前时间不能超出最后期限
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;block&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;timestamp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: EXPIRED&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 获得摘要（包含授权方, 被授权方, 授权数量, nonce, 截止日期等信息）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// 为了防止重放攻击，添加了DOMAIN_SEPARATOR等信息（包含了链id、合约等信息）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;bytes32&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;digest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;keccak256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;abi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;encodePacked&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x19\x01&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;DOMAIN_SEPARATOR&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nb&#34;&gt;keccak256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;abi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;encode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PERMIT_TYPEHASH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;owner&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;spender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nonces&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;owner&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 恢复摘要的签名地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recoveredAddress&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;ecrecover&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;digest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 检查恢复的地址是否为 0 和是否是 owner
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;recoveredAddress&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recoveredAddress&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;owner&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INVALID_SIGNATURE&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;_approve&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;owner&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;spender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;uniswapv2pair&#34;&gt;UniswapV2Pair
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`Pair`合约主要实现了四个方法：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mint&lt;/code&gt;：用于添加流动性，会被路由合约调用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;burn&lt;/code&gt;：用于移除流动性，会被路由合约调用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;swap&lt;/code&gt;：用于两种代币的交换，会被路由合约调用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;skim&lt;/code&gt;：用于清理合约中多余的 Token。无原因是多余的代币都会导致池子里的储备量和实际余额不一致，从而影响价格和流动性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一句话概括&lt;code&gt;mint&lt;/code&gt;部分：根据合约的两种代币的储备量计算添加流动性获得的 LP 代币：第一次添加：代币乘积的平方根 - 最小流动性 LP；非首次：添加&lt;code&gt;token&lt;/code&gt;在存储中所占比例 * 发行 LP 代币总数。&lt;/p&gt;
+&lt;p&gt;所以&lt;code&gt;Pair&lt;/code&gt;合约引导用户添加流动性时，代币比例与合约存储比例一致。&lt;/p&gt;
+&lt;p&gt;减去最小流动性 LP 时为了防止被称为((20240618154258-vpmhqnw &amp;ldquo;LP token 操纵&amp;rdquo;))的攻击&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// mint 部分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 添加流动性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lock&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得池里原本（指转入前）的代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getReserves&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// gas savings
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算当前合约中两个币的余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算投入的代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算协议费用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feeOn&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_mintFee&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得当前 LP 代币总额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查是否是第一次添加流动性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 第一次添加流动性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 计算池中流动性的变化
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;			&lt;span class=&#34;c1&#34;&gt;// sqrt(amount0 * amount1) - MINIMUM_LIQUIDITY
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sqrt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MINIMUM_LIQUIDITY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 锁定最小流动性的 LP（发送相应 LP 到地址 0 上）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;           &lt;span class=&#34;n&#34;&gt;_mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MINIMUM_LIQUIDITY&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 非第一次添加流动性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;			&lt;span class=&#34;c1&#34;&gt;// 根据添加代币数量占池子代币储备量比例决定
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 要求是添加流动性，所以变化要大于0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INSUFFICIENT_LIQUIDITY_MINTED&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 给添加流动性的用户发送相应 LP 代币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;_mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 更新储备
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;n&#34;&gt;_update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查是否开启协议费用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 当开启时，更新 kLast 值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;feeOn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kLast&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 触发事件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;一句话概括&lt;code&gt;burn&lt;/code&gt;部分：根据持有的 LP 代币在发行总数中占比，发送给持有者对应比例的两种代币。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// burn 部分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 除移流动性
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;burn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lock&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得原本两种代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getReserves&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// gas savings
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得当前代币合约地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;                                &lt;span class=&#34;c1&#34;&gt;// gas savings
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;                                &lt;span class=&#34;c1&#34;&gt;// gas savings
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得合约中代币余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算当前合约 LP 代币余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算当前合约代币余额是因为：路由合约会先把用户的流动性代币划转到该配对合约里
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 所以此处的代币余额即为需要燃烧的代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查是否开启协议费
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feeOn&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_mintFee&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得 LP 代币发行总量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// gas savings, must be defined here since totalSupply can update in _mintFee
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算能提出的两种代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_totalSupply&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查取出余额大于 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INSUFFICIENT_LIQUIDITY_BURNED&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 移除合约中的 LP 代币（即用户想提现消耗的代币）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;_burn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 提出两种代币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;_safeTransfer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;_safeTransfer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算提现后两种代币的余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 更新代币的余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;_update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查是否开启协议费用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 当开启时，更新 kLast 值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// reserve0 and reserve1 are up-to-date
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;feeOn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;kLast&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Burn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;一句话概括&lt;code&gt;swap&lt;/code&gt;部分：先向用户转去期望获得的代币， 然后根据用户传入数据选择是否执行闪电贷，最后检查当前的两种代币的余额情况，并计算是否保持 k 恒等。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// swap 部分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 用于两种代币的交换
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;swap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lock&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查是否有需要得到的代币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 通常两者只有一个不为 0 ，但闪电交易时可能两个都不为 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INSUFFICIENT_OUTPUT_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获得库存的代币余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint112&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getReserves&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// gas savings
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查合约中是否有足够的代币余额取出
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INSUFFICIENT_LIQUIDITY&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 使用块作用范围，防止堆栈过深
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查接收者地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INVALID_TO&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 将代币转发给指定用户
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_safeTransfer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_safeTransfer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// data 参数大于 0 ，表示这是一个闪电贷
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 将 to 地址转为 IUniswapV2Callee 并调用其 uniswapV2Call() 函数，这其实就是一个回调函数，to 地址需要实现该接口。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IUniswapV2Callee&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;uniswapV2Call&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获取合约的两个代币的当前余额
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IERC20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_token1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balanceOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 计算两个代币的实际转入量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 即进行交换时，代币的实际转入量是多少
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 因为计算转入，所以余额变大才计算，变小则为0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0In&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1In&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 要求至少有一个转入（转换至少一进一出）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0In&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1In&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: INSUFFICIENT_INPUT_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 保证 k 恒等式约束
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0Adjusted&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0In&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1Adjusted&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount1In&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance0Adjusted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance1Adjusted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mul&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2: K&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;_update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;balance0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;balance1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_reserve1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Swap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0In&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1In&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1Out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;periphery-部分&#34;&gt;periphery 部分
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;periphery&lt;/code&gt;模块提供了和 &lt;code&gt;UniswapV2&lt;/code&gt;进行交互的外围合约，包含了以下主要合约：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;UniswapV2Router02&lt;/code&gt;：最新版的路由合约，相比&lt;code&gt;UniswapV2Router01&lt;/code&gt;增加了对&lt;code&gt;FeeOnTransfer&lt;/code&gt;代币的支持；实现&lt;code&gt;Uniswap v2&lt;/code&gt;最常用的接口，比如添加/移除流动性，使用代币 A 交换代币 B，使用&lt;code&gt;ETH&lt;/code&gt;交换代币等，用来提升用户的体验。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UniswapV1Router01&lt;/code&gt;：旧版本&lt;code&gt;Router&lt;/code&gt;实现，与&lt;code&gt;Router02&lt;/code&gt;类似，但不支持&lt;code&gt;FeeOnTransferTokens&lt;/code&gt;，目前已不使用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UniswapV2Migrator&lt;/code&gt;：用于迁移流动性（从&lt;code&gt;v1&lt;/code&gt;迁移到&lt;code&gt;v2&lt;/code&gt;合约）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;uniswapv2router02&#34;&gt;UniswapV2Router02
+&lt;/h3&gt;&lt;p&gt;是与用户进行交互的入口，主要提供了添加流动性、移除流动性和兑换的系列接口，并提供了几个查询接口&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一句话概括添加流动性：计算最终需要两种代币数量，然后将两种代币转入合约对中，调用合约对的&lt;code&gt;mint&lt;/code&gt;函数铸造对应的 LP 给添加者。&lt;/p&gt;
+&lt;p&gt;计算过程：获取代币对合约中库存量：如果为空表示新合约，那么最终数量等于期望数量；反之计算出结果&lt;code&gt;(amountAMin = mountA &amp;amp;&amp;amp; amountBMin &amp;lt;= mountB &amp;lt;= amountBDesired) || (amountAMin &amp;lt;= mountA &amp;lt;= amountADesired &amp;amp;&amp;amp; mountB = amountBDesired)&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 添加流动性的接口：addLiquidity、addLiquidityETH（这个主要是定义另一个代币为 ETH）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 本质上就是支付两种代币，换回对应这两种代币的流动性代币 LP-Token。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// addLiquidity
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;addLiquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 配对的代币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 预期支付代币的数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 根据预期值和滑点计算的最小数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// ensure 确定是否过期
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ensure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 调用 _addLiquidity 获得最终需要支付的代币数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_addLiquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 计算出两个代币对的合约地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pairFor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 从 msg.sender 账户中发送 amount 数量的 token 到 pair 合约中
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;c1&#34;&gt;// 因为使用了 transferfrom 函数，所以用户调用前需要授权给路由合约
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;n&#34;&gt;TransferHelper&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;safeTransferFrom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;TransferHelper&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;safeTransferFrom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 铸造相应数量的 LP 代币给用户，返回得到流动性的改变
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IUniswapV2Pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;_addLiquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;internal&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 检查代币对合约是否存在，不存在就创建
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IUniswapV2Factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getPair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;IUniswapV2Factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;createPair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 获得两个token在池子中的储备量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getReserves&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;// 当储备量均为 0 时，这时应该是新建的代币对合约
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reserveA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveB&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 新建合约则实际支付的数量就和预期数量一致
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 根据两种代币储备量，其中一个代币的预期数量，计算另一个代币的等值的数值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;// 应该是相当于计算兑换比例
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;quote&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 检查结果是否小于预期值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountBOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 检查是否低于最小值（超过滑点的容忍界限）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountBOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2Router: INSUFFICIENT_B_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 通过就直接返回
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBOptimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;// 结果能换回更多的零一币，则需要倒转过来检查是否超过滑点。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;            &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;quote&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reserveA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nb&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountAOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountADesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountAOptimal&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2Router: INSUFFICIENT_A_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountAOptimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBDesired&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;一句话概括除移流动性：获取对应代币合约对，然后发送 LP 代币到合约对中，然后调用代币对合约的销毁函数。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 移除流动性接口：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidity：和 addLiquidity 相对应，会换回两种 ERC20 代币
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidityETH：和 addLiquidityETH 相对应，换回的其中一种是主币 ETH
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidityWithPermit：也是换回两种 ERC20 代币，但用户会提供签名数据使用 permit 方式完成授权操作
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidityETHWithPermit：也是使用 permit 完成授权操作，换回的其中一种是主币 ETH
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidityETHSupportingFeeOnTransferTokens：名字真长，功能和 removeLiquidityETH 一样，不同的地方在于支持转账时支付费用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidityETHWithPermitSupportingFeeOnTransferTokens：功能和上一个函数一样，但支持使用链下签名的方式进行授权
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// removeLiquidity
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 其他几种合约基本都是基于 removeLiquidity 衍生出来
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;removeLiquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ensure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deadline&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;returns&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 获取代币对合约地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pairFor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;factory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 先将 LP 代币发往合约
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;IUniswapV2Pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;transferFrom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;liquidity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 燃烧 LP 代币，同时发送两种代币到目标地址 to ，返回发送的数量
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;uint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IUniswapV2Pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pair&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;burn&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 对代币对做排序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UniswapV2Library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sortTokens&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 得到正确的发送数量排序
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tokenA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;token0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amount1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amount0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;c1&#34;&gt;// 收益是否达到预期（计算滑点）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountA&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountAMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2Router: INSUFFICIENT_A_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nb&#34;&gt;require&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;amountB&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amountBMin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;UniswapV2Router: INSUFFICIENT_B_AMOUNT&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Uniswap V2 预言机</title>
+        <link>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</link>
+        <pubDate>Thu, 08 Aug 2024 19:39:32 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
+        <description>&lt;p&gt;V2 的预言机主要是通过计算时间加权平均价（TWAP, Time Weighted Average Price）来得到价格的。&lt;/p&gt;
+&lt;p&gt;称为时间加权是因为，计算价格时考虑了时间因素，价格的每次更新包含了上次价格时间累积值，本次价格时间累积值，中间间隔时间三个元素。&lt;/p&gt;
+&lt;h2 id=&#34;时间累积值&#34;&gt;时间累积值
+&lt;/h2&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
+&lt;p&gt;$$
+a_i = a_{i-1} + \Delta t * {p_{i-1}}
+$$&lt;/p&gt;
+&lt;p&gt;其中 $a_i$ 指第 i 个价格时间累积值，$a_0$ 为 0 ，$\Delta t$ 指两个值之间经过的时间，$p_{i-1}$ 指$a_{i-1}$所在区块最后一笔交易的价格。&lt;/p&gt;
+&lt;h2 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
+&lt;/h2&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
+&lt;h2 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
+&lt;/h2&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
+&lt;p&gt;滑动时间窗口可以分为两个部分：时间窗口、滑动。&lt;/p&gt;
+&lt;p&gt;时间窗口，和上面一样指选择一个$\Delta T$值来计算时间段内的平均价格。&lt;/p&gt;
+&lt;p&gt;滑动，指不再是间隔$\Delta T$时间计算一次，而是另外设置间隔$\Delta n$时间计算一次，即每间隔$\Delta n$时间滑动一次时间窗口。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Compound V2 逻辑整理</title>
+        <link>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <pubDate>Thu, 08 Aug 2024 17:41:45 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <description>&lt;p&gt;Compound V2 也和 Aave V2 很相似，有部分区别，但感觉是很多地方相似的，采用的设计逻辑都是由很多相似的地方的。下面依旧从行为的方面进行介绍。&lt;/p&gt;
+&lt;h2 id=&#34;借贷&#34;&gt;借贷
+&lt;/h2&gt;&lt;p&gt;Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。&lt;/p&gt;
+&lt;p&gt;和 Aave V2 的逻辑整理一样，借贷也从借款、还款、清算三件事情出发。&lt;/p&gt;
+&lt;h3 id=&#34;借款&#34;&gt;借款
+&lt;/h3&gt;&lt;p&gt;当一个用户想要从 Compound 中借款时需要进行抵押（这是毫无疑问的），而 Compound 采用的借款策略同样时超额抵押借贷（和 Aave V2 一样），而衡量这个超额比例的就是抵押因子（超额抵押的比例）。借款会有这么一个流程：用户借出一笔钱，开始计算利息，等待用户还款，等待过程中还会检查用户的借款是否可能造成坏账（即是否需要清算）。&lt;/p&gt;
+&lt;p&gt;我们知道 Aave V2 就是采用的复利的方式计算，而 Compound 也是一样。在 Compound 中是怎么计算个体用户的利息呢？这是通过复利累计指数计算的（$FV$ 表示当前累计指数，$PV$表示上次累计指数）：&lt;/p&gt;
+&lt;p&gt;$$
+FV = PV * (1+x)^{t}
+$$&lt;/p&gt;
+&lt;p&gt;那么合约中是怎么实现的呢？每当用户想借一笔款时，先计算复利累计指数（也算是更新当前复利累计指数），然后记录下来，然后开始计算自己的债务，如果过去没有结果款，那么这个债务大小就是当前借款大小，如果过去有债务，那么就用到了一个公式：$\frac{FV}{PV}$，表示借款的增长（从 PV 时刻开始产生的利息加上借款本金的比例）。这个公式展开后起始就是：$(1+x)^t$，其中 $t = \Delta T$ 表示从借出到当前经过的时间，其中 $x = \overline{R_{borrow}}$ 表示这段 $\Delta T$ 时间的平均利率。通过这个公式（PV 即为上次借款时记录的累计指数，FV 即为当前累计指数）乘上过去债务大小，就得到过去欠款的最新大小。两者（新借款和过去借款）相加，即为总债务。最后更新池子中得债务（为了下次更新池子得利率）。&lt;/p&gt;
+&lt;p&gt;通过上述，我们就可以理解每次借款了，当我们想知道当前实际欠款大小也是利用上面更新过去债务最新大小的思路。（$\frac{FV}{PV} * last_{borrow}$ 后者表示上次 Compound 内部记账的金额大小，如此得到欠款总数）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Compound 的借款采用的抵押物实际上是 &lt;code&gt;ctoken&lt;/code&gt;（一种 ERC20 代币，用户存款可以获得对应的&lt;code&gt;ctoken&lt;/code&gt;，存 ETH 得 cETH），即用用户的存款作为抵押物进行贷款。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;还款&#34;&gt;还款
+&lt;/h3&gt;&lt;p&gt;还款在 Compound 中既可以还自己得欠款也可以还他人得欠款（这个就是清算）。我们在借款中知道通过抵押物（&lt;code&gt;ctoken&lt;/code&gt;）可以获得&lt;code&gt;标的 token&lt;/code&gt;，还钱就通过归还&lt;code&gt;标的 token&lt;/code&gt;赎回&lt;code&gt;ctoken&lt;/code&gt;。在 Aave V2 中采用了&lt;code&gt;债务token&lt;/code&gt;（一种魔改 ERC20）记录用户债务，而 Compound 则是内部记账（变量记录地址欠款额度）得方式。&lt;/p&gt;
+&lt;p&gt;当用户归回欠款时，先计算复利累计指数（更新归还前得利息情况，和前面一样），然后计算过去债务得最新大小，然后减去还款得到最后得债务大小，并存入（总债务这些得也会更新），最后合约将还款转入资金池中。&lt;/p&gt;
+&lt;h3 id=&#34;清算&#34;&gt;清算
+&lt;/h3&gt;&lt;p&gt;前面说了，清算就是帮别人还欠款，但人们不会做慈善一样得帮忙还款，清算者需要获得一定得利益。&lt;/p&gt;
+&lt;p&gt;首先需要明确的时清算条件。前面借款时有说到抵押因子，将用户存款乘以抵押因子就得到所能借出的贷款上限，随着抵押物的价格波动和贷款的利息所带来的贷款增加，这就可能导致用户借款达到贷款上限，从而到达清算条件。&lt;/p&gt;
+&lt;p&gt;其次是清算人如何来清算的。需要明白的是对于被清算人（借款人）的债务，单次清算上限为债务 50% ，因为清算人也不一定是恶意不还款（可能是币价波动导致清算这些的）。同时对于清算人所获得的抵押资产（&lt;code&gt;ctoken&lt;/code&gt;）也是可选的（如果借款人有多种抵押物），可以选择更加青睐的代币类型的抵押物。清算人清算就是通过购买借款人手中的&lt;code&gt;ctoken&lt;/code&gt;（即购买对应的&lt;code&gt;token&lt;/code&gt;）来替借款人偿还债务，以此进行清算。&lt;/p&gt;
+&lt;p&gt;那么清算让借款不再处于坏账风险的原因是什么？直接的理解就是超额抵押借贷中的超额让这笔借贷交易处于清算状态，合约通过清算（自动卖出用户的&lt;code&gt;ctoken&lt;/code&gt;）实现欠款的偿还，合约只要卖出的价格超过超额抵押的判断下的价格高，即可让交易不再处于坏账风险中。实际上合约是以接近市场价的价格卖出的。&lt;/p&gt;
+&lt;p&gt;清算人的收益是什么？前面说合约是以接近市场价的价格卖出的，这个接近就是清算人的收益。这个售出价比市场价低，中间的差价便是清算人的收益。具体的计算如下：&lt;/p&gt;
+&lt;p&gt;$$
+seizeTokens = \frac{Amount_{Repay}   * liquidationIncentive * price_{Borrowed}} {price_{Collateral} * exchangeRate}
+$$&lt;/p&gt;
+&lt;p&gt;分子：清算人帮还欠款数额 _ 清算奖励（合约为 1.08 ，这两个相乘，放大清算人付出的金额，让清算人能以低于市场价的价格购买）_ 借款人借出资产的价格。&lt;/p&gt;
+&lt;p&gt;分母：抵押物的价格（清算人想要获得的&lt;code&gt;token&lt;/code&gt;的价格）* 兑换率（&lt;code&gt;ctoken&lt;/code&gt;兑换&lt;code&gt;token&lt;/code&gt;的比例）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;兑换率的存在主要是因为存款中的存款人的利息收益的计算。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;存款&#34;&gt;存款
+&lt;/h2&gt;&lt;p&gt;在 Compound 中，存款和 Aave V2 一样，都是根据借款所产生的利息而获得存款利息。有借款产生利息，那么用户存款才会有存款利息收益产生，如果 Compound 中没有人进行借款，那么无论往里面存多少钱都不会有利息。&lt;/p&gt;
+&lt;p&gt;借款产生的收益会分为两部分：一部分给用户作为存款收益，另外一小部分留给合约，作为资金储备池（防止出现取款的挤兑）。&lt;/p&gt;
+&lt;p&gt;首先需要明白，在 Compound 中存入&lt;code&gt;token&lt;/code&gt;会获得一定数量&lt;code&gt;ctoken&lt;/code&gt;，而取出的时候也就是利用&lt;code&gt;ctoken&lt;/code&gt;换回&lt;code&gt;token&lt;/code&gt;，而利息就是存入和取出时两者兑换比例不同所带来的不同。&lt;/p&gt;
+&lt;h3 id=&#34;存入&#34;&gt;存入
+&lt;/h3&gt;&lt;p&gt;用户 Compound 中存入一笔金额为 m 的&lt;code&gt;token&lt;/code&gt;代币，此时该类型的&lt;code&gt;token&lt;/code&gt;的兑换率为$ER$ （&lt;code&gt;token&lt;/code&gt;：&lt;code&gt;ctoken&lt;/code&gt; = 1&lt;code&gt;toekn&lt;/code&gt;：n&lt;code&gt;ctoken&lt;/code&gt;），那么用户可以拿到 $\frac{m}{ER}$ 个&lt;code&gt;ctoken&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;随着 Compound 池子中的资金不断被借出，这个兑换率会不断上升，这会使得后来的用户采用同等量的&lt;code&gt;token&lt;/code&gt;得到的&lt;code&gt;ctoken&lt;/code&gt;更加少，实现了从时间上区分用户的存入（这样同样量的&lt;code&gt;token&lt;/code&gt;，无论是否同一用户，只要时间不同存入获得的&lt;code&gt;ctoken&lt;/code&gt;不一样），而无需记录其他的信息。&lt;/p&gt;
+&lt;p&gt;那么这个兑换率是怎么变动实现单调递增的？首先是兑换率的定义：&lt;/p&gt;
+&lt;p&gt;$$
+ER = \frac{Count_{t}}{Count_{ct}}
+$$&lt;/p&gt;
+&lt;p&gt;其中 $Count_t$ 表示资金池中的&lt;code&gt;token&lt;/code&gt;总数（不包含资金储备池）即：$underlyingBalance + totalBorrowBalance - reserve$，最后的减号便是去除储备池的金额。&lt;/p&gt;
+&lt;p&gt;其中 $Count_{ct}$ 表示发行的&lt;code&gt;ctoken&lt;/code&gt;数量。当用户存入 m 的代币，我们可以看到兑换率的变化：&lt;/p&gt;
+&lt;p&gt;$$
+ER
+= \frac{Crount_t + m}{Count_{ct} + m * \frac{Count_{ct}}{Crount_t }}
+= \frac{Crount_t + m}{Count_{ct} * (1+ \frac{m }{Crount_t })}
+= \frac{Crount_t + m}{\frac{Count_{ct}}{Crount_t} * (Crount_t+ m )}
+= \frac{Count_{t}}{Count_{ct}}
+$$&lt;/p&gt;
+&lt;p&gt;可以看到并不会减小汇率，这至少保证了存款不会导致兑换率下降，而借贷毫无疑问只会使得 $ER$ 不断上升。&lt;/p&gt;
+&lt;h3 id=&#34;取出&#34;&gt;取出
+&lt;/h3&gt;&lt;p&gt;现在来看看取出，取出就是存入的反向操作，燃烧&lt;code&gt;ctoken&lt;/code&gt;，然后根据兑换率获得&lt;code&gt;token&lt;/code&gt;，燃烧 m 个&lt;code&gt;ctoken&lt;/code&gt;可以获得 $m * ER$ 个&lt;code&gt;token&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;下面来看看这个过程对于兑换率的影响（其实就是看会不会让兑换率下降）：&lt;/p&gt;
+&lt;p&gt;$$
+ER
+= \frac{Crount _ {t} - m * \frac{Count _ t}{Count _{ct}} }{Crount _ {ct} - m}
+= \frac{Crount _ {t} - m * \frac{Count _ t}{Count _{ct}} }{Crount _ {ct} - m}
+= \frac{Crount _ {t} * (1 - \frac{m}{Crount _ {ct}})}{Crount _ {ct} - m}
+= \frac{Crount _ {t} * (Crount _ {ct}- m)}{Crount _ {ct} * (Crount _ {ct}- m)}
+= \frac{Count _ {t}}{Count _ {ct}}
+$$&lt;/p&gt;
+&lt;p&gt;我们可以看到兑换率并没有改变，所以兑换率只会单调递增。&lt;/p&gt;
+&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;amp;mid=2652494245&amp;amp;idx=1&amp;amp;sn=186611e277f1a88a8fe116ee5f16fa78&amp;amp;chksm=8b6853b5bc1fdaa3b5468bb3cfe5c6cf2a98892ce29dc0b8a8c9b012c2e8d7ffe4c3a904c1e1&amp;amp;token=785907827&amp;amp;lang=zh_CN#rd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;剖析 DeFi 借贷产品之 Compound：概述篇&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;amp;mid=2652494251&amp;amp;idx=1&amp;amp;sn=dfd6b4ad7f73006258b3d65411adf28f&amp;amp;chksm=8b6853bbbc1fdaad6dc3a3b3cbcb0a7a0a0c9803d95238c3471b0293308d7e41a164368e2766&amp;amp;token=785907827&amp;amp;lang=zh_CN#rd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;剖析 DeFi 借贷产品之 Compound：合约篇&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3165&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Compound&lt;/a&gt;​&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3165&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt; 中文白皮书&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3153&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;关于借贷的思考 - 以&lt;/a&gt;​&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3153&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;compound 为例&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/README-CN.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/README-CN.md&lt;/a&gt;（这个真的很好）&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Aave V2 逻辑整理</title>
+        <link>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <pubDate>Thu, 08 Aug 2024 16:25:27 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <description>&lt;p&gt;Aave 就相当于去中心化交易所中的一个银行，在其中用户可以进行一系列的资金操作，下面基于行为的角度对其两个功能进行阐述：借贷、存款。&lt;/p&gt;
+&lt;h2 id=&#34;借贷&#34;&gt;借贷
+&lt;/h2&gt;&lt;p&gt;在 Aave 中借贷有两种方式：借款（有抵押物的）、闪电贷（无抵押物的）。&lt;/p&gt;
+&lt;h3 id=&#34;闪电贷&#34;&gt;闪电贷
+&lt;/h3&gt;&lt;p&gt;Aave V2 的闪电贷感觉没有什么特别的地方，就是在一个区块交易内完成借出和还入两个操作。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-solidity&#34; data-lang=&#34;solidity&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;flashLoan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;receiverAddress&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 借款受益人地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;assets&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 借款代币地址（数组）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;amounts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 借款数量（数组）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;uint256&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;modes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 借款模式（数组）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;onBehalfOf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 还款人地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calldata&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 入参编码
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;uint16&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;referralCode&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 推荐码
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;external&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;override&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;whenNotPaused&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;查看 Aave V2 的代码（参考上述的函数头），我们可以知道，Aave V2 允许一次性借出多种贷款（&lt;code&gt;assets&lt;/code&gt;是个数组），并且允许选择模式（由&lt;code&gt;modes&lt;/code&gt;决定，不同资产可以选择不同模式），有：闪电贷模式（0，正常闪电贷）、借款模式（1，普通的借款，采用稳定利率；2，普通的借款，采用浮动利率）。&lt;/p&gt;
+&lt;p&gt;对于每一笔贷款（无论哪种模式） Aave V2 都会先转出借款费用、计算手续费，然后再根据模式进行判断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;闪电贷：从贷款者处（&lt;code&gt;receiverAddress&lt;/code&gt;）转账还款（&lt;code&gt;借款+手续费&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;借款模式：执行借款的函数逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总的来说，Aave V2 在闪电贷种添加了一个转入正常借贷的机会，可以将闪电贷、正常借贷合并在一笔交易中。&lt;/p&gt;
+&lt;h3 id=&#34;借款&#34;&gt;借款
+&lt;/h3&gt;&lt;p&gt;关于借款，就开始麻烦起来了，借款可以分为三个部分：借款（借钱这件事）、还款（还钱这件事）、清算（清算合约中不良借款这件事）&lt;/p&gt;
+&lt;h4 id=&#34;清算&#34;&gt;清算
+&lt;/h4&gt;&lt;p&gt;我们首先来看看清算这件事。由于区块链中没办法轻易的溯源到账户拥有者本人，所以对于合约中每一笔借款都不能有坏账（借出款的价值大于抵押物的价值）这件事发生合约就会不被信任了。&lt;/p&gt;
+&lt;p&gt;我们知道合约对于借款策略采用的是超额抵押借贷（如抵押 100$价值的抵押物，借贷的钱不能到达 100$ 那么多，可能只有 50$）,所以可以设定一个阈值（抵押物价值/所欠金额），到达一定比值后资产就会被清算（合约自动卖出抵押物，借款人就不用还款了）。&lt;/p&gt;
+&lt;p&gt;那么这个清算阈值是怎么确定的呢？Aave V2 定义了一个&lt;code&gt;健康系数(HealthFactor)&lt;/code&gt;，当其小于 1 时，该笔交易就可以清算。那么这个&lt;code&gt;HealthFactor&lt;/code&gt;如何定量呢？&lt;/p&gt;
+&lt;p&gt;$$
+HealthFactor = \frac{TotalCollateralInETH * LiquidationThreshold}{TotalDebtInETH}
+$$&lt;/p&gt;
+&lt;p&gt;首先分母&lt;code&gt;TotalDebtInETH&lt;/code&gt;表示：总共的债务量（借款 + 利息，但在实际中只会计算债务量，因为 Aave V2 采用的是利滚利模型）。分子&lt;code&gt;TotalCollateralInETH&lt;/code&gt;表示：借款人抵押物的总价值（以&lt;code&gt;ETH&lt;/code&gt;为单位）。分子&lt;code&gt;LiquidationThreshold&lt;/code&gt;表示：该种资产设定的阈值（一个百分比，例如 75%）。&lt;/p&gt;
+&lt;p&gt;分子两者相乘，得到当前抵押物能借出金额上限，分母表示当前借出的债务。分子受市场波动影响，抵押物价值下降，&lt;code&gt;HealthFactor&lt;/code&gt;就有可能逼近 1 了，而&lt;code&gt;TotalDebtInETH&lt;/code&gt;由于债务利率的存在，会不断的上涨，也会让&lt;code&gt;HealthFactor&lt;/code&gt;逐渐的逼近 1 。&lt;/p&gt;
+&lt;p&gt;清算具体会发生什么呢？当用户抵押了价值 200 $的抵押物，借出了 100 USDT，此时清算阈值是 75%，那么抵押物的价值如果下跌，最多跌倒 133.3（用 100 / 0.75 得到，并且忽略利息对健康系数分母的影响），一旦跌倒这个价格之下，那么清算开始发生。&lt;/p&gt;
+&lt;p&gt;此时有一个清算人负责清算该资产，它可以清算该笔资产的一部分（用户自己决定，但有上限，由 Aave V2 决定，其不允许一次性清算完全部抵押资产），Aave V2 将对抵押物折价卖出，清算人付出借出债务的代币（0%~Aave V2 规定的上限 50%），以当前折扣价买入被清算的抵押物（&lt;code&gt;(市场价/代还款)*(1+奖励比例)&lt;/code&gt;，其中奖励比例就是清算人比起在正常市场中购买代币，在 Aave V2 清算中能额外获得的利润）。此时借款人的健康系数受到影响，变得健康：以上清算行为相当于 Aave V2 自动帮借款人卖出一部分抵押物，来偿还借款（略低于市场价，但高于&lt;code&gt;阈值 * 市场价&lt;/code&gt;，因此可以提高健康系数）。&lt;/p&gt;
+&lt;p&gt;如何发起清算呢？合约由于不能说根据触发条件自动执行函数，所以需要外部的套利者不断的巡视整个市场，发现这些可以清算的交易，对于到达清算线的交易，所有人都可以对其进行清算。清算过后：套利者获得一定利润（通过奖励比例），合约避免了坏账的诞生，维护了市场的稳定。&lt;/p&gt;
+&lt;h4 id=&#34;借款-1&#34;&gt;借款
+&lt;/h4&gt;&lt;p&gt;Aave V2 对于借款人的债务进行了&lt;code&gt;token&lt;/code&gt;化，即债务就是一个个的代币。首先有一个问题：债务是&lt;code&gt;token&lt;/code&gt;那么转移&lt;code&gt;token&lt;/code&gt;是不是就不用还钱了。理论是这样的，但是 Aave V2 将&lt;code&gt;transfer&lt;/code&gt;函数重载了，调用后就会&lt;code&gt;revert&lt;/code&gt;，所以是没办法转移债务的。&lt;/p&gt;
+&lt;p&gt;然后就是如何借款了。在 Aave V2 中借款有两种：稳定利率债务、可变利率债务。前者利率固定，借钱时利率是多少，后面利滚利时利息就一直是多少（也有可能调整，如借钱时固定利率和当前利率差距过大）；后者利率不固定，随着市场波动，借钱的人多（资金池使用率高），利率就高，人少，利率就低。&lt;/p&gt;
+&lt;p&gt;当我们想统计&lt;code&gt;t&lt;/code&gt;时刻债务总量即：$D^{asset}_t = SD_t(稳定利率债务) + VD_t(浮动利率债务)$，而借款关系到存款利率问题（借款为合约赚取收入，收入分配给存款用户，实现银行的基本功能）。&lt;/p&gt;
+&lt;h5 id=&#34;浮动利率债务&#34;&gt;浮动利率债务
+&lt;/h5&gt;&lt;p&gt;浮动利率虽然浮动（会因为资金池利用率而改变，利用率高，浮动利率就该，反之变低），但是其计算实现反而更加简单。Aave V2 对于每一笔可变债务都首先放缩到&lt;code&gt;0&lt;/code&gt;时刻（创世时间）然后利用一个变量存储累计可变债务指数，从而统计出用户当前总可变债务（仅浮动利率债务部分）。&lt;/p&gt;
+&lt;p&gt;首先理解这个放缩（&lt;code&gt;scaled&lt;/code&gt;），它将当前借出的债务换算到创世时间时（即假设你这笔债务在创世时间时借出），假设现在是 $t_1$ 时刻，从 $t_0$ 时刻（创世时间）到当前的累计可变债务 $VN_t^{asset}$ 为 200%（假设创世初借款 100，现在 $t_1$ 就需要还 200 了），那么用户借出 1000 $ 相当于创世初时借了 500 $。上述这个 1000 到 500 的过程就是放缩。&lt;/p&gt;
+&lt;p&gt;然后就是这个累计可变债务指数 $VN_t^{asset}$ 又是如何确定的呢？白皮书中的定义是：&lt;/p&gt;
+&lt;p&gt;$$
+V N_t = (1 + \frac{V R_t}{
+T_{year}}
+)^{
+∆T} *V I_{t−1}
+$$&lt;/p&gt;
+&lt;p&gt;下面介绍公式中的每个变量的定义，首先是 $VR_t$ 表示的是：当前浮动利率（这种当前利率放到最后阐述，先默认已知），即当前所有浮动债务所需要每秒支付利息的利率，这个利率是年华利率。$T_{year}$ 表示：一年的秒数（固定值），配合其分子进行除法运算，即可得到每秒的利率。$\Delta T$ 表示：前后两次操作发生之间的间隔时间，这个操作包含借出、存入、取出、偿还、交换、清算。$VI_{t-1}$ 表达的含义应该与 $VN_t^{asset}$ 一样（我认为的），因为两者白皮书上定义公式一致：&lt;/p&gt;
+&lt;p&gt;$$
+V I_t = (1 + \frac{V R_t}{
+T_{year}}
+)^{
+∆T} *V I_{t−1}
+$$&lt;/p&gt;
+&lt;p&gt;而其初始值应该为 1 ，然后随着用户不断的操作使得这个变量单调递增。每当我们借出一笔价值为 m 的债务，然后合约进行放缩得到债务值$\frac{m}{VN_t} $ ，然后加上过去放缩到创世时间的债务（这种方式方便合约计算债务，只需要改变这个累计值，不然浮动利率不断变动，每次操作都要遍历所有债务计算新的债务，又或者记录每次利率变化，&lt;code&gt;gas&lt;/code&gt;消耗太大）：&lt;/p&gt;
+&lt;p&gt;$$
+ScVB_{t}(x) =ScVB_{t-1}(x) +   \frac{m}{VN_t}
+$$&lt;/p&gt;
+&lt;p&gt;当我们想知道当前债务到底是多少时，也很容易计算（其中 $x$ 指某个用户，$VN_t$ 在白皮书中为 $D_t$，查了下资料说可能是白皮书排版错误，$D_t$ 表示放缩后总债务，包含了浮动和固定的）：&lt;/p&gt;
+&lt;p&gt;$$
+V D(x) = ScV B(x) * VN_t
+$$&lt;/p&gt;
+&lt;p&gt;对于开头的 $SD_t$ （浮动利率债务）的计算就是所有用户的 $VD(x)$ 的总和了。&lt;/p&gt;
+&lt;h5 id=&#34;稳定利率债务&#34;&gt;稳定利率债务
+&lt;/h5&gt;&lt;p&gt;对于稳定利率，其计算方法就不一样了。首先需要明确，稳定利率债务不是说借贷利率恒定不变（非硬编码在合约中），而是在计算复利（利滚利）时，利率固定下来，不会因为资金利用率（合约中资金使用程度）而改变，当然当前稳定利率还是会不断改变的。&lt;/p&gt;
+&lt;p&gt;那么借出一笔稳定利率的债务是怎么进行的呢？在 Aave V2 中记录的是用户的平均稳定借款利率和稳定借款债务，通过两者即可计算当前债务量。&lt;/p&gt;
+&lt;p&gt;为什么要计算平均稳定借款利率呢？如果使用平均稳定借款利率，那么统计债务的时候就需要遍历每一笔稳定利率借款，而且每一笔债务都需要单独的存储，这都会需要大量的&lt;code&gt;gas&lt;/code&gt;，而采用平均稳定利率，那么对于每个用户想要得到当前时刻的债务 $SD_t(x)$，需要存储的就变为，用户所有债务的平均稳定利率 $\overline{SR_t}$ 和稳定利率债务总量 $SB(x)$：&lt;/p&gt;
+&lt;p&gt;$$
+SD_t(x) = SB(x) * (1 + \frac{\overline{SR_t}}{T_{year}})^{\Delta T}
+$$&lt;/p&gt;
+&lt;p&gt;上述公式另外几个变量的含义都比较清楚，与浮动利率中的一致。那么上面的平均稳定利率这些变量是怎么确定的呢？首先是平均稳定利率 $\overline{SR_t}$ ，作为平均的利率，肯定是稳定利率平均而来，其公式为：&lt;/p&gt;
+&lt;p&gt;$$
+\overline{SR_t} =
+\frac{SD_t * \overline{SR_{t−1}} + SB_{new} * SR_t}{SD_t + SB_{new}}
+$$&lt;/p&gt;
+&lt;p&gt;上述公式表示，当用户借出一笔新的资金 $SB_{new}$ ，在此时，资金池的稳定利率为 $SR_t$ ，而用户此前的稳定利率债务为 $SD_t$ （不包含 $SB_{new}$，并且个人觉得使用 $SD_{t-1}$更加符合含义）此前的平均稳定利率为 $\overline{SR_{t−1}} $。在初始和还清债务时，用户的 $SD_t$ 和 $\overline{SR_{t−1}} $ 均为 0 。如此，如果用户不断借钱，那么这个平均稳定利率就会不断靠近当前稳定利率。&lt;/p&gt;
+&lt;p&gt;在上面的几个公式中 $SD_t$ 和 $SB(x)$ 不断交替出现，其含义十分相似，都表示用户的稳定利率的债务，但还是有一些区别。对于 $SB(x)$ 其表示的存储于合约上的债务，即用户当前拥有的债务 token，而$SD_t(x)$ 更多的表示实际需要还给合约的欠款，从$SB(x)$ 到 $SD_t(x)$ 需要经过开头的那个公式。&lt;/p&gt;
+&lt;h4 id=&#34;还款&#34;&gt;还款
+&lt;/h4&gt;&lt;h5 id=&#34;浮动利率还款&#34;&gt;浮动利率还款
+&lt;/h5&gt;&lt;p&gt;在前面我们知道，统计用户的浮动利率债务的时候用的是放缩后的债务 token，而还款也是一样，扣除的是放缩后的债务 token，以此保持浮动利率债务的统计。那么还款后应该扣除多少放缩后的债务 token 呢？这个逻辑和借款的逻辑相反，用户还款 $m$ 根据从创世到现在的累计可变债务 $VN_t^{asset}$ 即可得到新的债务：$ScVB_t(x) = ScVB_{t-1}(x) - \frac{m}{VN_t}$。&lt;/p&gt;
+&lt;h5 id=&#34;稳定利率还款&#34;&gt;稳定利率还款
+&lt;/h5&gt;&lt;p&gt;稳定利率和浮动利率不同，没有这个放缩的过程，所以是计算当前实际欠款 $SD_t(x)$（利用借款中其定义公式），然后减去还款数额，并且重新计算平均稳定利率（分母不能为 0 所以分条件）：&lt;/p&gt;
+&lt;p&gt;$$
+\overline{SR*t} =
+\begin{cases}
+0 &amp;amp;, if \space SDt − SB(x) = 0 \\
+\frac{SD_t * \overline{SR*{t−1}} − SB(x) * SR(x)}{SD_t−SB_x}&amp;amp;,if \space SD_t − SB_x &amp;gt; 0
+\end{cases}
+$$&lt;/p&gt;
+&lt;h2 id=&#34;存款&#34;&gt;存款
+&lt;/h2&gt;&lt;p&gt;Aave V2 中对于用户的存款也是采用放缩和 token 的方法存储用户的存款额度。首先是用户查看当前存款额度$aB_t(x)$（能取出多少钱）：&lt;/p&gt;
+&lt;p&gt;$$
+aB_t(x) = ScB_t(x) * NI_t
+$$&lt;/p&gt;
+&lt;p&gt;其中 $ScB_t(x)$ 正是用户放缩后的存款额度（同样是放缩到创世时间），而后面的 $NI_t$ 正是累计流动性指数，和借款里的累计类似，这是一个全局的变量（所有的存款共用）：&lt;/p&gt;
+&lt;p&gt;$$
+LI_t = (LR_t * \Delta T_{year} + 1 ) * LI_{t-1}
+\
+LI_0 = 1 * 10^{27} = 1 \space ray
+$$&lt;/p&gt;
+&lt;p&gt;上面阐述了这个累计指数的初始值和后续的变化方法，而其中的 $LR_t$ 是指当前的流动性（一个随着每次资金池操作而改变的值）。在上面我们看到了这个累计流动性指数也是和可变债务指数一样，在不断的单调递增，利用放缩到创世初的存储金额两者结合计算当前存款。&lt;/p&gt;
+&lt;p&gt;当用户新存入一笔存款 m 也是放缩到创世初，然后两个相加，取款类似（具体是按照取款额度还是放缩后的代币额度需要后续看源码）：&lt;/p&gt;
+&lt;p&gt;$$
+ScB_t(x) = ScB_{t-1}(x) + \frac{m}{NI_t}
+$$&lt;/p&gt;
+&lt;h2 id=&#34;利率变化&#34;&gt;利率变化
+&lt;/h2&gt;&lt;p&gt;在上述的各种操作，我们可以知道 Aave V2 其实挺像一个银行了，利用用户的存款进行出借，赚取借贷的利息，然后将利息作为存款的利息发放给存款用户，实现存款获得利息，借款付出利息（虽然是超额抵押借贷）。&lt;/p&gt;
+&lt;p&gt;但还有一个问题，上述的三个实时利率（当前稳定利率、当前浮动利率、当前流动性率）都是如何确定的呢？首先明确影响这些利率的因素：资金池使用率（使用率越高，借贷的利率理所当然的会更高，反之降低）。&lt;/p&gt;
+&lt;p&gt;基本上说所有的操作都会影响这个，然后影响其他：借款拉高、还款降低、存款拉低、取回拉高。同时借贷的利息越多，用户存款所得到的利息才会高（存款利息的来源就是借贷的利息）。&lt;/p&gt;
+&lt;p&gt;首先明确借款的当前利率如何确定：&lt;/p&gt;
+&lt;p&gt;$$
+\sharp R_t^{asset} =
+\begin{cases}
+&amp;amp;\sharp R^{asset}_{base} + \frac{U^{asset}_t}{U^{asset} _ {optimal}}* \sharp R^{asset} _{slope1}&amp;amp;, if U^{asset} _t &amp;lt; U^{asset} _ {optimal} \\
+&amp;amp;\sharp R^{asset} _ {base} + \sharp R^{asset} _ {slope1} +
+\frac{U^{asset}_t − U _{optimal}}{1−U _{optimal}}  *
+\sharp R^{asset} _{slope2}&amp;amp;, if \space U^{asset} _{t} ≥ U_{optimal}
+\end{cases}
+$$&lt;/p&gt;
+&lt;p&gt;我们知道借款分为浮动和稳定，而上述公式同时适用于两种，将其中的 $\sharp$ 替换成为&lt;code&gt;V&lt;/code&gt;或&lt;code&gt;S&lt;/code&gt;即表示浮动和稳定两种。上面的式子表达的意思是：利率从 $\sharp R^{asset} _ {base}$ （由管理员设置）开始起步计算（相当于起步价），根据当前的资金使用率 $U^{asset} _ t $ （总债务/总储蓄）判断，如果小于最佳借款使用率 $U^{asset} _ {optimal}$（由管理员设置），基础利率加上对应比例&lt;code&gt;slope1&lt;/code&gt;（由管理员设置）的利率（$\frac{U^{asset} _ t}{U^{asset} _ {optimal}} * \sharp R^{asset} _ {slope1}$）。超过最佳借款使用率 $U^{asset} _ {optimal}$ 就在基础利率和&lt;code&gt;slope1&lt;/code&gt;利率的和上，根据超过对应比例的&lt;code&gt;slope2&lt;/code&gt;（由管理员设置）的利率（$\frac{U^{asset} _ t −U _ {optimal}}{1−U _ {optimal}} *  \sharp R^{asset} _ {slope2}$）递增。&lt;/p&gt;
+&lt;p&gt;而存款利率（即流动性利率），理所当然的根据债务所产生的利息决定：&lt;/p&gt;
+&lt;p&gt;$$
+LR_t = \overline{R_t} * U_t
+$$&lt;/p&gt;
+&lt;p&gt;其中 $U_t$ 是资金池的使用率，$\overline{R_t}$ 是总体借款利率，总体借款利率通过计算浮动债务和稳定债务的得到：&lt;/p&gt;
+&lt;p&gt;$$
+\overline{R_t} =\begin{cases}
+&amp;amp;0&amp;amp;, if \space D_t = 0
+\\
+&amp;amp;\frac{V D_t * V R_t+SD_t *\overline{SR_t}}{D_t}
+&amp;amp;, if \space D_t &amp;gt; 0
+\end{cases}
+$$&lt;/p&gt;
+&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3099&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;AAVE v2 - white paper&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3137&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;AAVE V2 学习笔记&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/rebase-network/Dapp-Learning/blob/main/defi/Aave/contract/readme.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Dapp-Learning: AAVE&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Uniswap V3 手续费收取</title>
+        <link>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</link>
+        <pubDate>Thu, 08 Aug 2024 16:22:18 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
+        <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
+&lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
+&lt;h2 id=&#34;单位手续费&#34;&gt;单位手续费
+&lt;/h2&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;liquidityGross&lt;/code&gt;：当该&lt;code&gt;tick&lt;/code&gt;被设置为区间上限或下限时就会增加，当其为 0 时，表示该&lt;code&gt;tick&lt;/code&gt;没有人设置区间（计算区间流动性时忽略，当这个&lt;code&gt;tick&lt;/code&gt;不存在）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;liquidityNet&lt;/code&gt;：记录流动性的变化量，即一个$\Delta$值，每当穿过这个&lt;code&gt;tick&lt;/code&gt;值时需要改变的当前激活流动性大小（从&lt;code&gt;tick&lt;/code&gt;右边穿过加，反之减）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;liquidityNet&lt;/code&gt;计算方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注入流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;注入流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;移除流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;移除流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;通过上述变量，我们便获得了当前区间的激活流动性，根据交易中产生的手续费，我们可以得到因为这笔交易产生的&lt;strong&gt;每单位流动性手的续费收益&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;那么后续如何做呢？如果直接记录到各个提供者账上，那么需要遍历该区间所有提供者（可想而知这会产生多少&lt;code&gt;gas&lt;/code&gt;，没人会想承担这个成本的），这个思路没了。&lt;/p&gt;
+&lt;p&gt;无需遍历的方法便是：新产生的手续费收益会修改的只有全局总收益（所有区间相加的手续费收益总和），而想计算当前交易区间内收益：全局收益 - 区间外收益（每次交易不会影响这个值）。&lt;/p&gt;
+&lt;p&gt;当然上述只是一个思路，那么具体一点如何设计呢？&lt;/p&gt;
+&lt;p&gt;V3 中设置了一个变量&lt;code&gt;feeGrowthGlobal&lt;/code&gt;记录全局单位手续费收益，利用每个&lt;code&gt;tick&lt;/code&gt;记录该&lt;code&gt;tick&lt;/code&gt;外的手续费&lt;code&gt;feeGrowthOutside&lt;/code&gt;。这样一来我们就能得到范围内的手续费：&lt;code&gt;feeGrowthInside = feeGrowthGlobal - feeGrowthOutside&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;这里又有两个问题：如何为不同时间投入流动性的用户计算各自的收益？&lt;code&gt;tick&lt;/code&gt;如何记录外部手续费收益（怎么定义外部）？&lt;/p&gt;
+&lt;p&gt;首先是时间问题，投入流动性时，头寸记录当前区块手续费收益&lt;code&gt;feeGrowthInside&lt;/code&gt;，因为这是一个累加值，当取出时和当时的&lt;code&gt;feeGrowthInside&lt;/code&gt;比较增量，就知道该段时间内的收益了。&lt;/p&gt;
+&lt;p&gt;其次是外部收益记录问题，这里抛去了绝对的外部的定义（不再区分点的左边是外部还是右边是外部），而是通过当前价格点来调整这个外部值。假设当前价格点在&lt;code&gt;tick&lt;/code&gt;左边，&lt;code&gt;tick&lt;/code&gt;中记录了一个外部值，此时外部就是&lt;code&gt;tick&lt;/code&gt;的右边，里面的值就是&lt;code&gt;tick&lt;/code&gt;右边的收益。&lt;/p&gt;
+&lt;p&gt;当价格点穿过&lt;code&gt;tick&lt;/code&gt;时，&lt;code&gt;tick&lt;/code&gt;的左边就变为外部，&lt;code&gt;tick&lt;/code&gt;所记录的外部收益怎么算呢？&lt;code&gt;feeGrowthOutside(新的) = feeGrowthGlobal - feeGrowthOutside(旧的)&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;关于&lt;code&gt;tick&lt;/code&gt;添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。&lt;/p&gt;
+&lt;h2 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
+&lt;/h2&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
+&lt;p&gt;首先时原本的恒定乘积公式：$x * y = k = L^2$&lt;/p&gt;
+&lt;p&gt;用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
+图片参考：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;的图二图三&lt;/p&gt;
+&lt;p&gt;这就变成了一个新的公式（根据左加右减，上加下减）：$(x + x1) * (y + y1) = L^2$&lt;/p&gt;
+&lt;p&gt;我们根据公式 $y = p * x(p 为价格)$联合 $x * y =  L^2$ 得到 $x = L / \sqrt{p}\space;\space y = L *\sqrt{p}$，所以 $x_1 = L / \sqrt{p_{upper}}\space;\space y_1 = L *\sqrt{p_{lower}}$，所以我们可以得到&lt;/p&gt;
+&lt;p&gt;$$
+(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}}) = L^2
+\
+\space
+\
+\space
+\
+L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
+$$&lt;/p&gt;
+&lt;h2 id=&#34;参考文章&#34;&gt;参考文章：
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Uniswap V3 升级概述</title>
+        <link>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</link>
+        <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
+        <description>&lt;h2 id=&#34;主要更新点&#34;&gt;主要更新点
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;分不同价格区间提供流动性&lt;/li&gt;
+&lt;li&gt;提供多个收费层级&lt;/li&gt;
+&lt;li&gt;高级预言机&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
+&lt;/h2&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;用户选择投入流动性到 1,000-2,000 美元的价格区间，那么只有价格在此范围内进行的交易产生的手续费，用户才有资格得到。因此用户需要选择交易最经常发生的价格区间才能获得最大的收益&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如此做法带来了什么好处呢？最直接是资金的利用率提升了：过去 V2 中池子中有部分不合理的价格也被强制分配了一部分流动性（如 &lt;code&gt;1 eth = 0.1$&lt;/code&gt;或者&lt;code&gt;1 eth = 10^18$&lt;/code&gt;），这无疑是对池子的资金的浪费，V3 通过用户指定流动性提供区间，提高了这个利用率（如果用户非要选择离谱的区间那用户就没办法获得手续费，毕竟那些区间没有交易产生）。&lt;/p&gt;
+&lt;p&gt;采用这种区间的方法就需要修改一些原本 V2 的设计了：首先就是 LP token。&lt;/p&gt;
+&lt;p&gt;在 V2 中采用的是 ERC20 代币作为 LP token，因为所有流动性添加用户添加的流动性是等价的（大家都是在零到正无穷这个区间添加流动性）。而到了 V3 就很明显的不一样了：每个用户选择的区间并不一定一样（也可以一样，但这种情况应该少数，即使是某些池子中大多一样，那也不影响），所以它们获得 LP token 无法等价起来，故采用 ERC721 来记录流动性提供者投入的流动性，而这个 LP token 也被称为&lt;strong&gt;头寸&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;对于用户选择的区间和当前池子的价格之间的大小关系不同，有不同的投入要求（此处假设价格点连续）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;价格大于区间：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：20&lt;/code&gt;、&lt;code&gt;1：30&lt;/code&gt;，那么此时想添加流动性，就只能添加代币&lt;code&gt;X&lt;/code&gt;。（可以理解为认为&lt;code&gt;X&lt;/code&gt;币会跌/&lt;code&gt;Y&lt;/code&gt;币会涨，设置一个订单，在此范围内逐渐卖出/买入代币，当然前提是超出你设置的区间后及时取回流动性，不然随着价格回来又会转换回来）&lt;/li&gt;
+&lt;li&gt;价格在区间内：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：5&lt;/code&gt;、&lt;code&gt;1：20&lt;/code&gt;，那么此时想添加流动性，需要同时注入两种代币&lt;/li&gt;
+&lt;li&gt;价格小于区间：假设此时：&lt;code&gt;1Y = 10X&lt;/code&gt;，提供者选择的区间为：&lt;code&gt;1：5&lt;/code&gt;、&lt;code&gt;1：7&lt;/code&gt;，那么此时想添加流动性，就只能添加代币&lt;code&gt;Y&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其次的设计就是区间：区间的选择不能无限制，作为链上合约，实现不了这么复杂的事情。&lt;/p&gt;
+&lt;p&gt;V3 在价格这一射线上选择一系列不连续的价格点作为可以选择形成区间，这些价格点称为&lt;code&gt;tick&lt;/code&gt;，以此来减少计算关于流动性的计算，然后还设置了&lt;code&gt;tickspacing&lt;/code&gt;这一存在，要求两个&lt;code&gt;tick&lt;/code&gt;之间存在&lt;code&gt;tickspacing&lt;/code&gt;个&lt;code&gt;tick&lt;/code&gt;，而在 V3 中锁定唯一的代币对池子，需要通过：两种代币、&lt;code&gt;tickspacing&lt;/code&gt;这三个参数。&lt;code&gt;tick&lt;/code&gt;的大小是如何设置的呢？&lt;code&gt;tick&lt;/code&gt;本身是一个等幂数列 $p_i= {1.0001}^i$ ，其 i 的取值有范围&lt;code&gt;[-887272, 887272]&lt;/code&gt;。这使得在接&lt;code&gt;0-1&lt;/code&gt;的时候能提供一个很密集的&lt;code&gt;tick&lt;/code&gt;（很适合如稳定币对），远离 1 的时候能提供较分散的&lt;code&gt;tick&lt;/code&gt;给价格波动大的兑换合约（如两个山寨币对）。&lt;/p&gt;
+&lt;h2 id=&#34;多收费层级&#34;&gt;多收费层级
+&lt;/h2&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
+&lt;p&gt;不同的收费层级通过前面所讲的&lt;code&gt;tickspacing&lt;/code&gt;结合决定：手续费低，则币价相对稳定，&lt;code&gt;tickspacing&lt;/code&gt;小；反之手续费高，币价波动大，&lt;code&gt;tickspacing&lt;/code&gt;大。具体设置如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;费率&lt;/th&gt;
+&lt;th&gt;tickspacing&lt;/th&gt;
+&lt;th&gt;建议的使用范围&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0.05%&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;稳定币交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0.3%&lt;/td&gt;
+&lt;td&gt;60&lt;/td&gt;
+&lt;td&gt;适用大多数交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1%&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;波动极大的交易对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 V3 合约实现的时候为&lt;code&gt;tickspacing&lt;/code&gt;扩充留下了代码，可以后续添加。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;高级预言机&#34;&gt;高级预言机
+&lt;/h2&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
+&lt;p&gt;在 V3 中&lt;code&gt;tick&lt;/code&gt;的计算为$p_i= {1.0001}^i$，所以$i = \log _{1.0001} p_i$&lt;/p&gt;
+&lt;p&gt;V3 中计算的不再是价格累积值而是&lt;code&gt;tick&lt;/code&gt;累积值，所以$a_j = a_{j-1} + \Delta t * i$，其中 i 就是上面&lt;code&gt;tick&lt;/code&gt;中指代的那个 i 。当我们计算平均价格时&lt;/p&gt;
+&lt;p&gt;$$
+P_{t1,t2} = \frac{a_{t2} - a_{t1}}{t2 - t1} = \frac{\sum_{i =t1}^{t2}\log_{1.0001}P_i}{t2 - t1}=\log_{1.0001}{(\Pi _{i = t2}^{t_2} P_i)^{\frac{1}{t2 - t1}}}
+$$&lt;/p&gt;
+&lt;p&gt;最后面那一步转换便称为价格 的几何平均值形式（数学不好，没能理解这个转换）。剩下的计算和 V2 也很相似了&lt;/p&gt;
+&lt;p&gt;参考文章：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.web3idea.xyz/post/blockchain%2Fdefi%2FUniswap-v3%E8%AF%A6%E8%A7%A3%28%E4%BA%94%29:Oracle%E9%A2%84%E8%A8%80%E6%9C%BA#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%B9%B3%E5%9D%87%E5%80%BC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Uniswap v3 详解（五）：Oracle 预言机&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

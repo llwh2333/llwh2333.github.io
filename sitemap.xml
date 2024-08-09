@@ -3,12 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-08-09T01:29:33+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/js/</loc>
-    <lastmod>2024-08-09T01:29:33+08:00</lastmod>
+    <lastmod>2024-08-09T01:41:57+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/</loc>
+    <lastmod>2024-08-09T01:41:57+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/rust/</loc>
+    <lastmod>2024-08-09T01:41:57+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/rust-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</loc>
+    <lastmod>2024-08-09T01:41:57+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2024-08-09T01:41:57+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/js/</loc>
     <lastmod>2024-08-09T01:29:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/python/</loc>
@@ -21,9 +30,6 @@
     <lastmod>2024-08-09T01:29:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</loc>
-    <lastmod>2024-08-09T01:29:33+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2024-08-09T01:29:33+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/defi/</loc>
@@ -47,7 +53,13 @@
     <loc>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</loc>
     <lastmod>2024-08-08T17:57:49+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2024-08-08T17:56:25+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/p/%E5%AF%B9-zksync-%E5%AE%98%E6%96%B9-paymaster-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%90%86%E8%A7%A3/</loc>
+    <lastmod>2024-08-08T17:56:25+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</loc>
     <lastmod>2024-08-08T17:56:25+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/account-abstraction/</loc>
@@ -104,6 +116,9 @@
     <loc>http://localhost:1313/tags/uniswapv3/</loc>
     <lastmod>2024-08-08T16:22:18+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/categories/defi/</loc>
+    <lastmod>2024-08-08T16:18:10+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</loc>
     <lastmod>2024-08-08T16:18:10+08:00</lastmod>
   </url><url>
@@ -133,8 +148,6 @@
   </url><url>
     <loc>http://localhost:1313/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/%E5%85%B3%E4%BA%8E/</loc>
   </url><url>

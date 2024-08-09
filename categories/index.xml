@@ -6,6 +6,31 @@
         <description>Recent content in Categories on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>Nillnum</copyright><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Fri, 09 Aug 2024 01:41:57 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Rust</title>
+        <link>http://localhost:1313/categories/rust/</link>
+        <pubDate>Fri, 09 Aug 2024 01:41:57 +0800</pubDate>
+        
+        <guid>http://localhost:1313/categories/rust/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>区块链</title>
+        <link>http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
+        <pubDate>Fri, 09 Aug 2024 01:29:33 +0800</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Defi</title>
+        <link>http://localhost:1313/categories/defi/</link>
+        <pubDate>Thu, 08 Aug 2024 19:44:44 +0800</pubDate>
+        
+        <guid>http://localhost:1313/categories/defi/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>
