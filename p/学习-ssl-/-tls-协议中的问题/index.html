@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？ 答： \u200b SSL 链接的建立过程可以分为 4 个阶段： 服务端与客户端交换信息（双方发送">
+<title>学习 SSL / TLS 协议中的问题</title>
+
+<link rel='canonical' href='http://localhost:1313/p/%E5%AD%A6%E4%B9%A0-ssl-/-tls-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="学习 SSL / TLS 协议中的问题">
+<meta property='og:description' content="问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？ 答： \u200b SSL 链接的建立过程可以分为 4 个阶段： 服务端与客户端交换信息（双方发送">
+<meta property='og:url' content='http://localhost:1313/p/%E5%AD%A6%E4%B9%A0-ssl-/-tls-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98/'>
+<meta property='og:site_name' content='Nillnum'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='https' /><meta property='article:tag' content='SSL/TLS' /><meta property='article:published_time' content='2022-03-04T15:17:06&#43;08:00'/><meta property='article:modified_time' content='2022-03-04T15:17:06&#43;08:00'/>
+<meta name="twitter:title" content="学习 SSL / TLS 协议中的问题">
+<meta name="twitter:description" content="问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？ 答： \u200b SSL 链接的建立过程可以分为 4 个阶段： 服务端与客户端交换信息（双方发送">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15415685995576500094.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nillnum</a></h1>
+            <h2 class="site-description">永远热情，永远年轻</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/llwh2333'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+<section class="widget archives">
+    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+</div>
+    <h2 class="widget-title section-title">目录</h2>
+
+    <div class="widget--toc"><nav id="TableOfContents">
+  <ol>
+    <li><a href="#问ssl-链接建立过程中密码套件证书密匙协商算法到底是怎样的">问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？</a></li>
+    <li><a href="#问密码套件的格式是怎样的">问：密码套件的格式是怎样的？</a></li>
+    <li><a href="#问密匙交换算法有哪些如何进行的">问：密匙交换算法有哪些？如何进行的？</a></li>
+    <li><a href="#问dhe-算法-dh-算法-ecc-算法ecdhe-算法和-ecdsa-算法它们有何不同">问：DHE 算法、 DH 算法、 ECC 算法、ECDHE 算法和 ECDSA 算法，它们有何不同</a></li>
+    <li><a href="#问dhdhe-算法中证书里的公匙作用区别">问：DH、DHE 算法中证书里的公匙作用区别？</a></li>
+    <li><a href="#问ssl-中的密码算法有哪些">问：SSL 中的密码算法有哪些？</a></li>
+    <li><a href="#问什么是前向安全性">问：什么是前向安全性？</a></li>
+  </ol>
+</nav></div>
+</section>
+
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%BD%91%E7%BB%9C/" style="background-color: #2a9d8f; color: #fff;">
+                网络
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%AD%A6%E4%B9%A0-ssl-/-tls-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98/">学习 SSL / TLS 协议中的问题</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 04,  2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="问ssl-链接建立过程中密码套件证书密匙协商算法到底是怎样的">问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？
+</h1><p>答：</p>
+<p>​ SSL 链接的建立过程可以分为 4 个阶段：</p>
+<ol>
+<li>服务端与客户端交换信息（双方发送 Hello 信息）：SSL 版本、随机数、会话 ID、密码套件（密钥交换算法、MAC 算法、加密算法）、压缩方法（可选）</li>
+<li>服务端向客户端发送信息：服务端证书（证书链）、服务器公钥（可选，视密匙协商算法定，如对于 RSA 算法，其证书中已包含公钥 ，而 DHE 要，DH 不用）、客户端证书请求（可选）、服务器握手完成信号</li>
+<li>客户端向服务端发送信息：客户端证书（如果第二步有请求）、客户端交换预主密钥（用服务器公钥加密）、客户端证书验证（可选，若有发送客户端证书才需。客户端会将所有收到信息进行 hash 并用私匙签名）</li>
+<li>客户端向服务端发送两条信息，服务端发送相似信息：更换加密规约（事件消息，表示本链接以后使用约定的加密方式通信）、Finish 消息（将 Handshake 信息、主密钥 进行 hash 所得值）</li>
+</ol>
+<p>​ 密码套件在第一步中出现，确定了密钥协商算法、MAC 算法、加密算法。</p>
+<p>​ 证书在第二部分出现，有签名验证功能（有的证书还包含服务端公钥，如 RSA、DH、ECDH，就有了加密功能）。</p>
+<p>​ 密钥协商算法在第一步确定好，后面的阶段则使用该算法交换信息，最后得到一个通信双方都知道，没有第三方知道的密钥。</p>
+<ul>
+<li>参考资料：
+<ul>
+<li><a class="link" href="https://kb.cnblogs.com/page/162080/"  target="_blank" rel="noopener"
+    >SSL 协议详解<em>知识库</em>博客园 (cnblogs.com)</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="问密码套件的格式是怎样的">问：密码套件的格式是怎样的？
+</h1><p>答：</p>
+<p>​ 例如：<strong>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</strong> ，表示使用 TLS 协议，采用的密匙协商算法为：带有 RSA 的 ECDHE 算法；采用的加密算法为：AES（密匙与初始向量为 256）；采用的 MAC 算法为：SHA</p>
+<ul>
+<li>参考资料：
+<ul>
+<li><a class="link" href="https://kb.cnblogs.com/page/162080/"  target="_blank" rel="noopener"
+    >SSL 协议详解<em>知识库</em>博客园 (cnblogs.com)</a></li>
+<li><a class="link" href="https://www.cnblogs.com/cioliuguilan/p/5518798.html"  target="_blank" rel="noopener"
+    >SSL 证书(HTTPS)背后的加密算法 - 首席咨询 - 博客园 (cnblogs.com)</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="问密匙交换算法有哪些如何进行的">问：密匙交换算法有哪些？如何进行的？
+</h1><p>答：</p>
+<p>​ 密匙交换算法的作用在于能够安全的帮助通信双方交换密匙（即使有第三方可以监听双方所发出的所有消息内容）。
+​ 算法的分类有：RSA 算法（基于大整数的因数分解问题）、DH 算法（基于离散对数问题）、ECDHE 算法（基于椭圆曲线离散对数问题），利用算法交换密匙的过程如下：
+​ RSA 算法：</p>
+<ol>
+<li>服务端直接发送自己 RSA 算法的公匙给客户端</li>
+<li>客户端用服务器公匙加密自己密钥发送给服务端</li>
+<li>服务端用自己私匙解密信息得到客户端的密钥</li>
+</ol>
+<p>​ DH 算法：</p>
+<ol>
+<li>双方利用固定的值：p、q</li>
+<li>客户端和服务端都进行一样的操作：各自生成一个不同的随机数 X ，得到一个对数 N = $q^X$ ，发送给对方</li>
+<li>客户端和服务端收到一个 N （两个值显然不一样），再进行计算 KEY = $N^X$ ，此时明显两者的 KEY 都是一样的，故获得了密匙</li>
+</ol>
+<p>​ ECDHE 算法：</p>
+<ol>
+<li>客户端随机生成随机值 $R_a$，计算 $P_a(x, y) = R_a * Q(x, y)$，$Q(x, y)$ 为全世界公认的某个椭圆曲线算法的基点。将 $P_a(x, y)$ 发送至服务器</li>
+<li>服务器随机生成随机值 $R_b$，计算 $P_b(x,y) = R_b * Q(x, y)$ 。将 $P_b(x, y)$ 发送至客户端。</li>
+<li>客户端计算 $S_a(x, y) = R_a * P_b(x, y)= R_a * R_b * Q(x, y)= S$ ；服务器计算 $S_b(x, y) = R_b *P_a(x, y) =R_b * R_a * Q(x, y) = S$</li>
+<li>算法保证了 $S_a = S_b = S$ ，提取其中的 S 的 x 向量作为密钥（预主密钥）</li>
+</ol>
+<ul>
+<li>参考资料：
+<ul>
+<li><a class="link" href="https://wonderful.blog.csdn.net/article/details/78025940"  target="_blank" rel="noopener"
+    >TLS/SSL 协议详解 (30) SSL 中的 RSA、DHE、ECDHE、ECDH 流程与区别_Network/Storage/Linux Kernel-CSDN 博客_ecdhe</a></li>
+<li><a class="link" href="https://www.cnblogs.com/xiaolincoding/p/14318338.html"  target="_blank" rel="noopener"
+    >图解 ECDHE 密钥交换算法 - 小林 coding - 博客园 (cnblogs.com)</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="问dhe-算法-dh-算法-ecc-算法ecdhe-算法和-ecdsa-算法它们有何不同">问：DHE 算法、 DH 算法、 ECC 算法、ECDHE 算法和 ECDSA 算法，它们有何不同
+</h1><p>答：</p>
+<p>​ DH 算法是一种基于离散对数问题的一种密匙交换算法。</p>
+<p>​ DHE 算法为 DH 算法的一种。根据服务端私匙的生成的具体实现方法，DH 算法分为两种：DHE 和 static DH（已废弃）。后者废弃原因为服务端私匙是固定的（静态的），一旦被他人破解，会危害到大量其它会话；前者不一样，前者的 E 表示 ephemeral（临时性的）的意思，每一次会话中服务端的私匙都不固定（临时的），即使被破解，也只影响一个会话，如此实现了前向安全。</p>
+<p>​ ECC 算法是一种椭圆曲线算法，主要应用在证书加密上的算法。</p>
+<p>​ ECDHE 算法即为利用了 ECC 椭圆曲线特性的 DHE 算法，在数学上就是基于椭圆曲线离散对数问题的算法，目的是为了提升 DHE 算法的性能，故也是一种密匙交换算法。</p>
+<p>​ ECDSA 算法是一种椭圆曲线算法，主要应用在数字签名上，是使用椭圆曲线密码（ECC）对数字签名算法（DSA）的模拟。</p>
+<ul>
+<li>参考资料：
+<ul>
+<li><a class="link" href="https://www.cnblogs.com/xiaolincoding/p/14318338.html"  target="_blank" rel="noopener"
+    >图解 ECDHE 密钥交换算法 - 小林 coding - 博客园 (cnblogs.com)</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="问dhdhe-算法中证书里的公匙作用区别">问：DH、DHE 算法中证书里的公匙作用区别？
+</h1><p>答：</p>
+<p>​ 在 DH 算法中，证书公匙的作用是对证书的签名，同时用于对于后面密钥协商中服务端的公匙；在 DHE 算法中，证书公匙仅用于签名，如对证书的签名，而实际两方的密匙协商方法是利用离散对数问题协商，因此对于 DHE 算法，双方交互是服务端需要发送 server key exchange 报文。</p>
+<h1 id="问ssl-中的密码算法有哪些">问：SSL 中的密码算法有哪些？
+</h1><p>答：</p>
+<p>​ 在密码算法中大概可以有三种：RSA（大整数的因数分解）、DH（离散对数）、ECC（椭圆曲线）。</p>
+<p>​ RSA 算法在密码中应用广泛，可以进行数字签名、密匙交换、证书公匙加密。</p>
+<p>​ DH 算法常应用在密匙交换中，有 static DH 算法（基本不用）、DHE 算法、ECDH 算法（基本不用）、ECDHE 算法。</p>
+<p>​ ECC 算法常用于密匙交换、证书公匙加密（目前的大势所趋）中，有 ECDH 算法（基本不用）、ECDHE 算法、ECDSA 算法。</p>
+<p>​ 用在密匙交换中的算法有：RSA 、DHE、ECDHE；用在数字签名中的算法有：RSA（包含 MD、SHA 系列）、DSA、ECDSA；用在证书公匙加密的算法有：RSA、ECC。</p>
+<h1 id="问什么是前向安全性">问：什么是前向安全性？
+</h1><p>答：</p>
+<p>​ 前向安全性指即使密匙现在暴露了，也不会使得过去的通信信息有暴露的危险。与之相对的有后向安全性，指即使密匙现在暴露了，也不会使得未来的其它的通信信息（非本次通信信道的信息）有暴露的危险。</p>
+<ul>
+<li>参考资料
+<ul>
+<li><a class="link" href="https://sunhuachuang.gitbooks.io/sun-note/content/cryptography/forward_backward_secrecy.html"  target="_blank" rel="noopener"
+    >前（后）向安全性 · Sun Note (gitbooks.io)</a></li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/https/">Https</a>
+        
+            <a href="/tags/ssl/tls/">SSL/TLS</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Nillnum
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

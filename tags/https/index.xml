@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Https on Nillnum</title>
+        <link>http://localhost:1313/tags/https/</link>
+        <description>Recent content in Https on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Sat, 10 Aug 2024 18:05:02 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/https/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>学习 SSL / TLS 协议中的问题</title>
+        <link>http://localhost:1313/p/%E5%AD%A6%E4%B9%A0-ssl-/-tls-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+        <pubDate>Sat, 10 Aug 2024 18:05:02 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E5%AD%A6%E4%B9%A0-ssl-/-tls-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+        <description>&lt;h1 id=&#34;问ssl-链接建立过程中密码套件证书密匙协商算法到底是怎样的&#34;&gt;问：SSL 链接建立过程中，密码套件、证书、密匙协商算法到底是怎样的？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ SSL 链接的建立过程可以分为 4 个阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;服务端与客户端交换信息（双方发送 Hello 信息）：SSL 版本、随机数、会话 ID、密码套件（密钥交换算法、MAC 算法、加密算法）、压缩方法（可选）&lt;/li&gt;
+&lt;li&gt;服务端向客户端发送信息：服务端证书（证书链）、服务器公钥（可选，视密匙协商算法定，如对于 RSA 算法，其证书中已包含公钥 ，而 DHE 要，DH 不用）、客户端证书请求（可选）、服务器握手完成信号&lt;/li&gt;
+&lt;li&gt;客户端向服务端发送信息：客户端证书（如果第二步有请求）、客户端交换预主密钥（用服务器公钥加密）、客户端证书验证（可选，若有发送客户端证书才需。客户端会将所有收到信息进行 hash 并用私匙签名）&lt;/li&gt;
+&lt;li&gt;客户端向服务端发送两条信息，服务端发送相似信息：更换加密规约（事件消息，表示本链接以后使用约定的加密方式通信）、Finish 消息（将 Handshake 信息、主密钥 进行 hash 所得值）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​ 密码套件在第一步中出现，确定了密钥协商算法、MAC 算法、加密算法。&lt;/p&gt;
+&lt;p&gt;​ 证书在第二部分出现，有签名验证功能（有的证书还包含服务端公钥，如 RSA、DH、ECDH，就有了加密功能）。&lt;/p&gt;
+&lt;p&gt;​ 密钥协商算法在第一步确定好，后面的阶段则使用该算法交换信息，最后得到一个通信双方都知道，没有第三方知道的密钥。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考资料：
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kb.cnblogs.com/page/162080/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SSL 协议详解&lt;em&gt;知识库&lt;/em&gt;博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;问密码套件的格式是怎样的&#34;&gt;问：密码套件的格式是怎样的？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ 例如：&lt;strong&gt;TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA&lt;/strong&gt; ，表示使用 TLS 协议，采用的密匙协商算法为：带有 RSA 的 ECDHE 算法；采用的加密算法为：AES（密匙与初始向量为 256）；采用的 MAC 算法为：SHA&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考资料：
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://kb.cnblogs.com/page/162080/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SSL 协议详解&lt;em&gt;知识库&lt;/em&gt;博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/cioliuguilan/p/5518798.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SSL 证书(HTTPS)背后的加密算法 - 首席咨询 - 博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;问密匙交换算法有哪些如何进行的&#34;&gt;问：密匙交换算法有哪些？如何进行的？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ 密匙交换算法的作用在于能够安全的帮助通信双方交换密匙（即使有第三方可以监听双方所发出的所有消息内容）。
+​ 算法的分类有：RSA 算法（基于大整数的因数分解问题）、DH 算法（基于离散对数问题）、ECDHE 算法（基于椭圆曲线离散对数问题），利用算法交换密匙的过程如下：
+​ RSA 算法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;服务端直接发送自己 RSA 算法的公匙给客户端&lt;/li&gt;
+&lt;li&gt;客户端用服务器公匙加密自己密钥发送给服务端&lt;/li&gt;
+&lt;li&gt;服务端用自己私匙解密信息得到客户端的密钥&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​ DH 算法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;双方利用固定的值：p、q&lt;/li&gt;
+&lt;li&gt;客户端和服务端都进行一样的操作：各自生成一个不同的随机数 X ，得到一个对数 N = $q^X$ ，发送给对方&lt;/li&gt;
+&lt;li&gt;客户端和服务端收到一个 N （两个值显然不一样），再进行计算 KEY = $N^X$ ，此时明显两者的 KEY 都是一样的，故获得了密匙&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​ ECDHE 算法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端随机生成随机值 $R_a$，计算 $P_a(x, y) = R_a * Q(x, y)$，$Q(x, y)$ 为全世界公认的某个椭圆曲线算法的基点。将 $P_a(x, y)$ 发送至服务器&lt;/li&gt;
+&lt;li&gt;服务器随机生成随机值 $R_b$，计算 $P_b(x,y) = R_b * Q(x, y)$ 。将 $P_b(x, y)$ 发送至客户端。&lt;/li&gt;
+&lt;li&gt;客户端计算 $S_a(x, y) = R_a * P_b(x, y)= R_a * R_b * Q(x, y)= S$ ；服务器计算 $S_b(x, y) = R_b *P_a(x, y) =R_b * R_a * Q(x, y) = S$&lt;/li&gt;
+&lt;li&gt;算法保证了 $S_a = S_b = S$ ，提取其中的 S 的 x 向量作为密钥（预主密钥）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;参考资料：
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://wonderful.blog.csdn.net/article/details/78025940&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TLS/SSL 协议详解 (30) SSL 中的 RSA、DHE、ECDHE、ECDH 流程与区别_Network/Storage/Linux Kernel-CSDN 博客_ecdhe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/xiaolincoding/p/14318338.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;图解 ECDHE 密钥交换算法 - 小林 coding - 博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;问dhe-算法-dh-算法-ecc-算法ecdhe-算法和-ecdsa-算法它们有何不同&#34;&gt;问：DHE 算法、 DH 算法、 ECC 算法、ECDHE 算法和 ECDSA 算法，它们有何不同
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ DH 算法是一种基于离散对数问题的一种密匙交换算法。&lt;/p&gt;
+&lt;p&gt;​ DHE 算法为 DH 算法的一种。根据服务端私匙的生成的具体实现方法，DH 算法分为两种：DHE 和 static DH（已废弃）。后者废弃原因为服务端私匙是固定的（静态的），一旦被他人破解，会危害到大量其它会话；前者不一样，前者的 E 表示 ephemeral（临时性的）的意思，每一次会话中服务端的私匙都不固定（临时的），即使被破解，也只影响一个会话，如此实现了前向安全。&lt;/p&gt;
+&lt;p&gt;​ ECC 算法是一种椭圆曲线算法，主要应用在证书加密上的算法。&lt;/p&gt;
+&lt;p&gt;​ ECDHE 算法即为利用了 ECC 椭圆曲线特性的 DHE 算法，在数学上就是基于椭圆曲线离散对数问题的算法，目的是为了提升 DHE 算法的性能，故也是一种密匙交换算法。&lt;/p&gt;
+&lt;p&gt;​ ECDSA 算法是一种椭圆曲线算法，主要应用在数字签名上，是使用椭圆曲线密码（ECC）对数字签名算法（DSA）的模拟。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考资料：
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/xiaolincoding/p/14318338.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;图解 ECDHE 密钥交换算法 - 小林 coding - 博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;问dhdhe-算法中证书里的公匙作用区别&#34;&gt;问：DH、DHE 算法中证书里的公匙作用区别？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ 在 DH 算法中，证书公匙的作用是对证书的签名，同时用于对于后面密钥协商中服务端的公匙；在 DHE 算法中，证书公匙仅用于签名，如对证书的签名，而实际两方的密匙协商方法是利用离散对数问题协商，因此对于 DHE 算法，双方交互是服务端需要发送 server key exchange 报文。&lt;/p&gt;
+&lt;h1 id=&#34;问ssl-中的密码算法有哪些&#34;&gt;问：SSL 中的密码算法有哪些？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ 在密码算法中大概可以有三种：RSA（大整数的因数分解）、DH（离散对数）、ECC（椭圆曲线）。&lt;/p&gt;
+&lt;p&gt;​ RSA 算法在密码中应用广泛，可以进行数字签名、密匙交换、证书公匙加密。&lt;/p&gt;
+&lt;p&gt;​ DH 算法常应用在密匙交换中，有 static DH 算法（基本不用）、DHE 算法、ECDH 算法（基本不用）、ECDHE 算法。&lt;/p&gt;
+&lt;p&gt;​ ECC 算法常用于密匙交换、证书公匙加密（目前的大势所趋）中，有 ECDH 算法（基本不用）、ECDHE 算法、ECDSA 算法。&lt;/p&gt;
+&lt;p&gt;​ 用在密匙交换中的算法有：RSA 、DHE、ECDHE；用在数字签名中的算法有：RSA（包含 MD、SHA 系列）、DSA、ECDSA；用在证书公匙加密的算法有：RSA、ECC。&lt;/p&gt;
+&lt;h1 id=&#34;问什么是前向安全性&#34;&gt;问：什么是前向安全性？
+&lt;/h1&gt;&lt;p&gt;答：&lt;/p&gt;
+&lt;p&gt;​ 前向安全性指即使密匙现在暴露了，也不会使得过去的通信信息有暴露的危险。与之相对的有后向安全性，指即使密匙现在暴露了，也不会使得未来的其它的通信信息（非本次通信信道的信息）有暴露的危险。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考资料
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sunhuachuang.gitbooks.io/sun-note/content/cryptography/forward_backward_secrecy.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;前（后）向安全性 · Sun Note (gitbooks.io)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
