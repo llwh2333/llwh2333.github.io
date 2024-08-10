@@ -297,8 +297,8 @@
     
     <p>V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。</p>
 <p>在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。</p>
-<h2 id="单位手续费">单位手续费
-</h2><p>想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在<code>tick</code>上设置了两个变量<code>liquidityGross</code>、<code>liquidityNet</code>（计算区间内流动性就是计算两个<code>tick</code>间的流动性）。</p>
+<h1 id="单位手续费">单位手续费
+</h1><p>想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在<code>tick</code>上设置了两个变量<code>liquidityGross</code>、<code>liquidityNet</code>（计算区间内流动性就是计算两个<code>tick</code>间的流动性）。</p>
 <ul>
 <li><code>liquidityGross</code>：当该<code>tick</code>被设置为区间上限或下限时就会增加，当其为 0 时，表示该<code>tick</code>没有人设置区间（计算区间流动性时忽略，当这个<code>tick</code>不存在）。</li>
 <li><code>liquidityNet</code>：记录流动性的变化量，即一个$\Delta$值，每当穿过这个<code>tick</code>值时需要改变的当前激活流动性大小（从<code>tick</code>右边穿过加，反之减）。</li>
@@ -325,8 +325,8 @@
 <p>把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。</p>
 </blockquote>
 <p>关于<code>tick</code>添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。</p>
-<h2 id="lp-提供者的流动性">LP 提供者的流动性
-</h2><p>对于 LP 提供者提供的流动性是怎么定量计算的呢？</p>
+<h1 id="lp-提供者的流动性">LP 提供者的流动性
+</h1><p>对于 LP 提供者提供的流动性是怎么定量计算的呢？</p>
 <p>首先时原本的恒定乘积公式：$x * y = k = L^2$</p>
 <p>用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
 图片参考：<a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
@@ -342,8 +342,8 @@
 \
 L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
 $$</p>
-<h2 id="参考文章">参考文章：
-</h2><p><a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
+<h1 id="参考文章">参考文章：
+</h1><p><a class="link" href="https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md"  target="_blank" rel="noopener"
     >Understand UniswapV3 whitepaper</a></p>
 
 </section>

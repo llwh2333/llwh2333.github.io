@@ -294,8 +294,8 @@
     <section class="article-content">
     
     
-    <h2 id="1-合约变量">1 合约变量
-</h2><p>​ 通过创建或调用合约变量即可使用其他合约中的变量</p>
+    <h1 id="1-合约变量">1 合约变量
+</h1><p>​ 通过创建或调用合约变量即可使用其他合约中的变量</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -315,8 +315,8 @@
 <p>这种方法要求：已知目标合约的代码（或接口）和地址。</p>
 <p>调用者修改了，执行环境被修改</p>
 </blockquote>
-<h2 id="2-call">2 call
-</h2><p>​ address 类型低级成员函数，返回(bool, data)，分别对应 call 是否成功以及目标函数的返回值。</p>
+<h1 id="2-call">2 call
+</h1><p>​ address 类型低级成员函数，返回(bool, data)，分别对应 call 是否成功以及目标函数的返回值。</p>
 <p>​ call 使用后调用者（msg.sender）被修改，执行环境也修改为目标合约的执行环境。可以指定发送给目标合约的 value 和 gas。</p>
 <p>​ 不推荐使用它来调用其他合约，因为不安全（因为这回将函数调用的主动权交给它），但其可以帮助我们在不知道目标合约代码（或接口）的情况下调用其函数。使用方法如下：</p>
 <div class="highlight"><div class="chroma">
@@ -335,8 +335,8 @@
 <p>其中的 data 是使用 abi.encodeWithSignature 获得的，其值为对调用函数和函数参数内容的编码。</p>
 </blockquote>
 <p>​ 当调用了不存在的函数时，会触发目标合约（address）的 fallback 函数，这存在安全风险。</p>
-<h2 id="3-delegatecall">3 delegatecall
-</h2><p>​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，但其只能指定 gas，不能指定 value。</p>
+<h1 id="3-delegatecall">3 delegatecall
+</h1><p>​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，但其只能指定 gas，不能指定 value。</p>
 <p>​ delegatecall 使用后调用者（msg.sender）和执行环境均不变。</p>
 <p>​ 使用 delegatecall 一定要保证当前合约和目标合约的状态变量存储结构相同，并且目标合约安全，不然会造成资产损失。</p>
 <p>​ 使用其场景主要有代理合约和 EIP-2535 Diamonds。使用方法如下：</p>
@@ -352,18 +352,18 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// address 是目标合约地址，即想调用这个合约的函数
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="4-callcode">4 callcode
-</h2><p>​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，使用后调用者（msg.sender）会修改，执行环境不会改变。</p>
+</div><h1 id="4-callcode">4 callcode
+</h1><p>​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，使用后调用者（msg.sender）会修改，执行环境不会改变。</p>
 <blockquote>
 <p>在 solidity 0.5.0 后禁用了。</p>
 </blockquote>
-<h2 id="5-staticcall">5 staticcall
-</h2><p>​ 它允许合约调用目标合约的函数和数据，但不能修改（即只能调用 view、pure 函数）。</p>
+<h1 id="5-staticcall">5 staticcall
+</h1><p>​ 它允许合约调用目标合约的函数和数据，但不能修改（即只能调用 view、pure 函数）。</p>
 <blockquote>
 <p>目前 solidity 中没有 API 能够直接调用它，仅仅是计划将来在编译器层面把调用 view 和 pure 类型的函数编译成 STATICCALL 指令。</p>
 </blockquote>
-<h2 id="6-总结">6 总结
-</h2><p>​ 主要能够使用的有三种（call、delegatecall、合约变量），有一种废弃（callcode），一种未来计划用在编译器层面中（staticcall）。</p>
+<h1 id="6-总结">6 总结
+</h1><p>​ 主要能够使用的有三种（call、delegatecall、合约变量），有一种废弃（callcode），一种未来计划用在编译器层面中（staticcall）。</p>
 <p>​ 几种方法可以这样记：call 方法属于‘极端改变’的方法，调用者和执行环境均改变；delegatecall 方法属于‘极端不改变’的方法，调用者和执行环境均不变；callcode 方法改变调用者，但执行环境不变；合约变量方法要求高（多了个目标合约代码或接口的要求），但安全。</p>
 
 </section>

@@ -307,11 +307,11 @@
     
     
     <p>Compound V2 也和 Aave V2 很相似，有部分区别，但感觉是很多地方相似的，采用的设计逻辑都是由很多相似的地方的。下面依旧从行为的方面进行介绍。</p>
-<h2 id="借贷">借贷
-</h2><p>Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。</p>
+<h1 id="借贷">借贷
+</h1><p>Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。</p>
 <p>和 Aave V2 的逻辑整理一样，借贷也从借款、还款、清算三件事情出发。</p>
-<h3 id="借款">借款
-</h3><p>当一个用户想要从 Compound 中借款时需要进行抵押（这是毫无疑问的），而 Compound 采用的借款策略同样时超额抵押借贷（和 Aave V2 一样），而衡量这个超额比例的就是抵押因子（超额抵押的比例）。借款会有这么一个流程：用户借出一笔钱，开始计算利息，等待用户还款，等待过程中还会检查用户的借款是否可能造成坏账（即是否需要清算）。</p>
+<h2 id="借款">借款
+</h2><p>当一个用户想要从 Compound 中借款时需要进行抵押（这是毫无疑问的），而 Compound 采用的借款策略同样时超额抵押借贷（和 Aave V2 一样），而衡量这个超额比例的就是抵押因子（超额抵押的比例）。借款会有这么一个流程：用户借出一笔钱，开始计算利息，等待用户还款，等待过程中还会检查用户的借款是否可能造成坏账（即是否需要清算）。</p>
 <p>我们知道 Aave V2 就是采用的复利的方式计算，而 Compound 也是一样。在 Compound 中是怎么计算个体用户的利息呢？这是通过复利累计指数计算的（$FV$ 表示当前累计指数，$PV$表示上次累计指数）：</p>
 <p>$$
 FV = PV * (1+x)^{t}
@@ -321,11 +321,11 @@ $$</p>
 <blockquote>
 <p>Compound 的借款采用的抵押物实际上是 <code>ctoken</code>（一种 ERC20 代币，用户存款可以获得对应的<code>ctoken</code>，存 ETH 得 cETH），即用用户的存款作为抵押物进行贷款。</p>
 </blockquote>
-<h3 id="还款">还款
-</h3><p>还款在 Compound 中既可以还自己得欠款也可以还他人得欠款（这个就是清算）。我们在借款中知道通过抵押物（<code>ctoken</code>）可以获得<code>标的 token</code>，还钱就通过归还<code>标的 token</code>赎回<code>ctoken</code>。在 Aave V2 中采用了<code>债务token</code>（一种魔改 ERC20）记录用户债务，而 Compound 则是内部记账（变量记录地址欠款额度）得方式。</p>
+<h2 id="还款">还款
+</h2><p>还款在 Compound 中既可以还自己得欠款也可以还他人得欠款（这个就是清算）。我们在借款中知道通过抵押物（<code>ctoken</code>）可以获得<code>标的 token</code>，还钱就通过归还<code>标的 token</code>赎回<code>ctoken</code>。在 Aave V2 中采用了<code>债务token</code>（一种魔改 ERC20）记录用户债务，而 Compound 则是内部记账（变量记录地址欠款额度）得方式。</p>
 <p>当用户归回欠款时，先计算复利累计指数（更新归还前得利息情况，和前面一样），然后计算过去债务得最新大小，然后减去还款得到最后得债务大小，并存入（总债务这些得也会更新），最后合约将还款转入资金池中。</p>
-<h3 id="清算">清算
-</h3><p>前面说了，清算就是帮别人还欠款，但人们不会做慈善一样得帮忙还款，清算者需要获得一定得利益。</p>
+<h2 id="清算">清算
+</h2><p>前面说了，清算就是帮别人还欠款，但人们不会做慈善一样得帮忙还款，清算者需要获得一定得利益。</p>
 <p>首先需要明确的时清算条件。前面借款时有说到抵押因子，将用户存款乘以抵押因子就得到所能借出的贷款上限，随着抵押物的价格波动和贷款的利息所带来的贷款增加，这就可能导致用户借款达到贷款上限，从而到达清算条件。</p>
 <p>其次是清算人如何来清算的。需要明白的是对于被清算人（借款人）的债务，单次清算上限为债务 50% ，因为清算人也不一定是恶意不还款（可能是币价波动导致清算这些的）。同时对于清算人所获得的抵押资产（<code>ctoken</code>）也是可选的（如果借款人有多种抵押物），可以选择更加青睐的代币类型的抵押物。清算人清算就是通过购买借款人手中的<code>ctoken</code>（即购买对应的<code>token</code>）来替借款人偿还债务，以此进行清算。</p>
 <p>那么清算让借款不再处于坏账风险的原因是什么？直接的理解就是超额抵押借贷中的超额让这笔借贷交易处于清算状态，合约通过清算（自动卖出用户的<code>ctoken</code>）实现欠款的偿还，合约只要卖出的价格超过超额抵押的判断下的价格高，即可让交易不再处于坏账风险中。实际上合约是以接近市场价的价格卖出的。</p>
@@ -338,12 +338,12 @@ $$</p>
 <blockquote>
 <p>兑换率的存在主要是因为存款中的存款人的利息收益的计算。</p>
 </blockquote>
-<h2 id="存款">存款
-</h2><p>在 Compound 中，存款和 Aave V2 一样，都是根据借款所产生的利息而获得存款利息。有借款产生利息，那么用户存款才会有存款利息收益产生，如果 Compound 中没有人进行借款，那么无论往里面存多少钱都不会有利息。</p>
+<h1 id="存款">存款
+</h1><p>在 Compound 中，存款和 Aave V2 一样，都是根据借款所产生的利息而获得存款利息。有借款产生利息，那么用户存款才会有存款利息收益产生，如果 Compound 中没有人进行借款，那么无论往里面存多少钱都不会有利息。</p>
 <p>借款产生的收益会分为两部分：一部分给用户作为存款收益，另外一小部分留给合约，作为资金储备池（防止出现取款的挤兑）。</p>
 <p>首先需要明白，在 Compound 中存入<code>token</code>会获得一定数量<code>ctoken</code>，而取出的时候也就是利用<code>ctoken</code>换回<code>token</code>，而利息就是存入和取出时两者兑换比例不同所带来的不同。</p>
-<h3 id="存入">存入
-</h3><p>用户 Compound 中存入一笔金额为 m 的<code>token</code>代币，此时该类型的<code>token</code>的兑换率为$ER$ （<code>token</code>：<code>ctoken</code> = 1<code>toekn</code>：n<code>ctoken</code>），那么用户可以拿到 $\frac{m}{ER}$ 个<code>ctoken</code>。</p>
+<h2 id="存入">存入
+</h2><p>用户 Compound 中存入一笔金额为 m 的<code>token</code>代币，此时该类型的<code>token</code>的兑换率为$ER$ （<code>token</code>：<code>ctoken</code> = 1<code>toekn</code>：n<code>ctoken</code>），那么用户可以拿到 $\frac{m}{ER}$ 个<code>ctoken</code>。</p>
 <p>随着 Compound 池子中的资金不断被借出，这个兑换率会不断上升，这会使得后来的用户采用同等量的<code>token</code>得到的<code>ctoken</code>更加少，实现了从时间上区分用户的存入（这样同样量的<code>token</code>，无论是否同一用户，只要时间不同存入获得的<code>ctoken</code>不一样），而无需记录其他的信息。</p>
 <p>那么这个兑换率是怎么变动实现单调递增的？首先是兑换率的定义：</p>
 <p>$$
@@ -359,8 +359,8 @@ ER
 = \frac{Count_{t}}{Count_{ct}}
 $$</p>
 <p>可以看到并不会减小汇率，这至少保证了存款不会导致兑换率下降，而借贷毫无疑问只会使得 $ER$ 不断上升。</p>
-<h3 id="取出">取出
-</h3><p>现在来看看取出，取出就是存入的反向操作，燃烧<code>ctoken</code>，然后根据兑换率获得<code>token</code>，燃烧 m 个<code>ctoken</code>可以获得 $m * ER$ 个<code>token</code>。</p>
+<h2 id="取出">取出
+</h2><p>现在来看看取出，取出就是存入的反向操作，燃烧<code>ctoken</code>，然后根据兑换率获得<code>token</code>，燃烧 m 个<code>ctoken</code>可以获得 $m * ER$ 个<code>token</code>。</p>
 <p>下面来看看这个过程对于兑换率的影响（其实就是看会不会让兑换率下降）：</p>
 <p>$$
 ER
@@ -371,8 +371,8 @@ ER
 = \frac{Count _ {t}}{Count _ {ct}}
 $$</p>
 <p>我们可以看到兑换率并没有改变，所以兑换率只会单调递增。</p>
-<h2 id="参考文章">参考文章
-</h2><p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;mid=2652494245&amp;idx=1&amp;sn=186611e277f1a88a8fe116ee5f16fa78&amp;chksm=8b6853b5bc1fdaa3b5468bb3cfe5c6cf2a98892ce29dc0b8a8c9b012c2e8d7ffe4c3a904c1e1&amp;token=785907827&amp;lang=zh_CN#rd"  target="_blank" rel="noopener"
+<h1 id="参考文章">参考文章
+</h1><p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;mid=2652494245&amp;idx=1&amp;sn=186611e277f1a88a8fe116ee5f16fa78&amp;chksm=8b6853b5bc1fdaa3b5468bb3cfe5c6cf2a98892ce29dc0b8a8c9b012c2e8d7ffe4c3a904c1e1&amp;token=785907827&amp;lang=zh_CN#rd"  target="_blank" rel="noopener"
     >剖析 DeFi 借贷产品之 Compound：概述篇</a></p>
 <p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;mid=2652494251&amp;idx=1&amp;sn=dfd6b4ad7f73006258b3d65411adf28f&amp;chksm=8b6853bbbc1fdaad6dc3a3b3cbcb0a7a0a0c9803d95238c3471b0293308d7e41a164368e2766&amp;token=785907827&amp;lang=zh_CN#rd"  target="_blank" rel="noopener"
     >剖析 DeFi 借贷产品之 Compound：合约篇</a></p>

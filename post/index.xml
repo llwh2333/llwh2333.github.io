@@ -368,8 +368,8 @@
         
         <guid>http://localhost:1313/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
         <description>&lt;p&gt;&lt;code&gt;Solana&lt;/code&gt;中原生代币的交互即为对&lt;code&gt;Solana&lt;/code&gt;的代币&lt;code&gt;Sol&lt;/code&gt;代币的代币进行交易，实际上就是对于&lt;code&gt;Sol&lt;/code&gt;代币进行查看，转账这两个操作。&lt;/p&gt;
-&lt;h2 id=&#34;js-交互&#34;&gt;JS 交互
-&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;以下为通过 JS 代码，查看某个特定账户的余额和从某个账户（持有该账户的私钥）向另一个账户（只需要直到公钥地址）进行转账。
+&lt;h1 id=&#34;js-交互&#34;&gt;JS 交互
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;以下为通过 JS 代码，查看某个特定账户的余额和从某个账户（持有该账户的私钥）向另一个账户（只需要直到公钥地址）进行转账。
 &lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -507,8 +507,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;python-交互&#34;&gt;Python 交互
-&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;通过`python`的`seahorse`框架进行转账（假设该程序需要对用户收取`sol`）
+&lt;/div&gt;&lt;h1 id=&#34;python-交互&#34;&gt;Python 交互
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;通过`python`的`seahorse`框架进行转账（假设该程序需要对用户收取`sol`）
 &lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -599,15 +599,15 @@
         
         <guid>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;Uniswap V2 可以分为两个部分：&lt;code&gt;core&lt;/code&gt;部分、&lt;code&gt;periphery&lt;/code&gt;部分。&lt;code&gt;core&lt;/code&gt;部分提供实际的逻辑实现，&lt;code&gt;periphery&lt;/code&gt;部分提供和&lt;code&gt;core&lt;/code&gt;的交互（感觉就是对其的封装）。&lt;/p&gt;
-&lt;h2 id=&#34;core-部分&#34;&gt;core 部分
-&lt;/h2&gt;&lt;p&gt;主要有&lt;/p&gt;
+&lt;h1 id=&#34;core-部分&#34;&gt;core 部分
+&lt;/h1&gt;&lt;p&gt;主要有&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Factory&lt;/code&gt;：工厂合约，用于创建&lt;code&gt;Pair&lt;/code&gt;合约&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Pair&lt;/code&gt;：负责核心逻辑，如&lt;code&gt;swap&lt;/code&gt;/&lt;code&gt;mint&lt;/code&gt;/&lt;code&gt;burn&lt;/code&gt;，价格预言机等功能，其本身是一个&lt;code&gt;ERC20&lt;/code&gt;合约，继承&lt;code&gt;UniswapV2ERC20&lt;/code&gt;(Factory 只允许创建唯一的交易对)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2ERC20&lt;/code&gt;：这是一个扩展的&lt;code&gt;ERC20&lt;/code&gt;实现，用于实现&lt;code&gt;LPToken&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;uniswapv2factory&#34;&gt;UniswapV2Factory
-&lt;/h3&gt;&lt;p&gt;主要功能是创建&lt;code&gt;Pair&lt;/code&gt;合约，所以主要关注的也就是&lt;code&gt;createPair&lt;/code&gt;方法：&lt;/p&gt;
+&lt;h2 id=&#34;uniswapv2factory&#34;&gt;UniswapV2Factory
+&lt;/h2&gt;&lt;p&gt;主要功能是创建&lt;code&gt;Pair&lt;/code&gt;合约，所以主要关注的也就是&lt;code&gt;createPair&lt;/code&gt;方法：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括逻辑：检查是否存在&lt;code&gt;token&lt;/code&gt;对的&lt;code&gt;Pair&lt;/code&gt;合约，然后利用&lt;code&gt;creat2&lt;/code&gt;计算出新合约地址，赋值给对应索引，然后创建。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -657,8 +657,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;uniswapv2erc20&#34;&gt;UniswapV2ERC20
-&lt;/h3&gt;&lt;p&gt;实现了&lt;code&gt;LPToken&lt;/code&gt;，一个标准的&lt;code&gt;ERC20&lt;/code&gt;代币，唯一不同的是实现了 EIP-2612 以支持转账的离线授权。&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;uniswapv2erc20&#34;&gt;UniswapV2ERC20
+&lt;/h2&gt;&lt;p&gt;实现了&lt;code&gt;LPToken&lt;/code&gt;，一个标准的&lt;code&gt;ERC20&lt;/code&gt;代币，唯一不同的是实现了 EIP-2612 以支持转账的离线授权。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括： owner 对 spender 授权（&lt;code&gt;approve&lt;/code&gt;）消息产生了&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;三个元素，根据原本属性（函数的几个输入）计算数据摘要，通过其与&lt;code&gt;r&lt;/code&gt;、&lt;code&gt;s&lt;/code&gt;、&lt;code&gt;v&lt;/code&gt;还原出签名者地址，与 owner 一致（即要求签名消息为 owner 发出）执行 approve。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -704,8 +704,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;uniswapv2pair&#34;&gt;UniswapV2Pair
-&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;`Pair`合约主要实现了四个方法：
+&lt;/div&gt;&lt;h2 id=&#34;uniswapv2pair&#34;&gt;UniswapV2Pair
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;`Pair`合约主要实现了四个方法：
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;mint&lt;/code&gt;：用于添加流动性，会被路由合约调用。&lt;/li&gt;
@@ -1016,15 +1016,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;periphery-部分&#34;&gt;periphery 部分
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;periphery&lt;/code&gt;模块提供了和 &lt;code&gt;UniswapV2&lt;/code&gt;进行交互的外围合约，包含了以下主要合约：&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;periphery-部分&#34;&gt;periphery 部分
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;periphery&lt;/code&gt;模块提供了和 &lt;code&gt;UniswapV2&lt;/code&gt;进行交互的外围合约，包含了以下主要合约：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Router02&lt;/code&gt;：最新版的路由合约，相比&lt;code&gt;UniswapV2Router01&lt;/code&gt;增加了对&lt;code&gt;FeeOnTransfer&lt;/code&gt;代币的支持；实现&lt;code&gt;Uniswap v2&lt;/code&gt;最常用的接口，比如添加/移除流动性，使用代币 A 交换代币 B，使用&lt;code&gt;ETH&lt;/code&gt;交换代币等，用来提升用户的体验。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV1Router01&lt;/code&gt;：旧版本&lt;code&gt;Router&lt;/code&gt;实现，与&lt;code&gt;Router02&lt;/code&gt;类似，但不支持&lt;code&gt;FeeOnTransferTokens&lt;/code&gt;，目前已不使用&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;UniswapV2Migrator&lt;/code&gt;：用于迁移流动性（从&lt;code&gt;v1&lt;/code&gt;迁移到&lt;code&gt;v2&lt;/code&gt;合约）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;uniswapv2router02&#34;&gt;UniswapV2Router02
-&lt;/h3&gt;&lt;p&gt;是与用户进行交互的入口，主要提供了添加流动性、移除流动性和兑换的系列接口，并提供了几个查询接口&lt;/p&gt;
+&lt;h2 id=&#34;uniswapv2router02&#34;&gt;UniswapV2Router02
+&lt;/h2&gt;&lt;p&gt;是与用户进行交互的入口，主要提供了添加流动性、移除流动性和兑换的系列接口，并提供了几个查询接口&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一句话概括添加流动性：计算最终需要两种代币数量，然后将两种代币转入合约对中，调用合约对的&lt;code&gt;mint&lt;/code&gt;函数铸造对应的 LP 给添加者。&lt;/p&gt;
 &lt;p&gt;计算过程：获取代币对合约中库存量：如果为空表示新合约，那么最终数量等于期望数量；反之计算出结果&lt;code&gt;(amountAMin = mountA &amp;amp;&amp;amp; amountBMin &amp;lt;= mountB &amp;lt;= amountBDesired) || (amountAMin &amp;lt;= mountA &amp;lt;= amountADesired &amp;amp;&amp;amp; mountB = amountBDesired)&lt;/code&gt;&lt;/p&gt;
@@ -1236,16 +1236,16 @@
         <guid>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
         <description>&lt;p&gt;V2 的预言机主要是通过计算时间加权平均价（TWAP, Time Weighted Average Price）来得到价格的。&lt;/p&gt;
 &lt;p&gt;称为时间加权是因为，计算价格时考虑了时间因素，价格的每次更新包含了上次价格时间累积值，本次价格时间累积值，中间间隔时间三个元素。&lt;/p&gt;
-&lt;h2 id=&#34;时间累积值&#34;&gt;时间累积值
-&lt;/h2&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
+&lt;h1 id=&#34;时间累积值&#34;&gt;时间累积值
+&lt;/h1&gt;&lt;p&gt;在 V2 中，合约会记录价格时间累积值，这个价格时间累计值相当于&lt;code&gt;价格*时间&lt;/code&gt;得到的值，这个便是 Uniswap V2 的 TWAP 的基础。这个价格时间累积值计算公式为：&lt;/p&gt;
 &lt;p&gt;$$
 a_i = a_{i-1} + \Delta t * {p_{i-1}}
 $$&lt;/p&gt;
 &lt;p&gt;其中 $a_i$ 指第 i 个价格时间累积值，$a_0$ 为 0 ，$\Delta t$ 指两个值之间经过的时间，$p_{i-1}$ 指$a_{i-1}$所在区块最后一笔交易的价格。&lt;/p&gt;
-&lt;h2 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
-&lt;/h2&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
-&lt;h2 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
-&lt;/h2&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
+&lt;h1 id=&#34;固定时间窗口-twap&#34;&gt;固定时间窗口 TWAP
+&lt;/h1&gt;&lt;p&gt;即选择一个固定的时间$\Delta T$值，计算时间间隔为$\Delta T$的两个$a_i 和 a_j$，然后得到这段时间的平均价格，然后每隔$\Delta T$时间计算一次价格。&lt;/p&gt;
+&lt;h1 id=&#34;滑动时间窗口-twap&#34;&gt;滑动时间窗口 TWAP
+&lt;/h1&gt;&lt;p&gt;上述的固定时间窗口 TWAP 每隔一段固定时间才会更新一次价格，这种价格除非固定时间很短，不然价格变化很容易不平滑，固定时间越长越陡峭，所以实际更多的采用滑动事件窗口 TWAP。&lt;/p&gt;
 &lt;p&gt;滑动时间窗口可以分为两个部分：时间窗口、滑动。&lt;/p&gt;
 &lt;p&gt;时间窗口，和上面一样指选择一个$\Delta T$值来计算时间段内的平均价格。&lt;/p&gt;
 &lt;p&gt;滑动，指不再是间隔$\Delta T$时间计算一次，而是另外设置间隔$\Delta n$时间计算一次，即每间隔$\Delta n$时间滑动一次时间窗口。&lt;/p&gt;
@@ -1309,8 +1309,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://solanacookbook.com/zh/core-concepts/accounts.html#%E7%BB%BC%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://solanacookbook.com/zh/core-concepts/accounts.html#%E7%BB%BC%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Solana 秘籍&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
@@ -1850,8 +1850,8 @@ $$&lt;/p&gt;
         <pubDate>Thu, 08 Aug 2024 17:54:47 +0800</pubDate>
         
         <guid>http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
-        <description>&lt;h2 id=&#34;zksync-era-中的抽象账户与-eip-4337-的抽象账户&#34;&gt;zksync Era 中的抽象账户与 EIP-4337 的抽象账户
-&lt;/h2&gt;&lt;p&gt;ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：&lt;/p&gt;
+        <description>&lt;h1 id=&#34;zksync-era-中的抽象账户与-eip-4337-的抽象账户&#34;&gt;zksync Era 中的抽象账户与 EIP-4337 的抽象账户
+&lt;/h1&gt;&lt;p&gt;ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;实现层级
 &lt;ul&gt;
@@ -1876,18 +1876,18 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;介绍&#34;&gt;介绍
-&lt;/h2&gt;&lt;p&gt;以太坊中有两种类型的账户：&lt;/p&gt;
+&lt;h1 id=&#34;介绍&#34;&gt;介绍
+&lt;/h1&gt;&lt;p&gt;以太坊中有两种类型的账户：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;外部拥有账户（EOA，即用户使用私钥直接控制进行交易的账户）&lt;/li&gt;
 &lt;li&gt;合约账户（拥有代码的账户，不存在私钥，所以用户不能直接控制进行交易）
 在 ZKsync Era 中实现这样的账户：可以直接发起一笔交易（如 EOA 一般），也能在其中实现一些逻辑（即放入智能合约代码），这种账户称为抽象账户（AA 账户）。
 由于用户的账户可以是 AA 账户，所以可以对自己的账户进行编程，然后用户自己调用自己账户上的函数进行交易，因此，用户可以自定义签名算法、多签、支出限制等。同时，用户可以通过&lt;code&gt;paymasters&lt;/code&gt;来帮助交易，即交易的&lt;code&gt;gas&lt;/code&gt;由&lt;code&gt;paymasters&lt;/code&gt;付出（前提是用户在&lt;code&gt;paymasters&lt;/code&gt;有存款或授权一定数量的 ERC20 代币）。这使得用户在区块链上能有更好的体验了。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;设计&#34;&gt;设计
-&lt;/h2&gt;&lt;p&gt;ZKsync 上的帐户抽象协议与 &lt;code&gt;EIP-4337&lt;/code&gt;非常相似，但为了效率和更好的用户体验，仍然有所不同。&lt;/p&gt;
-&lt;h3 id=&#34;nonce-的唯一性&#34;&gt;Nonce 的唯一性
-&lt;/h3&gt;&lt;ul&gt;
+&lt;h1 id=&#34;设计&#34;&gt;设计
+&lt;/h1&gt;&lt;p&gt;ZKsync 上的帐户抽象协议与 &lt;code&gt;EIP-4337&lt;/code&gt;非常相似，但为了效率和更好的用户体验，仍然有所不同。&lt;/p&gt;
+&lt;h2 id=&#34;nonce-的唯一性&#34;&gt;Nonce 的唯一性
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;当前的模型不允许自定义钱包同时发送多笔交易并保持确定的顺序&lt;/li&gt;
 &lt;li&gt;对于 EOA，Nonce 的计数会依次增长（每笔交易都会递增）；对于自定义账户，无法保证交易顺序&lt;/li&gt;
 &lt;li&gt;未来计划切换到可以在顺序或任意 Nonce 之间选择的模型&lt;/li&gt;
@@ -1901,11 +1901,11 @@ $$&lt;/p&gt;
 &lt;li&gt;验证完成后，系统检查 Nonce 是否标记为已使用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;用户可以使用一个任意的 256 bit 的数字作为 Nonce，并且可以在系统合约中对应的 key 下放置任意的非零值。但仅有协议层面支持，但在 server 端并不支持这么做，目前仅支持通过顺序使用 Nonce 值（使用&lt;code&gt;incrementMinNonceIfEquals&lt;/code&gt;方法，重新标记能使用的最低 Nonce）。&lt;/p&gt;
-&lt;h3 id=&#34;标准化交易哈希&#34;&gt;标准化交易哈希
-&lt;/h3&gt;&lt;p&gt;在未来，计划在 ZKsync 上支持高效的交易包含证明。这需要我们在&lt;code&gt;Bootloader&lt;/code&gt;中计算交易哈希。因为这种计算需要消耗&lt;code&gt;gas&lt;/code&gt;，所以将计算交易哈希交给 AA 方法的接口才公平（防止账户可能由于某些原因需要该值），这也是为何下面描述的&lt;code&gt;IAccount&lt;/code&gt;与&lt;code&gt;IPaymaster&lt;/code&gt;接口的所有的方法都包含交易哈希以及推荐的签名摘要（由 EOA 对本次交易进行签名的摘要）。&lt;/p&gt;
-&lt;h3 id=&#34;interface&#34;&gt;Interface
-&lt;/h3&gt;&lt;h4 id=&#34;iaccount-interface&#34;&gt;IAccount interface
-&lt;/h4&gt;&lt;p&gt;这个就是建议每个账户都需要实现的 IAccount interface。它包含五个接口：&lt;/p&gt;
+&lt;h2 id=&#34;标准化交易哈希&#34;&gt;标准化交易哈希
+&lt;/h2&gt;&lt;p&gt;在未来，计划在 ZKsync 上支持高效的交易包含证明。这需要我们在&lt;code&gt;Bootloader&lt;/code&gt;中计算交易哈希。因为这种计算需要消耗&lt;code&gt;gas&lt;/code&gt;，所以将计算交易哈希交给 AA 方法的接口才公平（防止账户可能由于某些原因需要该值），这也是为何下面描述的&lt;code&gt;IAccount&lt;/code&gt;与&lt;code&gt;IPaymaster&lt;/code&gt;接口的所有的方法都包含交易哈希以及推荐的签名摘要（由 EOA 对本次交易进行签名的摘要）。&lt;/p&gt;
+&lt;h2 id=&#34;interface&#34;&gt;Interface
+&lt;/h2&gt;&lt;h3 id=&#34;iaccount-interface&#34;&gt;IAccount interface
+&lt;/h3&gt;&lt;p&gt;这个就是建议每个账户都需要实现的 IAccount interface。它包含五个接口：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;个人认为下面的”系统“通常指&lt;code&gt;Bootloader&lt;/code&gt;，但又有时候表示更大的概念，即整个 zksync 系统&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1916,8 +1916,8 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;prepareForPaymaster&lt;/code&gt;：是可选实现的，如果交易有&lt;code&gt;paymaster&lt;/code&gt;代为支付交易费用，那么系统将会调用它。这个方法用来准备和&lt;code&gt;paymaster&lt;/code&gt;进行交互（最著名的示例就是使用 ERC20 让&lt;code&gt;paymaster&lt;/code&gt;代为支付交易费用）。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;executeTransactionFromOutside&lt;/code&gt;：是可选实现的，但强烈推荐实现，因为在 priority 模式下的某些情况时（如 operator 没有响应），需要从你那来自”外部“的账户开始交易（即从 EOA 开始一个智能合约的交易，如以太坊上一样）。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;ipaymaster-interface&#34;&gt;IPaymaster interface
-&lt;/h4&gt;&lt;p&gt;与&lt;code&gt;EIP-4337&lt;/code&gt;相同，ZKsync 同样支持&lt;code&gt;paymaster&lt;/code&gt;：用于代付其他账户交易执行费用的账户。每个&lt;code&gt;paymaster&lt;/code&gt;都需要实现 IPaymaster interface，其包含以下两个方法：&lt;/p&gt;
+&lt;h3 id=&#34;ipaymaster-interface&#34;&gt;IPaymaster interface
+&lt;/h3&gt;&lt;p&gt;与&lt;code&gt;EIP-4337&lt;/code&gt;相同，ZKsync 同样支持&lt;code&gt;paymaster&lt;/code&gt;：用于代付其他账户交易执行费用的账户。每个&lt;code&gt;paymaster&lt;/code&gt;都需要实现 IPaymaster interface，其包含以下两个方法：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;：是必须实现的，系统需要使用它来确认&lt;code&gt;paymaster&lt;/code&gt;是否同意代付这笔交易。如果同意，则这个方法至少发送&lt;code&gt;tx.gasprice * tx.gasLimit&lt;/code&gt;的 ETH 给 operator 。它需要返回&lt;code&gt;context&lt;/code&gt;来作为&lt;code&gt;postTransaction&lt;/code&gt;方法的调用参数之一。&lt;/p&gt;
@@ -1935,8 +1935,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;transaction-结构体的保留字段&#34;&gt;Transaction 结构体的保留字段
-&lt;/h3&gt;&lt;p&gt;对于上面的每个方法都会接收 Transaction 结构，虽然大多数字段不言自明，但仍旧有 6 个&lt;code&gt;reserved&lt;/code&gt;字段（在下面结构中貌似被单独命名了出来，并没有如文档所讲放在&lt;code&gt;reserved&lt;/code&gt;中），不命名的原因在于：未来的某些交易类型中可能不需要他们。目前为：&lt;/p&gt;
+&lt;h2 id=&#34;transaction-结构体的保留字段&#34;&gt;Transaction 结构体的保留字段
+&lt;/h2&gt;&lt;p&gt;对于上面的每个方法都会接收 Transaction 结构，虽然大多数字段不言自明，但仍旧有 6 个&lt;code&gt;reserved&lt;/code&gt;字段（在下面结构中貌似被单独命名了出来，并没有如文档所讲放在&lt;code&gt;reserved&lt;/code&gt;中），不命名的原因在于：未来的某些交易类型中可能不需要他们。目前为：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;reserved[0]&lt;/code&gt;：是 Nonce&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;reserved[1]&lt;/code&gt;：是随交易传递的&lt;code&gt;msg.value&lt;/code&gt;&lt;/li&gt;
@@ -1985,10 +1985,10 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;交易流程&#34;&gt;交易流程
-&lt;/h3&gt;&lt;p&gt;每笔交易都会有如下流程处理&lt;/p&gt;
-&lt;h4 id=&#34;验证&#34;&gt;验证
-&lt;/h4&gt;&lt;p&gt;验证过程就是：系统确定交易是否能够执行。如果这笔交易在任何验证点失败，则不会向用户收取任何费用，并且交易不会包含在区块中（应该是指这笔交易不会有任何的记录，即相当于没有这笔交易）。&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;交易流程&#34;&gt;交易流程
+&lt;/h2&gt;&lt;p&gt;每笔交易都会有如下流程处理&lt;/p&gt;
+&lt;h3 id=&#34;验证&#34;&gt;验证
+&lt;/h3&gt;&lt;p&gt;验证过程就是：系统确定交易是否能够执行。如果这笔交易在任何验证点失败，则不会向用户收取任何费用，并且交易不会包含在区块中（应该是指这笔交易不会有任何的记录，即相当于没有这笔交易）。&lt;/p&gt;
 &lt;p&gt;验证过程的步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -2011,41 +2011,41 @@ $$&lt;/p&gt;
 &lt;p&gt;资金验证：系统确定&lt;code&gt;Bootloader&lt;/code&gt;至少收到&lt;code&gt;tx.gasPrice * tx.gasLimit&lt;/code&gt;的 ETH。如果所需的资金已经保存了，则交易被视为已经验证，准备进行下一步&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4 id=&#34;执行&#34;&gt;执行
-&lt;/h4&gt;&lt;p&gt;执行步骤负责执行实际的交易操作，并将任何为使用的&lt;code&gt;gas&lt;/code&gt;退还给用户，即使此步骤中出现 revert 情况，交易人就包含在区块中。&lt;/p&gt;
+&lt;h3 id=&#34;执行&#34;&gt;执行
+&lt;/h3&gt;&lt;p&gt;执行步骤负责执行实际的交易操作，并将任何为使用的&lt;code&gt;gas&lt;/code&gt;退还给用户，即使此步骤中出现 revert 情况，交易人就包含在区块中。&lt;/p&gt;
 &lt;p&gt;执行过程步骤：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;交易执行：调用账户上的&lt;code&gt;executeTransaction&lt;/code&gt;方法，执行交易&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;paymaster&lt;/code&gt;的交易后处理（仅在涉及&lt;code&gt;paymaster&lt;/code&gt;时适用）：调用&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;postTransaction&lt;/code&gt;方法。这个方法通常将未使用的&lt;code&gt;gas&lt;/code&gt;退还给发送者（应该就是当前账户了），尤其是&lt;code&gt;paymaster&lt;/code&gt;采用的是 ERC20 代币作为代付费用（即向当前账户收取 ERC20 ，然后代付&lt;code&gt;gas&lt;/code&gt;）。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4 id=&#34;费用&#34;&gt;费用
-&lt;/h4&gt;&lt;p&gt;不同协议之间处理对于交易费的处理不同，如 &lt;code&gt;EIP-4337&lt;/code&gt; 和 ZKsync 之间。&lt;/p&gt;
-&lt;h5 id=&#34;eip-4337-的-gas-limit&#34;&gt;EIP-4337 的 Gas Limit
-&lt;/h5&gt;&lt;p&gt;&lt;code&gt;EIP-4337&lt;/code&gt;定义了三种&lt;code&gt;Gas Limit&lt;/code&gt;来管理不同交易阶段的成本（应该是指将不同阶段的&lt;code&gt;gas&lt;/code&gt;费用分开统计）：&lt;/p&gt;
+&lt;h3 id=&#34;费用&#34;&gt;费用
+&lt;/h3&gt;&lt;p&gt;不同协议之间处理对于交易费的处理不同，如 &lt;code&gt;EIP-4337&lt;/code&gt; 和 ZKsync 之间。&lt;/p&gt;
+&lt;h4 id=&#34;eip-4337-的-gas-limit&#34;&gt;EIP-4337 的 Gas Limit
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;EIP-4337&lt;/code&gt;定义了三种&lt;code&gt;Gas Limit&lt;/code&gt;来管理不同交易阶段的成本（应该是指将不同阶段的&lt;code&gt;gas&lt;/code&gt;费用分开统计）：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;verificationGas&lt;/code&gt;：包含交易验证所需的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;executionGas&lt;/code&gt;：交易执行所需的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;preVerificationGas&lt;/code&gt;：在主要验证前所需的&lt;code&gt;gas&lt;/code&gt;（这个不太能理解，但看下面的描述，是转账 ERC20 的费用？）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h5 id=&#34;zksync-era-中统一的-gas-limit&#34;&gt;ZKsync Era 中统一的 Gas Limit
-&lt;/h5&gt;&lt;p&gt;在 ZKsync Era 中，使用单个&lt;code&gt;Gas Limit&lt;/code&gt;字段处理所有与交易相关的成本，所以这个统一的&lt;code&gt;Gas Limit&lt;/code&gt;需要包含：&lt;/p&gt;
+&lt;h4 id=&#34;zksync-era-中统一的-gas-limit&#34;&gt;ZKsync Era 中统一的 Gas Limit
+&lt;/h4&gt;&lt;p&gt;在 ZKsync Era 中，使用单个&lt;code&gt;Gas Limit&lt;/code&gt;字段处理所有与交易相关的成本，所以这个统一的&lt;code&gt;Gas Limit&lt;/code&gt;需要包含：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;交易验证&lt;/li&gt;
 &lt;li&gt;代支付逻辑费用（包括任意 ERC20 转账的费用）&lt;/li&gt;
 &lt;li&gt;交易本身的执行&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h5 id=&#34;估算-gas&#34;&gt;估算 Gas
-&lt;/h5&gt;&lt;p&gt;默认情况下，&lt;code&gt;estimateGas&lt;/code&gt;函数计算需要的&lt;code&gt;gas&lt;/code&gt;量，并包含一个常数。这个常数用于 EOA 交易的支付费用和签名验证（没看懂这句话）。&lt;/p&gt;
-&lt;h3 id=&#34;使用-systemcontractscaller-库&#34;&gt;使用 SystemContractsCaller 库
-&lt;/h3&gt;&lt;p&gt;为了安全起见，&lt;code&gt;NonceHolder&lt;/code&gt;（管理账户 Nonce）和&lt;code&gt;ContractDeployer&lt;/code&gt;（负责部署合约）的系统合约都只能在拥有&lt;code&gt;isSystem&lt;/code&gt;的特殊标志时调用。想要拥有此特殊标志来进行调用，需要使用 SystemContractsCaller 库中的&lt;code&gt;systemCall&lt;/code&gt;或&lt;code&gt;systemCallWithPropagatedRevert&lt;/code&gt;或&lt;code&gt;systemCallWithReturndata&lt;/code&gt;（后面两种内部都是调用了&lt;code&gt;systemCall&lt;/code&gt;）方法。&lt;/p&gt;
+&lt;h4 id=&#34;估算-gas&#34;&gt;估算 Gas
+&lt;/h4&gt;&lt;p&gt;默认情况下，&lt;code&gt;estimateGas&lt;/code&gt;函数计算需要的&lt;code&gt;gas&lt;/code&gt;量，并包含一个常数。这个常数用于 EOA 交易的支付费用和签名验证（没看懂这句话）。&lt;/p&gt;
+&lt;h2 id=&#34;使用-systemcontractscaller-库&#34;&gt;使用 SystemContractsCaller 库
+&lt;/h2&gt;&lt;p&gt;为了安全起见，&lt;code&gt;NonceHolder&lt;/code&gt;（管理账户 Nonce）和&lt;code&gt;ContractDeployer&lt;/code&gt;（负责部署合约）的系统合约都只能在拥有&lt;code&gt;isSystem&lt;/code&gt;的特殊标志时调用。想要拥有此特殊标志来进行调用，需要使用 SystemContractsCaller 库中的&lt;code&gt;systemCall&lt;/code&gt;或&lt;code&gt;systemCallWithPropagatedRevert&lt;/code&gt;或&lt;code&gt;systemCallWithReturndata&lt;/code&gt;（后面两种内部都是调用了&lt;code&gt;systemCall&lt;/code&gt;）方法。&lt;/p&gt;
 &lt;p&gt;当开发自定义的账户时，基本上都必定使用这个库，因为这是调用&lt;code&gt;NonceHolder&lt;/code&gt;系统合约的非视图的唯一方法。此外，如果想允许用户自己部署自己的合约，则必须使用这个库。可以使用 EOA 账户的实现（默认账户实现，所有没有包含代码的账户默认继承的）作为参考。&lt;/p&gt;
-&lt;h2 id=&#34;扩展-eip-4337&#34;&gt;扩展 EIP-4337
-&lt;/h2&gt;&lt;p&gt;主要是 &lt;code&gt;EIP-4337&lt;/code&gt;对 ZKsync 原生帐户抽象的扩展概述。&lt;/p&gt;
+&lt;h1 id=&#34;扩展-eip-4337&#34;&gt;扩展 EIP-4337
+&lt;/h1&gt;&lt;p&gt;主要是 &lt;code&gt;EIP-4337&lt;/code&gt;对 ZKsync 原生帐户抽象的扩展概述。&lt;/p&gt;
 &lt;p&gt;为了向 operator 提供 Dos 保护，&lt;code&gt;EIP-4337&lt;/code&gt;对账户的验证步骤施加了多项限制（如不允许访问能够变化的信息，如当前块时间、数字、哈希）。其中大多数，尤其是那些和禁止操作码相关的内容，仍然具有意义，但为了用户有更好的体验，其中的一些限制已经取消&lt;/p&gt;
-&lt;h3 id=&#34;拓展允许的操作码&#34;&gt;拓展允许的操作码
-&lt;/h3&gt;&lt;p&gt;允许使用已部署的&lt;code&gt;call&lt;/code&gt;/&lt;code&gt;delegateCall&lt;/code&gt;/&lt;code&gt;staticcall&lt;/code&gt;合约。和以太坊不同，我们无法编辑已部署的代码或通过自毁删除合约，所以我们可以确保合约执行期间的代码是相同的。&lt;/p&gt;
-&lt;h3 id=&#34;扩展属于用户的-slots-集&#34;&gt;扩展属于用户的 slots 集
-&lt;/h3&gt;&lt;blockquote&gt;
+&lt;h2 id=&#34;拓展允许的操作码&#34;&gt;拓展允许的操作码
+&lt;/h2&gt;&lt;p&gt;允许使用已部署的&lt;code&gt;call&lt;/code&gt;/&lt;code&gt;delegateCall&lt;/code&gt;/&lt;code&gt;staticcall&lt;/code&gt;合约。和以太坊不同，我们无法编辑已部署的代码或通过自毁删除合约，所以我们可以确保合约执行期间的代码是相同的。&lt;/p&gt;
+&lt;h2 id=&#34;扩展属于用户的-slots-集&#34;&gt;扩展属于用户的 slots 集
+&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;这一部分就没看懂&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;在原本的&lt;code&gt;EIP&lt;/code&gt;中，AA 的&lt;code&gt;validateTransaction&lt;/code&gt;步骤（检查交易是否合规）只允许读取自己存储的 slots 。但有些 slots 在语义上属于该用户，但实际上位于另一个合约的地址上，例如 ERC20 的余额。&lt;/p&gt;
@@ -2056,20 +2056,20 @@ $$&lt;/p&gt;
 &lt;li&gt;任何其他地址上的 slots A（这个不懂）&lt;/li&gt;
 &lt;li&gt;然和其他地址上的&lt;code&gt;keccak256(A || X)&lt;/code&gt;类型的 slots（包阔&lt;code&gt;mapping(address =&amp;gt; value)&lt;/code&gt;，通常用于 ERC20 代币中的余额）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;未来会允许什么&#34;&gt;未来会允许什么？
-&lt;/h3&gt;&lt;p&gt;未来可能允许有时限的交易，例如允许检查&lt;code&gt;block.timestamp &amp;lt;= value&lt;/code&gt;是否返回&lt;code&gt;false&lt;/code&gt;等等。这将需要部署此类可信方法的库，但它将大大增强账户的功能。&lt;/p&gt;
-&lt;h2 id=&#34;建立智能账户&#34;&gt;建立智能账户
-&lt;/h2&gt;&lt;p&gt;想在 zksync 上构建自定义账户（应该就是合约账户，带有合约的抽象账户），开发人员必须实现特定的接口，并遵循推荐的账户部署和管理的最佳实践。&lt;/p&gt;
-&lt;h3 id=&#34;接口实现&#34;&gt;接口实现
-&lt;/h3&gt;&lt;p&gt;每个自定义账户都应该实现 IAccount interface（这个可以在 &lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;未来会允许什么&#34;&gt;未来会允许什么？
+&lt;/h2&gt;&lt;p&gt;未来可能允许有时限的交易，例如允许检查&lt;code&gt;block.timestamp &amp;lt;= value&lt;/code&gt;是否返回&lt;code&gt;false&lt;/code&gt;等等。这将需要部署此类可信方法的库，但它将大大增强账户的功能。&lt;/p&gt;
+&lt;h1 id=&#34;建立智能账户&#34;&gt;建立智能账户
+&lt;/h1&gt;&lt;p&gt;想在 zksync 上构建自定义账户（应该就是合约账户，带有合约的抽象账户），开发人员必须实现特定的接口，并遵循推荐的账户部署和管理的最佳实践。&lt;/p&gt;
+&lt;h2 id=&#34;接口实现&#34;&gt;接口实现
+&lt;/h2&gt;&lt;p&gt;每个自定义账户都应该实现 IAccount interface（这个可以在 &lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;DefaultAccount.sol &lt;/a&gt;中找到示例）。&lt;/p&gt;
 &lt;p&gt;当外部地址调用时，此实现会返回空值，这可能不是您的自定义帐户所希望的行为。&lt;/p&gt;
-&lt;h3 id=&#34;eip-1271-集成&#34;&gt;EIP-1271 集成
-&lt;/h3&gt;&lt;p&gt;对于智能钱包，强烈鼓励实施&lt;code&gt;EIP-1271&lt;/code&gt;签名验证方案（让合约能够和 EOA 账户一样能够对消息进行签名，同时可以验证签名）。该标准得到了 ZKsync 团队的认可，并且是签名验证库的组成部分。&lt;/p&gt;
-&lt;h3 id=&#34;部署流程&#34;&gt;部署流程
-&lt;/h3&gt;&lt;p&gt;部署账户的逻辑与部署标准智能合约的过程类似，但为了区分不打算被视为账户的智能合约，需要使用&lt;code&gt;ContractDeployer&lt;/code&gt;系统合约的&lt;code&gt;createAccount&lt;/code&gt;/&lt;code&gt;create2Account&lt;/code&gt;方法，而不是使用&lt;code&gt;create&lt;/code&gt;/&lt;code&gt;create2&lt;/code&gt;（从代码中看没啥区别，因为&lt;code&gt;create&lt;/code&gt;中调用了&lt;code&gt;createAccount&lt;/code&gt;）。&lt;/p&gt;
-&lt;h4 id=&#34;使用-zksync-ethers-sdk-的示例-v5&#34;&gt;使用 zksync-ethers SDK 的示例 (v5)
-&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;eip-1271-集成&#34;&gt;EIP-1271 集成
+&lt;/h2&gt;&lt;p&gt;对于智能钱包，强烈鼓励实施&lt;code&gt;EIP-1271&lt;/code&gt;签名验证方案（让合约能够和 EOA 账户一样能够对消息进行签名，同时可以验证签名）。该标准得到了 ZKsync 团队的认可，并且是签名验证库的组成部分。&lt;/p&gt;
+&lt;h2 id=&#34;部署流程&#34;&gt;部署流程
+&lt;/h2&gt;&lt;p&gt;部署账户的逻辑与部署标准智能合约的过程类似，但为了区分不打算被视为账户的智能合约，需要使用&lt;code&gt;ContractDeployer&lt;/code&gt;系统合约的&lt;code&gt;createAccount&lt;/code&gt;/&lt;code&gt;create2Account&lt;/code&gt;方法，而不是使用&lt;code&gt;create&lt;/code&gt;/&lt;code&gt;create2&lt;/code&gt;（从代码中看没啥区别，因为&lt;code&gt;create&lt;/code&gt;中调用了&lt;code&gt;createAccount&lt;/code&gt;）。&lt;/p&gt;
+&lt;h3 id=&#34;使用-zksync-ethers-sdk-的示例-v5&#34;&gt;使用 zksync-ethers SDK 的示例 (v5)
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -2085,8 +2085,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;aa&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;deployed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;验证步骤限制&#34;&gt;验证步骤限制
-&lt;/h3&gt;&lt;p&gt;目前自定义账户验证规则尚未完全强制执行，将来可能变化：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;验证步骤限制&#34;&gt;验证步骤限制
+&lt;/h2&gt;&lt;p&gt;目前自定义账户验证规则尚未完全强制执行，将来可能变化：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;账户只能与属于他们自己的 slots 进行交互&lt;/p&gt;
@@ -2099,12 +2099,12 @@ $$&lt;/p&gt;
 &lt;p&gt;这些限制尚未在 电路/VM 级别强制执行，并且不适用于 L1-&amp;gt;L2 事务。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;nonce-管理&#34;&gt;Nonce 管理
-&lt;/h3&gt;&lt;p&gt;交易和部署的 Nonce 都被整合到&lt;code&gt;NonceHolder&lt;/code&gt;中进行优化。使用&lt;code&gt;incrementMinNonceIfEquals&lt;/code&gt;函数安全的增加账户的 Nonce。&lt;/p&gt;
-&lt;h3 id=&#34;发送交易&#34;&gt;发送交易
-&lt;/h3&gt;&lt;p&gt;目前仅支持&lt;code&gt;EIP-712&lt;/code&gt;（对结构化数据进行哈希和签名的标准）格式的交易从自定义账户发送。交易必须指定&lt;code&gt;from&lt;/code&gt;字段作为账户地址，并在&lt;code&gt;customData&lt;/code&gt;中包含&lt;code&gt;customSignature&lt;/code&gt;。&lt;/p&gt;
-&lt;h4 id=&#34;交易提交示例&#34;&gt;交易提交示例
-&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;nonce-管理&#34;&gt;Nonce 管理
+&lt;/h2&gt;&lt;p&gt;交易和部署的 Nonce 都被整合到&lt;code&gt;NonceHolder&lt;/code&gt;中进行优化。使用&lt;code&gt;incrementMinNonceIfEquals&lt;/code&gt;函数安全的增加账户的 Nonce。&lt;/p&gt;
+&lt;h2 id=&#34;发送交易&#34;&gt;发送交易
+&lt;/h2&gt;&lt;p&gt;目前仅支持&lt;code&gt;EIP-712&lt;/code&gt;（对结构化数据进行哈希和签名的标准）格式的交易从自定义账户发送。交易必须指定&lt;code&gt;from&lt;/code&gt;字段作为账户地址，并在&lt;code&gt;customData&lt;/code&gt;中包含&lt;code&gt;customSignature&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;交易提交示例&#34;&gt;交易提交示例
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -2134,22 +2134,22 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;sentTx&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;zksyncProvider&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sendTransaction&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;serializedTx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;paymasters&#34;&gt;Paymasters
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Paymasters&lt;/code&gt;时专门设计用来资助用户交易费用的账户，增强协议的可用性和灵活性，方便用户使用 ERC20 代币而不是 ETH 支付费用。&lt;/p&gt;
-&lt;h3 id=&#34;与-paymasters-交互&#34;&gt;与 Paymasters 交互
-&lt;/h3&gt;&lt;p&gt;要使用&lt;code&gt;paymaster&lt;/code&gt;，用户必须在其&lt;code&gt;EIP-712&lt;/code&gt;交易中指定非零的&lt;code&gt;paymaster&lt;/code&gt;地址，并在&lt;code&gt;paymasterInput&lt;/code&gt;字段中指定相关数据。&lt;/p&gt;
-&lt;h4 id=&#34;paymasters-验证规则&#34;&gt;Paymasters 验证规则
-&lt;/h4&gt;&lt;ul&gt;
+&lt;/div&gt;&lt;h1 id=&#34;paymasters&#34;&gt;Paymasters
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Paymasters&lt;/code&gt;时专门设计用来资助用户交易费用的账户，增强协议的可用性和灵活性，方便用户使用 ERC20 代币而不是 ETH 支付费用。&lt;/p&gt;
+&lt;h2 id=&#34;与-paymasters-交互&#34;&gt;与 Paymasters 交互
+&lt;/h2&gt;&lt;p&gt;要使用&lt;code&gt;paymaster&lt;/code&gt;，用户必须在其&lt;code&gt;EIP-712&lt;/code&gt;交易中指定非零的&lt;code&gt;paymaster&lt;/code&gt;地址，并在&lt;code&gt;paymasterInput&lt;/code&gt;字段中指定相关数据。&lt;/p&gt;
+&lt;h3 id=&#34;paymasters-验证规则&#34;&gt;Paymasters 验证规则
+&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;验证规则尚未完全强制执行&lt;/li&gt;
 &lt;li&gt;不遵守这些规则的&lt;code&gt;paymaster&lt;/code&gt;将来可能会停止正常运行&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;为了减少恶意&lt;code&gt;paymaster&lt;/code&gt;潜在的 Dos 攻击，使用了类似于&lt;code&gt;EIP-4337&lt;/code&gt;的声誉评分系统。但与&lt;code&gt;EIP-4337&lt;/code&gt;不同，zksync 中的&lt;code&gt;paymaster&lt;/code&gt;可以与任何存储 slots 交互，并且在特定条件下不会受到限制，如自上次成功验证以来经过的时间或连续的（consistent，可能也可以翻译为一致的） slots 访问模式&lt;/p&gt;
-&lt;h3 id=&#34;内置-paymasters-流程&#34;&gt;内置 Paymasters 流程
-&lt;/h3&gt;&lt;p&gt;&lt;code&gt;paymaster&lt;/code&gt;可以自动操作或需要用户交互，这取决于其设计。例如将 ERC20 代币兑换成 ETH 的&lt;code&gt;paymaster&lt;/code&gt;将要求用户授予必要限额。&lt;/p&gt;
+&lt;h2 id=&#34;内置-paymasters-流程&#34;&gt;内置 Paymasters 流程
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;paymaster&lt;/code&gt;可以自动操作或需要用户交互，这取决于其设计。例如将 ERC20 代币兑换成 ETH 的&lt;code&gt;paymaster&lt;/code&gt;将要求用户授予必要限额。&lt;/p&gt;
 &lt;p&gt;账户抽象协议本身是通用的，允许账户和&lt;code&gt;paymaster&lt;/code&gt;实现任意交互。但默认账户（EOA）的代码不变，但人就希望他们能够参与自定义账户和&lt;code&gt;paymaster&lt;/code&gt;的生态中。这就是为什么对交易的&lt;code&gt;paymasterInput&lt;/code&gt;字段进行了标准化，以涵盖大多数常见的&lt;code&gt;paymaster&lt;/code&gt;功能用例。&lt;/p&gt;
 &lt;p&gt;你的账户可以自由选择实现或不实现这些流程的支持，但强烈建议保持 EOA 和自定义账户的接口相同。&lt;/p&gt;
-&lt;h4 id=&#34;一般-paymasters-流程&#34;&gt;一般 Paymasters 流程
-&lt;/h4&gt;&lt;p&gt;当&lt;code&gt;paymaster&lt;/code&gt;不需要用户执行任何初始操作时，使用此流程：&lt;/p&gt;
+&lt;h3 id=&#34;一般-paymasters-流程&#34;&gt;一般 Paymasters 流程
+&lt;/h3&gt;&lt;p&gt;当&lt;code&gt;paymaster&lt;/code&gt;不需要用户执行任何初始操作时，使用此流程：&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;paymasterInput&lt;/code&gt;字段必须为具有以下接口的函数的调用进行编码：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2160,8 +2160,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;对于 EOA 账户，此输入通常不起作用，但&lt;code&gt;paymaster&lt;/code&gt;可以根据需求进行说明（不太清楚这个函数具体有什么作用）。&lt;/p&gt;
-&lt;h4 id=&#34;基于授权的-paymasters-流程&#34;&gt;基于授权的 Paymasters 流程
-&lt;/h4&gt;&lt;p&gt;当用户必须为&lt;code&gt;paymaster&lt;/code&gt;设置 token 限额时，此流程十分重要。&lt;code&gt;paymasterInput&lt;/code&gt;字段必须为对具有以下签名的函数的调用进行编码：&lt;/p&gt;
+&lt;h3 id=&#34;基于授权的-paymasters-流程&#34;&gt;基于授权的 Paymasters 流程
+&lt;/h3&gt;&lt;p&gt;当用户必须为&lt;code&gt;paymaster&lt;/code&gt;设置 token 限额时，此流程十分重要。&lt;code&gt;paymasterInput&lt;/code&gt;字段必须为对具有以下签名的函数的调用进行编码：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2180,11 +2180,11 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;EOA 将确保支付给&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;_token&lt;/code&gt;的限额至少设为&lt;code&gt;_minAllowance&lt;/code&gt;。&lt;code&gt;_innerInput&lt;/code&gt;参数是一个额外的有效负载，可以发送给&lt;code&gt;paymaster&lt;/code&gt;，以实现任意逻辑（如可以由&lt;code&gt;paymaster&lt;/code&gt;验证的额外签名或密钥）。&lt;/p&gt;
 &lt;p&gt;如果正在开发&lt;code&gt;paymaster&lt;/code&gt;，则不应该相信交易的发送者会诚实行事（如通过&lt;code&gt;approvalBased&lt;/code&gt;流程提供所需的限额）。这些流程主要作为对 EOA 的指示，而&lt;code&gt;paymaster&lt;/code&gt;应始终仔细检查这些要求。&lt;/p&gt;
-&lt;h3 id=&#34;测试网-paymasters&#34;&gt;测试网 Paymasters
-&lt;/h3&gt;&lt;p&gt;为保证用户在测试网上体验到&lt;code&gt;paymaster&lt;/code&gt;，同样继续支持使用 ERC20 代币支付费用，Matter Labs 团队提供了测试网&lt;code&gt;paymaster&lt;/code&gt;，可以将 ERC20 代币与 ETH 以 1:1 的汇率（1 ERC20 代币等于 1 wei 的 ETH）支付费用。&lt;/p&gt;
+&lt;h2 id=&#34;测试网-paymasters&#34;&gt;测试网 Paymasters
+&lt;/h2&gt;&lt;p&gt;为保证用户在测试网上体验到&lt;code&gt;paymaster&lt;/code&gt;，同样继续支持使用 ERC20 代币支付费用，Matter Labs 团队提供了测试网&lt;code&gt;paymaster&lt;/code&gt;，可以将 ERC20 代币与 ETH 以 1:1 的汇率（1 ERC20 代币等于 1 wei 的 ETH）支付费用。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;paymaster&lt;/code&gt;仅支持基于授权的&lt;code&gt;paymaster&lt;/code&gt;流程，并要求&lt;code&gt;token&lt;/code&gt;参数等于正在交换的&lt;code&gt;token&lt;/code&gt;，并且&lt;code&gt;minAllowance&lt;/code&gt;等于&lt;code&gt;tx.maxFeePerGas * tx.gasLimit&lt;/code&gt;。此外测试网&lt;code&gt;paymaster&lt;/code&gt;不适用&lt;code&gt;_innerInput&lt;/code&gt;参数，因此不应提供任何内容（空&lt;code&gt;bytes&lt;/code&gt;）。&lt;/p&gt;
-&lt;h3 id=&#34;与-paymasters-交互时估算-gas-费用&#34;&gt;与 Paymasters 交互时估算 Gas 费用
-&lt;/h3&gt;&lt;p&gt;由于额外的计算和操作，与&lt;code&gt;paymaster&lt;/code&gt;的交互通常比标准交易消耗更多的&lt;code&gt;gas&lt;/code&gt;，导致&lt;code&gt;gas&lt;/code&gt;增加的主要原因是：&lt;/p&gt;
+&lt;h2 id=&#34;与-paymasters-交互时估算-gas-费用&#34;&gt;与 Paymasters 交互时估算 Gas 费用
+&lt;/h2&gt;&lt;p&gt;由于额外的计算和操作，与&lt;code&gt;paymaster&lt;/code&gt;的交互通常比标准交易消耗更多的&lt;code&gt;gas&lt;/code&gt;，导致&lt;code&gt;gas&lt;/code&gt;增加的主要原因是：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;内部计算：包括&lt;code&gt;paymaster&lt;/code&gt;的&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;和&lt;code&gt;postTransaction&lt;/code&gt;的内部操作。&lt;/li&gt;
 &lt;li&gt;资金转账：&lt;code&gt;paymaster&lt;/code&gt;将资金发送到&lt;code&gt;bootloader&lt;/code&gt;时消耗的&lt;code&gt;gas&lt;/code&gt;&lt;/li&gt;
@@ -2195,8 +2195,8 @@ $$&lt;/p&gt;
 &lt;li&gt;转移资金的成本与用户能为类似交易支付的费用相当&lt;/li&gt;
 &lt;li&gt;管理 ERC20 限额会显著影响&lt;code&gt;gas&lt;/code&gt;的使用量，尤其是用户第一次设置限额。这个过程可能需要发布一个 32 byte 的存储密钥标识符，可能会以 50 gwei 的 L1 gas 价格使用多达 400k 的&lt;code&gt;gas&lt;/code&gt;。需要注意，虽然交易流程在执行结束时，将存储 slot 清空（因此”授予&lt;code&gt;X&lt;/code&gt;限额+&lt;code&gt;paymaster&lt;/code&gt;花费所有限额），但初始成本是在执行期间预先收取的，只有在交易结束时 slot 归零后才会退款给用户。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;准确估计-gas-的重要性&#34;&gt;准确估计 Gas 的重要性
-&lt;/h4&gt;&lt;p&gt;准确的估计&lt;code&gt;gas&lt;/code&gt;至关重要，尤其是对于涉及大量&lt;code&gt;pubdata&lt;/code&gt;的操作，例如写入存储。你应该在估算过程中包含&lt;code&gt;paymasterInput&lt;/code&gt;来保证准确考虑了&lt;code&gt;paymaster&lt;/code&gt;的参与。以下代码片段来自定义的&lt;code&gt;paymaster&lt;/code&gt;教程，演示了如何进行此估算：&lt;/p&gt;
+&lt;h3 id=&#34;准确估计-gas-的重要性&#34;&gt;准确估计 Gas 的重要性
+&lt;/h3&gt;&lt;p&gt;准确的估计&lt;code&gt;gas&lt;/code&gt;至关重要，尤其是对于涉及大量&lt;code&gt;pubdata&lt;/code&gt;的操作，例如写入存储。你应该在估算过程中包含&lt;code&gt;paymasterInput&lt;/code&gt;来保证准确考虑了&lt;code&gt;paymaster&lt;/code&gt;的参与。以下代码片段来自定义的&lt;code&gt;paymaster&lt;/code&gt;教程，演示了如何进行此估算：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2217,25 +2217,25 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此处&lt;code&gt;paymasterParams&lt;/code&gt;包括&lt;code&gt;paymaster&lt;/code&gt;的地址和他的输入。然而&lt;code&gt;paymasterInput&lt;/code&gt;通常包含难以提前预测的参数，例如用户所需的确切的代币数量。&lt;/p&gt;
 &lt;p&gt;此外，&lt;code&gt;paymaster&lt;/code&gt;可能需要验证价格数据或转换率，可能需要服务端的签名。&lt;/p&gt;
-&lt;h4 id=&#34;处理复杂的依赖关系&#34;&gt;处理复杂的依赖关系
-&lt;/h4&gt;&lt;p&gt;对于如涉及依赖交易内容的这些签名的这种复杂依赖关系，产生了挑战：&lt;/p&gt;
+&lt;h3 id=&#34;处理复杂的依赖关系&#34;&gt;处理复杂的依赖关系
+&lt;/h3&gt;&lt;p&gt;对于如涉及依赖交易内容的这些签名的这种复杂依赖关系，产生了挑战：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;从&lt;code&gt;validateAndPayForPaymasterTransaction&lt;/code&gt;中返回&lt;code&gt;magic = 0&lt;/code&gt;可以模拟有效签名验证的&lt;code&gt;gas&lt;/code&gt;消耗。这确保了尽管交易会由于&lt;code&gt;magic = 0&lt;/code&gt;而在主网上失败，但仍旧可以估计出正确的&lt;code&gt;gas&lt;/code&gt;数量。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;gas&lt;/code&gt;的估算本质上时对防止交易失败的最低&lt;code&gt;gas&lt;/code&gt;量的二分搜索。如果验证始终失败，那么&lt;code&gt;gas&lt;/code&gt;估计也会失败，因为系统将不断尝试增加&lt;code&gt;gas limit&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;提供授权估算的策略&#34;&gt;提供授权估算的策略
-&lt;/h4&gt;&lt;ol&gt;
+&lt;h3 id=&#34;提供授权估算的策略&#34;&gt;提供授权估算的策略
+&lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;粗略估计：如果对于涉及的资金有一个大概的认识，用它来进行估计。由于缓冲已经包含在估计中，所以微小的差异通常不会导致交易失败。但如果用户的余额在估计和交易执行之间发生意外的变化，可能会出现差异&lt;/li&gt;
 &lt;li&gt;单独估计限额的设置：或者估算用户为交易的&lt;code&gt;gas&lt;/code&gt;单独设置的限额。将此估算添加到原始交易的估算的成本中。这种方法考虑了 Nonce 的更改和一般验证逻辑，但可能会带来明显的开销。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;每种方法都有其优点和缺点，选择正确的方法取决于交易的具体情况和&lt;code&gt;paymaster&lt;/code&gt;的需求。&lt;/p&gt;
-&lt;h2 id=&#34;签名验证&#34;&gt;签名验证
-&lt;/h2&gt;&lt;p&gt;推荐的签名验证方法。如果项目准备支持原生 AA ，那么强烈建议这么做，这将允许自主的成千上万用户（许多新钱包都默认是智能账户，为用户提供更加流畅的体验）。我们预计未来会有更多用户转向智能钱包。&lt;/p&gt;
+&lt;h1 id=&#34;签名验证&#34;&gt;签名验证
+&lt;/h1&gt;&lt;p&gt;推荐的签名验证方法。如果项目准备支持原生 AA ，那么强烈建议这么做，这将允许自主的成千上万用户（许多新钱包都默认是智能账户，为用户提供更加流畅的体验）。我们预计未来会有更多用户转向智能钱包。&lt;/p&gt;
 &lt;p&gt;建立的各种不同类型的帐户之间最显着的区别是不同的签名方案。我们希望帐户支持&lt;code&gt;EIP-1271&lt;/code&gt;标准。&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/OpenZeppelin/openzeppelin-contracts/blob/5ed5a86d1d22f387ce69ab4e0ace405de8bc888d/contracts/utils/cryptography/SignatureChecker.sol#L22&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;code&gt;@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol&lt;/code&gt;&lt;/a&gt;库提供了一种验证不同账户实现的签名方法。当需要检查账户签名是否正确时，强烈建议使用这个库。&lt;/p&gt;
-&lt;h3 id=&#34;将库添加到项目中&#34;&gt;将库添加到项目中
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;将库添加到项目中&#34;&gt;将库添加到项目中
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -2243,8 +2243,8 @@ $$&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm add @openzeppelin/contracts
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;使用库的示例&#34;&gt;使用库的示例
-&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h2 id=&#34;使用库的示例&#34;&gt;使用库的示例
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -2280,8 +2280,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;验证-aa-签名&#34;&gt;验证 AA 签名
-&lt;/h3&gt;&lt;p&gt;不建议使用&lt;code&gt;ethers.js&lt;/code&gt;库来验证用户签名。官方 SDK 通过&lt;code&gt;utils&lt;/code&gt;提供了两种方法来验证账户的签名：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;验证-aa-签名&#34;&gt;验证 AA 签名
+&lt;/h2&gt;&lt;p&gt;不建议使用&lt;code&gt;ethers.js&lt;/code&gt;库来验证用户签名。官方 SDK 通过&lt;code&gt;utils&lt;/code&gt;提供了两种方法来验证账户的签名：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -2315,8 +2315,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;目前这些方法仅支持验证 ECDSA 签名，但很快将支持&lt;code&gt;EIP-1271&lt;/code&gt;签名验证。这两种方法都会返回&lt;code&gt;true&lt;/code&gt;或&lt;code&gt;false&lt;/code&gt;，具体取决于消息签名是否正确。&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ZKsync Era Protocol&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
@@ -2328,8 +2328,8 @@ $$&lt;/p&gt;
         <guid>http://localhost:1313/p/zksync-era-l1%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;zksync Era 在 L1 有部署智能合约，以实现 L1 上的修改。部署的合约有：DiamondInit、DiamondProxy、DiamondUpgrade、ExecutorFacet、GettersFacet、MailboxFacet、Verifier、ValidatorTimelock、AllowList。&lt;/p&gt;
 &lt;p&gt;通过上述合约，可以看的出来 zksync Era 的链上合约部分采用的是钻石代理方法，同时也有一些其他的合约辅助。&lt;/p&gt;
-&lt;h2 id=&#34;diamond-部分&#34;&gt;Diamond 部分
-&lt;/h2&gt;&lt;p&gt;这部分主要是直接贴近&lt;code&gt;Diamond&lt;/code&gt;的部分，充当起了 L1（以太坊）与 L2 （ZK Chain）之间的连接器，负责检查提交的有效性证明（零知识证明）与数据可用性，处理 L1 &amp;lt;-&amp;gt; L2 的通信（存取款等），完成 L2 上的状态转换（zksync 的状态更替）。&lt;/p&gt;
+&lt;h1 id=&#34;diamond-部分&#34;&gt;Diamond 部分
+&lt;/h1&gt;&lt;p&gt;这部分主要是直接贴近&lt;code&gt;Diamond&lt;/code&gt;的部分，充当起了 L1（以太坊）与 L2 （ZK Chain）之间的连接器，负责检查提交的有效性证明（零知识证明）与数据可用性，处理 L1 &amp;lt;-&amp;gt; L2 的通信（存取款等），完成 L2 上的状态转换（zksync 的状态更替）。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;L2 部分也部署了一些重要的合约执行一些逻辑行为，这些合约被称为系统合约。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2337,14 +2337,14 @@ $$&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;需要注意的是，钻石代理的升级系统可以被冻结，从而永久冻结该钻石代理（我的理解是解冻需要升级，升级被冻结就死循环了）&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;gettersfacet&#34;&gt;GettersFacet
-&lt;/h3&gt;&lt;p&gt;单独的&lt;code&gt;Facet&lt;/code&gt;，唯一功能是提供了&lt;code&gt;view&lt;/code&gt;和&lt;code&gt;pure&lt;/code&gt;方法，同时实现了&lt;code&gt;loupe&lt;/code&gt;功能，方便了 Facet 的管理，&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Getters.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;gettersfacet&#34;&gt;GettersFacet
+&lt;/h2&gt;&lt;p&gt;单独的&lt;code&gt;Facet&lt;/code&gt;，唯一功能是提供了&lt;code&gt;view&lt;/code&gt;和&lt;code&gt;pure&lt;/code&gt;方法，同时实现了&lt;code&gt;loupe&lt;/code&gt;功能，方便了 Facet 的管理，&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Getters.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;该 Facet &lt;/a&gt;绝对不能冻结。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;loupe&lt;/code&gt;功能就是指获取&lt;code&gt;Diamond&lt;/code&gt;的有关信息（各个&lt;code&gt;Facet&lt;/code&gt;的地址信息、函数选择器信息），进入到合约代码中发现函数的返回值大多数都是&lt;code&gt;address&lt;/code&gt;类型。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;mailboxfacet&#34;&gt;MailboxFacet
-&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Mailbox.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;mailboxfacet&#34;&gt;MailboxFacet
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Mailbox.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;该 Facet &lt;/a&gt;处理 L1 &amp;lt;-&amp;gt; L2 通信 ，具有三个功能：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2371,8 +2371,8 @@ $$&lt;/p&gt;
 &lt;p&gt;L1 上 user 发起的&lt;code&gt;Deposit&lt;/code&gt;和&lt;code&gt;FullExit&lt;/code&gt;交易都可以独立于 L2 的交易，优先完成。&lt;/p&gt;
 &lt;p&gt;用户在发起从 L1 到 L2 的交易时，需要以原生代币支付交易执行费用。在 L2 上的交易，由于 zksync 支持 AA 账户，所以可以用 ERC20 代币支付交易执行费用&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;executorfacet&#34;&gt;ExecutorFacet
-&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Executor.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;executorfacet&#34;&gt;ExecutorFacet
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Executor.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;该 Facet &lt;/a&gt;接收来自 L2 的 Batches，强制执行数据的可用性，检查零知识证明（zk-proof）的有效性。状态转换分三个阶段：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2476,8 +2476,8 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;NUMBER_OF_LAYER_1_TXS_KEY&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;EXPECTED_SYSTEM_CONTRACT_UPGRADE_TX_HASH_KEY&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;adminfacet&#34;&gt;AdminFacet
-&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Admin.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;adminfacet&#34;&gt;AdminFacet
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Admin.sol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;该 Facet &lt;/a&gt;负责配置的设置和升级能力，可以处理一下任务：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2512,8 +2512,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;diamondinit&#34;&gt;DiamondInit
-&lt;/h3&gt;&lt;p&gt;一个单独功能的合约，是钻石代理的初始化逻辑。仅在钻石代理的构造函数中调用以此，不会作为 Facet 保存在钻石中。&lt;/p&gt;
+&lt;h2 id=&#34;diamondinit&#34;&gt;DiamondInit
+&lt;/h2&gt;&lt;p&gt;一个单独功能的合约，是钻石代理的初始化逻辑。仅在钻石代理的构造函数中调用以此，不会作为 Facet 保存在钻石中。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;函数会返回一个魔术值，如&lt;code&gt;EIP 1271&lt;/code&gt;的设计，大小为 32 字节&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2555,19 +2555,19 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;/blockquote&gt;
-&lt;h2 id=&#34;validatortimelock&#34;&gt;ValidatorTimelock
-&lt;/h2&gt;&lt;p&gt;介于 Validator 的 EOA 账户和 zksync 智能合约之间的智能合约，提供了无需信任的方法来延迟 batch 的执行，而无需修改主要的 zksync 合约。&lt;/p&gt;
+&lt;h1 id=&#34;validatortimelock&#34;&gt;ValidatorTimelock
+&lt;/h1&gt;&lt;p&gt;介于 Validator 的 EOA 账户和 zksync 智能合约之间的智能合约，提供了无需信任的方法来延迟 batch 的执行，而无需修改主要的 zksync 合约。&lt;/p&gt;
 &lt;p&gt;zksync 主动监控链的活动，并通过冻结链来对任何可疑活动做出应对，使得在恢复正常运营之前有时间进行调查和缓解措施。这种临时方案是为了防止网络处于 Alpha 阶段时验证器的热密钥泄露造成任何重大影响。&lt;/p&gt;
 &lt;p&gt;该合约包含了四个主要函数：&lt;code&gt;commitBatches&lt;/code&gt; 、 &lt;code&gt;proveBatches&lt;/code&gt; 、 &lt;code&gt;executeBatches&lt;/code&gt; 和 &lt;code&gt;revertBatches&lt;/code&gt; 组成，只能由验证者调用。&lt;/p&gt;
 &lt;p&gt;当 Validator 调用&lt;code&gt;commitBatches&lt;/code&gt;时，相同的&lt;code&gt;calldata&lt;/code&gt;传播到 zksync 合约（&lt;code&gt;DiamondProxy&lt;/code&gt;通过&lt;code&gt;call&lt;/code&gt;，在&lt;code&gt;ExecutorFacet&lt;/code&gt;调用&lt;code&gt;delegatecall&lt;/code&gt;），并且为这些 Batches 分配了一个时间戳，来跟踪 Batches 的提交时间，来强制实行提交与执行 Batches 之间的延迟。然后 Validator 可以证明早已提交的 Bacthes 无论写到的时间戳，并且再次将相同的&lt;code&gt;calldata&lt;/code&gt;（与&lt;code&gt;proveBatches&lt;/code&gt;函数相关）传播到 zksync 合约。在这个延迟过去后，验证者可以调用&lt;code&gt;executeBatches&lt;/code&gt;将相同的&lt;code&gt;calldata&lt;/code&gt;传播到 zksync 合约。&lt;/p&gt;
 &lt;p&gt;ValidatorTimelock 合约的所有者与管理合约的所有者都是 Matter Labs 多签。&lt;/p&gt;
-&lt;h2 id=&#34;一些其他合约&#34;&gt;一些其他合约
-&lt;/h2&gt;&lt;h3 id=&#34;verifier&#34;&gt;Verifier
-&lt;/h3&gt;&lt;p&gt;知识异序非交互式论证（PLONK）验证器拉格朗日基置换的修改版本（大概是链上进行零知识证明的验证的合约吧）。&lt;/p&gt;
-&lt;h3 id=&#34;allowlist&#34;&gt;AllowList
-&lt;/h3&gt;&lt;p&gt;存储在不同合约上调用函数的权限的智能合约。&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://community.dorahacks.io/t/zksync-2023-01-31/294&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;一些其他合约&#34;&gt;一些其他合约
+&lt;/h1&gt;&lt;h2 id=&#34;verifier&#34;&gt;Verifier
+&lt;/h2&gt;&lt;p&gt;知识异序非交互式论证（PLONK）验证器拉格朗日基置换的修改版本（大概是链上进行零知识证明的验证的合约吧）。&lt;/p&gt;
+&lt;h2 id=&#34;allowlist&#34;&gt;AllowList
+&lt;/h2&gt;&lt;p&gt;存储在不同合约上调用函数的权限的智能合约。&lt;/p&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://community.dorahacks.io/t/zksync-2023-01-31/294&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;zkSync 学习记录 2023.01.31&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ZKsync Era Protocol&lt;/a&gt;&lt;/p&gt;
@@ -2588,8 +2588,8 @@ $$&lt;/p&gt;
 &lt;li&gt;通过交易输出，即状态差异进行状态更新（这中方式更加节省成本）&lt;/li&gt;
 &lt;li&gt;原生的抽象账户&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;总体&#34;&gt;总体
-&lt;/h2&gt;&lt;p&gt;对于 zksync 的架构组成，可以分为几个部分：&lt;/p&gt;
+&lt;h1 id=&#34;总体&#34;&gt;总体
+&lt;/h1&gt;&lt;p&gt;对于 zksync 的架构组成，可以分为几个部分：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;zkSync 智能合约：&lt;/p&gt;
@@ -2636,8 +2636,8 @@ $$&lt;/p&gt;
 	
 	
 &gt;总体概览（取自官网）&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.zksync.io/build/developer-reference/protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ZKsync Era Protocol&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning-ZKsync&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Dapp-Learning ZKsync Era Tutorial&lt;/a&gt;&lt;/p&gt;
@@ -2657,29 +2657,29 @@ $$&lt;/p&gt;
 &lt;p&gt;其中如何实现验证根据不同的思路有了不同的方向：ZK Rollup（提交状态时验证）、Optimistic Rollup（提交状态后验证）。&lt;/p&gt;
 &lt;p&gt;前者的思路是有效证明（证明区块是有效的），通过名为零知识证明的方法提交一个区块的证明，这个证明可以在不泄露交易内容的情况下证明交易的状态变更的正确，链上的合约在通过默克尔树、证明进行验证，通过验证就固定了链下的状态变更（这就表示 ZK Rollup 的上主链时间需要看 ZK 证明的生成速度）。&lt;/p&gt;
 &lt;p&gt;后者的思路是欺诈证明，其假设区块是 Optimistic（乐观）的，即假设区块中没有欺诈区块，然后设置一个争议期，在争议期内任何用户都可以对这个区块发起挑战（认为这个区块有问题），提交自己的欺诈证明。如果争议期内没有人提出挑战，那么区块则会通过状态变更（这就表示交易真正的上链时间就是争议期时间长度）。&lt;/p&gt;
-&lt;h2 id=&#34;optimistic-rollup&#34;&gt;Optimistic Rollup
-&lt;/h2&gt;&lt;blockquote&gt;
+&lt;h1 id=&#34;optimistic-rollup&#34;&gt;Optimistic Rollup
+&lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;OR 并没有节省交易的存储消耗，因为其将交易和交易结果一并上传到链上，这正是为了保证数据可用性的问题（Plasma 放弃的原因正是因为交易全部存储在链下，导致了数据可用性问题）。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;目前 Optimistic Rollup 的方案的落地并不只一个，而是有着众多的 OR 项目，主要是因为各个项目对于方案里面的部分偏具体的部分有不同的实现思路，因此产生了不同的项目。&lt;/p&gt;
 &lt;p&gt;目前主要的 Optimistic Rollup 项目有：Arbitrum、Optimism、opBNB 和 COMBO 这几个项目。&lt;/p&gt;
-&lt;h3 id=&#34;optimism&#34;&gt;Optimism
-&lt;/h3&gt;&lt;p&gt;Optimism 是一个 EVM 等效的 Optimism Rollup 链（简称 OP）。其中主要包含两类节点：sequencer（排序器）和 verifier（验证器）。&lt;/p&gt;
+&lt;h2 id=&#34;optimism&#34;&gt;Optimism
+&lt;/h2&gt;&lt;p&gt;Optimism 是一个 EVM 等效的 Optimism Rollup 链（简称 OP）。其中主要包含两类节点：sequencer（排序器）和 verifier（验证器）。&lt;/p&gt;
 &lt;p&gt;两者负责不同的任务：sequencer 负责将用户提交的交易进行处理，排序，然后提交给 L1 ，verifier 负责对于提交到 L1 上的状态根，汇总交易进行验证，如果验证为有问题则会提交对应的欺诈证明，sequencer 会因此需要重新计算对应的状态根。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Optimism 和 Arbitrum 的区别主要提现在对争议（挑战的验证方法不同）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;对于争议的处理，Optimism 主要依靠欺诈证明，需要证明就需要重新执行该交易以证明交易结果的正确，为了实现这个重放 Optimism 实现了 OVM 来处理，在 OVM 1.0 中 采用的是非交互式欺诈证明，而 OVM 2.0 中采用的是交互式欺诈证明（Arbitrum 也式非交互式）。&lt;/p&gt;
-&lt;h3 id=&#34;arbitrum&#34;&gt;Arbitrum
-&lt;/h3&gt;&lt;p&gt;Arbitrum 与 Optimism 很相似，主要区别在于争议处理（就是上面的那个证明挑战方式，Arbitrum 采用了交互式的方法）。&lt;/p&gt;
+&lt;h2 id=&#34;arbitrum&#34;&gt;Arbitrum
+&lt;/h2&gt;&lt;p&gt;Arbitrum 与 Optimism 很相似，主要区别在于争议处理（就是上面的那个证明挑战方式，Arbitrum 采用了交互式的方法）。&lt;/p&gt;
 &lt;p&gt;在这个交互式证明挑战中，将整个块上的交易分为 k 个部分（每个部分都有一个起点与端点），然后挑战者与被挑战者相互交流这 k 个部分确认争议点在哪个部分，然后继续缩小，直到确认具体的哪一条指令是两者的争议，然后交由 L1 合约判定。&lt;/p&gt;
 &lt;p&gt;目前 Arbitrum 项目包含了几个具体的项目：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Arbitrum One ：基于 Optimistic Rollup 技术，主要面向 Defi 和 NFT。&lt;/li&gt;
 &lt;li&gt;Arbitrum Nova：采用了 ZK-Rollup 技术，主要用户高吞入量的应用（如游戏、社交等应用）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;zk-rollup&#34;&gt;ZK Rollup
-&lt;/h2&gt;&lt;p&gt;前面讲过了，ZK Rollup 是通过零知识证明的方式进行打包验证的，其与 Optimistic Rollup 的不同点是这个验证，在 ZKR 中，提交到链上的信息有：状态 A 和 B、零知识证明、汇总交易，这些信息表示：状态 A 在经过这些汇总交易之后会变成状态 B，你可以通过验证零知识证明来证实。因此在 ZKR 中没有等待时间（Optimistic Rollup 有等待时间），ZKR 现在没有完全击败 OR 的原因在于生成 ZK 证明的时间。&lt;/p&gt;
+&lt;h1 id=&#34;zk-rollup&#34;&gt;ZK Rollup
+&lt;/h1&gt;&lt;p&gt;前面讲过了，ZK Rollup 是通过零知识证明的方式进行打包验证的，其与 Optimistic Rollup 的不同点是这个验证，在 ZKR 中，提交到链上的信息有：状态 A 和 B、零知识证明、汇总交易，这些信息表示：状态 A 在经过这些汇总交易之后会变成状态 B，你可以通过验证零知识证明来证实。因此在 ZKR 中没有等待时间（Optimistic Rollup 有等待时间），ZKR 现在没有完全击败 OR 的原因在于生成 ZK 证明的时间。&lt;/p&gt;
 &lt;p&gt;目前主流的零知识证明算法有：Bullet proof、zk-SNARK、zk-STARK&lt;/p&gt;
 &lt;p&gt;而主要的 ZKR 的项目有：zkSync、StarkWare 、Polygon（zkEVM）、Scroll、Aztec&lt;/p&gt;
 &lt;p&gt;在介绍各个项目前，先了解下目前对于以太坊兼容性 zkEVM（可以执行与以太坊虚拟机 (EVM) 相同的高级编程语言或低级字节码的虚拟机，并使用零知识证明 ZKP 证明此代码，这些类型的虚拟机更准确的名称是有效性证明生成 EVM）的类型。&lt;/p&gt;
@@ -2712,8 +2712,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;zksync&#34;&gt;zkSync
-&lt;/h3&gt;&lt;p&gt;zkSync 有两个版本：zkSync 1.0 （zkSync Lite）和 zkSync 2.0 （zkSync Era）。在 zkSync 1.0 中其只支持简单交易，zkSync 2.0 则在外观与使用都类似于以太坊，其智能合约采用 Solidity/Vyper 编写的，并且可以使用与其他 EVM 兼容链相同的客户端来调用，采用的零知识证明算法是：zk-SNARK。&lt;/p&gt;
+&lt;h2 id=&#34;zksync&#34;&gt;zkSync
+&lt;/h2&gt;&lt;p&gt;zkSync 有两个版本：zkSync 1.0 （zkSync Lite）和 zkSync 2.0 （zkSync Era）。在 zkSync 1.0 中其只支持简单交易，zkSync 2.0 则在外观与使用都类似于以太坊，其智能合约采用 Solidity/Vyper 编写的，并且可以使用与其他 EVM 兼容链相同的客户端来调用，采用的零知识证明算法是：zk-SNARK。&lt;/p&gt;
 &lt;p&gt;zkSync 2.0 有以下特点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;是一种通用协议&lt;/li&gt;
@@ -2721,18 +2721,18 @@ $$&lt;/p&gt;
 &lt;li&gt;以 ETH 支付 gas 费&lt;/li&gt;
 &lt;li&gt;原生账户抽象&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;starkware&#34;&gt;StarkWare
-&lt;/h3&gt;&lt;p&gt;StarkNet 则是前面第四类 ZK Rollup，其采用的是 zk-STARK 的零知识证明算法，被认为比 SNARK（zkSync 采用的） 更有效和可扩展，但可能需要更复杂的技术设置。&lt;/p&gt;
+&lt;h2 id=&#34;starkware&#34;&gt;StarkWare
+&lt;/h2&gt;&lt;p&gt;StarkNet 则是前面第四类 ZK Rollup，其采用的是 zk-STARK 的零知识证明算法，被认为比 SNARK（zkSync 采用的） 更有效和可扩展，但可能需要更复杂的技术设置。&lt;/p&gt;
 &lt;p&gt;StarkNet 中支持智能合约，但需要采用 Cairo 语言编写，作为第四类 ZK Rollup，其并不会在 EVM 中执行，而是在自己建立的 VM 中执行，使用自定义的字节码。&lt;/p&gt;
-&lt;h3 id=&#34;scroll&#34;&gt;Scroll
-&lt;/h3&gt;&lt;p&gt;Scroll 是实现了与 EVM 等效的 ZK Rollup，这意味着我们可以很轻松的将以太坊上的程序迁移到 Scroll 中（即不需要更改太多的代码）。其计划通过构建 1:1 opcode 映射来实现支持 EVM opcode 从而直接接受 EVM opcode 而无需编译器。&lt;/p&gt;
+&lt;h2 id=&#34;scroll&#34;&gt;Scroll
+&lt;/h2&gt;&lt;p&gt;Scroll 是实现了与 EVM 等效的 ZK Rollup，这意味着我们可以很轻松的将以太坊上的程序迁移到 Scroll 中（即不需要更改太多的代码）。其计划通过构建 1:1 opcode 映射来实现支持 EVM opcode 从而直接接受 EVM opcode 而无需编译器。&lt;/p&gt;
 &lt;p&gt;Scroll 的架构包括一个集中式序列化节点和一个分散的证明网络。&lt;/p&gt;
 &lt;p&gt;集中式序列化节点负责对交易进行排序、创建区块，并将交易数据作为 calldata 提交到以太坊上的 Rollup 合约以供数据可用性。Scroll 计划逐步去中心化序列化节点。&lt;/p&gt;
 &lt;p&gt;同时，一个名为 Roller 的分散式证明生成器会产生证明并将其发布到 L1 网络上，利用分布式计算能力。Rollers 是随机选择的，可以在不同的 Rollers 上并行生成不同块的多个证明以增加速度。&lt;/p&gt;
-&lt;h3 id=&#34;polygonzkevm&#34;&gt;Polygon（zkEVM）
-&lt;/h3&gt;&lt;p&gt;Polygon zkEVM 是 Polygon 收购了 Hermez Network 开始开发一个结合了 STARK 和 SNARK 的安全性和效率的 EVM 等效系统。其使用自定义的语言 zkASM 来解释 zkEVM 代码。&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://decert.me/tutorial/layer2/src/rollup-all/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;polygonzkevm&#34;&gt;Polygon（zkEVM）
+&lt;/h2&gt;&lt;p&gt;Polygon zkEVM 是 Polygon 收购了 Hermez Network 开始开发一个结合了 STARK 和 SNARK 的安全性和效率的 EVM 等效系统。其使用自定义的语言 zkASM 来解释 zkEVM 代码。&lt;/p&gt;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://decert.me/tutorial/layer2/src/rollup-all/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;第六章：Layer2 实现方式之 Rollup&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/2392&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;什么是 Rollup？&amp;ndash;上篇&lt;/a&gt;&lt;/p&gt;
@@ -2768,12 +2768,12 @@ $$&lt;/p&gt;
         <guid>http://localhost:1313/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</guid>
         <description>&lt;p&gt;区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成交的速度开始跟不上了，其中 &lt;code&gt;Crypto Kitties&lt;/code&gt;一度让以太坊不堪重负，交易拥堵。对于不修改区块链本身代码，而在现有的链本身上面搭建东西从而达成拓展的方法就是 Layer2 拓展。这种思路目的就是为了在尽可能保证去中心化和安全性的情况下提高可拓展性。&lt;/p&gt;
 &lt;p&gt;根据实现的设计方向出现了一些分支：侧链、状态通道（&lt;code&gt;State Channel&lt;/code&gt;）、&lt;code&gt;Plasma&lt;/code&gt;、&lt;code&gt;Rollup&lt;/code&gt;。&lt;/p&gt;
-&lt;h2 id=&#34;侧链&#34;&gt;侧链
-&lt;/h2&gt;&lt;p&gt;侧链就是建立一个独立的区块链，这个链有独立的共识机制（即主链是什么共识机制与侧链无关），其通过双向锚定进行沟通，对于主链而言，它是感知不到侧链的存在的，而侧链又具有一定的独立性（主链崩溃并不会影响他的运行，只会影响他的价值）。&lt;/p&gt;
+&lt;h1 id=&#34;侧链&#34;&gt;侧链
+&lt;/h1&gt;&lt;p&gt;侧链就是建立一个独立的区块链，这个链有独立的共识机制（即主链是什么共识机制与侧链无关），其通过双向锚定进行沟通，对于主链而言，它是感知不到侧链的存在的，而侧链又具有一定的独立性（主链崩溃并不会影响他的运行，只会影响他的价值）。&lt;/p&gt;
 &lt;p&gt;双向锚定就是两个链之间的一个沟通，通过一方销毁代币，另一方生成等值代币，从而实现资产的跨链转移。&lt;/p&gt;
 &lt;p&gt;对于侧链这一概念是需要搭配主链才有的（即有两条链才能称得上主链和侧链），单独看链是没有侧链这一说法的。如我们复制以太坊代码搭建一条链，和真正的以太坊之间搭建起一个双向锚定，那么自建的链就可以称为侧链（我感觉因为其价值低所以才称作侧链），真以太坊链就是主链。&lt;/p&gt;
-&lt;h2 id=&#34;状态通道&#34;&gt;状态通道
-&lt;/h2&gt;&lt;p&gt;状态通道这个方法就像在两个用户之间建立一个账本一样：创建初记录两者状态，一系列交易后，又得到一个两者状态的最终情况，销毁账本的时候上传这个最终情况的状态。&lt;/p&gt;
+&lt;h1 id=&#34;状态通道&#34;&gt;状态通道
+&lt;/h1&gt;&lt;p&gt;状态通道这个方法就像在两个用户之间建立一个账本一样：创建初记录两者状态，一系列交易后，又得到一个两者状态的最终情况，销毁账本的时候上传这个最终情况的状态。&lt;/p&gt;
 &lt;p&gt;举个例子就是，A 和 B 之间有一系列交易：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;A -&amp;gt; B（10 ETH）&lt;/li&gt;
@@ -2784,8 +2784,8 @@ $$&lt;/p&gt;
 &lt;p&gt;状态通道就是记录 A 和 B 交易开始时候的余额情况，然后根据交易不断修改双方状态，当关闭时返回交易完成的状态，让区块链根据状态通道返回的结果进行这场交易的结算。&lt;/p&gt;
 &lt;p&gt;在这个过程中只有开启交易（启动状态通道）和结算交易（销毁状态通道）是在链上进行的，而中间的一系列交易在链下进行的，这使得，这种方法适合交易对象固定且交易频率高的用户，这样能为用户省下大量交易费用，同样让主网上的交易大大减少。&lt;/p&gt;
 &lt;p&gt;但同样存在一些缺点，最明显的就是智能合约问题，这种方法只能转账交易，无法实现智能合约的交互，此外还有其他缺点如：拓展性差、参与双方需要保持在线等缺点。&lt;/p&gt;
-&lt;h2 id=&#34;plasma&#34;&gt;Plasma
-&lt;/h2&gt;&lt;p&gt;在 Plasma 中，就是通过创建不同的子链（用于支持不同的业务需求），然后将主链上的交易执行交给子链进行，交易数据也会存储在子链上，但会定期将子链的状态根上传到 L1 主链上，从而实现链的扩容（链下）。&lt;/p&gt;
+&lt;h1 id=&#34;plasma&#34;&gt;Plasma
+&lt;/h1&gt;&lt;p&gt;在 Plasma 中，就是通过创建不同的子链（用于支持不同的业务需求），然后将主链上的交易执行交给子链进行，交易数据也会存储在子链上，但会定期将子链的状态根上传到 L1 主链上，从而实现链的扩容（链下）。&lt;/p&gt;
 &lt;p&gt;在上面的描述中，主要有几个问题：如何将交易执行交给子链、子链如何保证能将正确的状态同步到主链当中。&lt;/p&gt;
 &lt;p&gt;首先是交易执行如何交给子链。首先就是 Plasma 在主链上部署一系列智能合约用于锁定用户在在主链上的数字资产与保存、验证子链状态（默克尔树根）。用户将自己的资产发送给 Plasma 的智能合约，然后子链就会产生等值的资产给这个用户。用户就可以在子链上进行交易，如此就实现了将交易执行交给子链。&lt;/p&gt;
 &lt;p&gt;其次是子链如何保证能将正确的状态同步到主链当中的问题，这其实包含了几个子问题：&lt;/p&gt;
@@ -2813,13 +2813,13 @@ $$&lt;/p&gt;
 &lt;li&gt;运营者， Plasma 链中子链状态同步到主链上依靠一个运营商，而运营者可以轻松的进行数据可用性攻击&lt;/li&gt;
 &lt;li&gt;用户在线，Plasma 要求交易资产的所有者在场&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;rollup&#34;&gt;Rollup
-&lt;/h2&gt;&lt;p&gt;在上面的描述中，我们可以知道 Plasma 存在着众多问题，所以在此基础上又出现了 Rollup 这一改进方法。Rollup 的设计方向和 Plasma 很相似：通过将大量交易数据打包（rollup）并与状态根一起提交到以太坊主网，以此让以太坊对提交状态验证提高交易吞吐量和降低交易费用。&lt;/p&gt;
+&lt;h1 id=&#34;rollup&#34;&gt;Rollup
+&lt;/h1&gt;&lt;p&gt;在上面的描述中，我们可以知道 Plasma 存在着众多问题，所以在此基础上又出现了 Rollup 这一改进方法。Rollup 的设计方向和 Plasma 很相似：通过将大量交易数据打包（rollup）并与状态根一起提交到以太坊主网，以此让以太坊对提交状态验证提高交易吞吐量和降低交易费用。&lt;/p&gt;
 &lt;p&gt;个人感觉 Rollup 和 Plasma 的区别就是增加了打包（Rollup）这个部分，并因此以太坊的对于子链的验证方法也有了一些改变。&lt;/p&gt;
 &lt;p&gt;目前对于 Rollup 的实现又分为两个路线：OP（Optimistic Rollup）、ZK（Zero Knowledge Rollup）。首先我们知道 Rollup 最需要解决的就是数据可用性的问题和交易有效性问题，解决这两个问题就保证了 Rollup 的安全性。而 OP、ZK 就是用于解决这个问题的。&lt;/p&gt;
 &lt;p&gt;OP 则是采用乐观验证机制，其假设提交的数据都是正确的，然后这次状态的提交存在一个质疑期，用户可以提交欺诈证明来质疑这次状态，证明成功，链上智能合约将会回滚不正确的区块。ZK 则是采用了零知识证明的方法，只有链上的智能合约检查提交的数据和零知识证明，检查通过后，状态提交则认为是有效的。&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/8405&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/8405&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;以太坊 Layer2 扩容方案之 State Channel&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/8406&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;以太坊 Layer2 扩容方案之 Sidechain&lt;/a&gt;&lt;/p&gt;
@@ -2852,11 +2852,11 @@ $$&lt;/p&gt;
         
         <guid>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Compound V2 也和 Aave V2 很相似，有部分区别，但感觉是很多地方相似的，采用的设计逻辑都是由很多相似的地方的。下面依旧从行为的方面进行介绍。&lt;/p&gt;
-&lt;h2 id=&#34;借贷&#34;&gt;借贷
-&lt;/h2&gt;&lt;p&gt;Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。&lt;/p&gt;
+&lt;h1 id=&#34;借贷&#34;&gt;借贷
+&lt;/h1&gt;&lt;p&gt;Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。&lt;/p&gt;
 &lt;p&gt;和 Aave V2 的逻辑整理一样，借贷也从借款、还款、清算三件事情出发。&lt;/p&gt;
-&lt;h3 id=&#34;借款&#34;&gt;借款
-&lt;/h3&gt;&lt;p&gt;当一个用户想要从 Compound 中借款时需要进行抵押（这是毫无疑问的），而 Compound 采用的借款策略同样时超额抵押借贷（和 Aave V2 一样），而衡量这个超额比例的就是抵押因子（超额抵押的比例）。借款会有这么一个流程：用户借出一笔钱，开始计算利息，等待用户还款，等待过程中还会检查用户的借款是否可能造成坏账（即是否需要清算）。&lt;/p&gt;
+&lt;h2 id=&#34;借款&#34;&gt;借款
+&lt;/h2&gt;&lt;p&gt;当一个用户想要从 Compound 中借款时需要进行抵押（这是毫无疑问的），而 Compound 采用的借款策略同样时超额抵押借贷（和 Aave V2 一样），而衡量这个超额比例的就是抵押因子（超额抵押的比例）。借款会有这么一个流程：用户借出一笔钱，开始计算利息，等待用户还款，等待过程中还会检查用户的借款是否可能造成坏账（即是否需要清算）。&lt;/p&gt;
 &lt;p&gt;我们知道 Aave V2 就是采用的复利的方式计算，而 Compound 也是一样。在 Compound 中是怎么计算个体用户的利息呢？这是通过复利累计指数计算的（$FV$ 表示当前累计指数，$PV$表示上次累计指数）：&lt;/p&gt;
 &lt;p&gt;$$
 FV = PV * (1+x)^{t}
@@ -2866,11 +2866,11 @@ $$&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Compound 的借款采用的抵押物实际上是 &lt;code&gt;ctoken&lt;/code&gt;（一种 ERC20 代币，用户存款可以获得对应的&lt;code&gt;ctoken&lt;/code&gt;，存 ETH 得 cETH），即用用户的存款作为抵押物进行贷款。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;还款&#34;&gt;还款
-&lt;/h3&gt;&lt;p&gt;还款在 Compound 中既可以还自己得欠款也可以还他人得欠款（这个就是清算）。我们在借款中知道通过抵押物（&lt;code&gt;ctoken&lt;/code&gt;）可以获得&lt;code&gt;标的 token&lt;/code&gt;，还钱就通过归还&lt;code&gt;标的 token&lt;/code&gt;赎回&lt;code&gt;ctoken&lt;/code&gt;。在 Aave V2 中采用了&lt;code&gt;债务token&lt;/code&gt;（一种魔改 ERC20）记录用户债务，而 Compound 则是内部记账（变量记录地址欠款额度）得方式。&lt;/p&gt;
+&lt;h2 id=&#34;还款&#34;&gt;还款
+&lt;/h2&gt;&lt;p&gt;还款在 Compound 中既可以还自己得欠款也可以还他人得欠款（这个就是清算）。我们在借款中知道通过抵押物（&lt;code&gt;ctoken&lt;/code&gt;）可以获得&lt;code&gt;标的 token&lt;/code&gt;，还钱就通过归还&lt;code&gt;标的 token&lt;/code&gt;赎回&lt;code&gt;ctoken&lt;/code&gt;。在 Aave V2 中采用了&lt;code&gt;债务token&lt;/code&gt;（一种魔改 ERC20）记录用户债务，而 Compound 则是内部记账（变量记录地址欠款额度）得方式。&lt;/p&gt;
 &lt;p&gt;当用户归回欠款时，先计算复利累计指数（更新归还前得利息情况，和前面一样），然后计算过去债务得最新大小，然后减去还款得到最后得债务大小，并存入（总债务这些得也会更新），最后合约将还款转入资金池中。&lt;/p&gt;
-&lt;h3 id=&#34;清算&#34;&gt;清算
-&lt;/h3&gt;&lt;p&gt;前面说了，清算就是帮别人还欠款，但人们不会做慈善一样得帮忙还款，清算者需要获得一定得利益。&lt;/p&gt;
+&lt;h2 id=&#34;清算&#34;&gt;清算
+&lt;/h2&gt;&lt;p&gt;前面说了，清算就是帮别人还欠款，但人们不会做慈善一样得帮忙还款，清算者需要获得一定得利益。&lt;/p&gt;
 &lt;p&gt;首先需要明确的时清算条件。前面借款时有说到抵押因子，将用户存款乘以抵押因子就得到所能借出的贷款上限，随着抵押物的价格波动和贷款的利息所带来的贷款增加，这就可能导致用户借款达到贷款上限，从而到达清算条件。&lt;/p&gt;
 &lt;p&gt;其次是清算人如何来清算的。需要明白的是对于被清算人（借款人）的债务，单次清算上限为债务 50% ，因为清算人也不一定是恶意不还款（可能是币价波动导致清算这些的）。同时对于清算人所获得的抵押资产（&lt;code&gt;ctoken&lt;/code&gt;）也是可选的（如果借款人有多种抵押物），可以选择更加青睐的代币类型的抵押物。清算人清算就是通过购买借款人手中的&lt;code&gt;ctoken&lt;/code&gt;（即购买对应的&lt;code&gt;token&lt;/code&gt;）来替借款人偿还债务，以此进行清算。&lt;/p&gt;
 &lt;p&gt;那么清算让借款不再处于坏账风险的原因是什么？直接的理解就是超额抵押借贷中的超额让这笔借贷交易处于清算状态，合约通过清算（自动卖出用户的&lt;code&gt;ctoken&lt;/code&gt;）实现欠款的偿还，合约只要卖出的价格超过超额抵押的判断下的价格高，即可让交易不再处于坏账风险中。实际上合约是以接近市场价的价格卖出的。&lt;/p&gt;
@@ -2883,12 +2883,12 @@ $$&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;兑换率的存在主要是因为存款中的存款人的利息收益的计算。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;存款&#34;&gt;存款
-&lt;/h2&gt;&lt;p&gt;在 Compound 中，存款和 Aave V2 一样，都是根据借款所产生的利息而获得存款利息。有借款产生利息，那么用户存款才会有存款利息收益产生，如果 Compound 中没有人进行借款，那么无论往里面存多少钱都不会有利息。&lt;/p&gt;
+&lt;h1 id=&#34;存款&#34;&gt;存款
+&lt;/h1&gt;&lt;p&gt;在 Compound 中，存款和 Aave V2 一样，都是根据借款所产生的利息而获得存款利息。有借款产生利息，那么用户存款才会有存款利息收益产生，如果 Compound 中没有人进行借款，那么无论往里面存多少钱都不会有利息。&lt;/p&gt;
 &lt;p&gt;借款产生的收益会分为两部分：一部分给用户作为存款收益，另外一小部分留给合约，作为资金储备池（防止出现取款的挤兑）。&lt;/p&gt;
 &lt;p&gt;首先需要明白，在 Compound 中存入&lt;code&gt;token&lt;/code&gt;会获得一定数量&lt;code&gt;ctoken&lt;/code&gt;，而取出的时候也就是利用&lt;code&gt;ctoken&lt;/code&gt;换回&lt;code&gt;token&lt;/code&gt;，而利息就是存入和取出时两者兑换比例不同所带来的不同。&lt;/p&gt;
-&lt;h3 id=&#34;存入&#34;&gt;存入
-&lt;/h3&gt;&lt;p&gt;用户 Compound 中存入一笔金额为 m 的&lt;code&gt;token&lt;/code&gt;代币，此时该类型的&lt;code&gt;token&lt;/code&gt;的兑换率为$ER$ （&lt;code&gt;token&lt;/code&gt;：&lt;code&gt;ctoken&lt;/code&gt; = 1&lt;code&gt;toekn&lt;/code&gt;：n&lt;code&gt;ctoken&lt;/code&gt;），那么用户可以拿到 $\frac{m}{ER}$ 个&lt;code&gt;ctoken&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;存入&#34;&gt;存入
+&lt;/h2&gt;&lt;p&gt;用户 Compound 中存入一笔金额为 m 的&lt;code&gt;token&lt;/code&gt;代币，此时该类型的&lt;code&gt;token&lt;/code&gt;的兑换率为$ER$ （&lt;code&gt;token&lt;/code&gt;：&lt;code&gt;ctoken&lt;/code&gt; = 1&lt;code&gt;toekn&lt;/code&gt;：n&lt;code&gt;ctoken&lt;/code&gt;），那么用户可以拿到 $\frac{m}{ER}$ 个&lt;code&gt;ctoken&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;随着 Compound 池子中的资金不断被借出，这个兑换率会不断上升，这会使得后来的用户采用同等量的&lt;code&gt;token&lt;/code&gt;得到的&lt;code&gt;ctoken&lt;/code&gt;更加少，实现了从时间上区分用户的存入（这样同样量的&lt;code&gt;token&lt;/code&gt;，无论是否同一用户，只要时间不同存入获得的&lt;code&gt;ctoken&lt;/code&gt;不一样），而无需记录其他的信息。&lt;/p&gt;
 &lt;p&gt;那么这个兑换率是怎么变动实现单调递增的？首先是兑换率的定义：&lt;/p&gt;
 &lt;p&gt;$$
@@ -2904,8 +2904,8 @@ ER
 = \frac{Count_{t}}{Count_{ct}}
 $$&lt;/p&gt;
 &lt;p&gt;可以看到并不会减小汇率，这至少保证了存款不会导致兑换率下降，而借贷毫无疑问只会使得 $ER$ 不断上升。&lt;/p&gt;
-&lt;h3 id=&#34;取出&#34;&gt;取出
-&lt;/h3&gt;&lt;p&gt;现在来看看取出，取出就是存入的反向操作，燃烧&lt;code&gt;ctoken&lt;/code&gt;，然后根据兑换率获得&lt;code&gt;token&lt;/code&gt;，燃烧 m 个&lt;code&gt;ctoken&lt;/code&gt;可以获得 $m * ER$ 个&lt;code&gt;token&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;取出&#34;&gt;取出
+&lt;/h2&gt;&lt;p&gt;现在来看看取出，取出就是存入的反向操作，燃烧&lt;code&gt;ctoken&lt;/code&gt;，然后根据兑换率获得&lt;code&gt;token&lt;/code&gt;，燃烧 m 个&lt;code&gt;ctoken&lt;/code&gt;可以获得 $m * ER$ 个&lt;code&gt;token&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;下面来看看这个过程对于兑换率的影响（其实就是看会不会让兑换率下降）：&lt;/p&gt;
 &lt;p&gt;$$
 ER
@@ -2916,8 +2916,8 @@ ER
 = \frac{Count _ {t}}{Count _ {ct}}
 $$&lt;/p&gt;
 &lt;p&gt;我们可以看到兑换率并没有改变，所以兑换率只会单调递增。&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;amp;mid=2652494245&amp;amp;idx=1&amp;amp;sn=186611e277f1a88a8fe116ee5f16fa78&amp;amp;chksm=8b6853b5bc1fdaa3b5468bb3cfe5c6cf2a98892ce29dc0b8a8c9b012c2e8d7ffe4c3a904c1e1&amp;amp;token=785907827&amp;amp;lang=zh_CN#rd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;amp;mid=2652494245&amp;amp;idx=1&amp;amp;sn=186611e277f1a88a8fe116ee5f16fa78&amp;amp;chksm=8b6853b5bc1fdaa3b5468bb3cfe5c6cf2a98892ce29dc0b8a8c9b012c2e8d7ffe4c3a904c1e1&amp;amp;token=785907827&amp;amp;lang=zh_CN#rd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;剖析 DeFi 借贷产品之 Compound：概述篇&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&amp;amp;mid=2652494251&amp;amp;idx=1&amp;amp;sn=dfd6b4ad7f73006258b3d65411adf28f&amp;amp;chksm=8b6853bbbc1fdaad6dc3a3b3cbcb0a7a0a0c9803d95238c3471b0293308d7e41a164368e2766&amp;amp;token=785907827&amp;amp;lang=zh_CN#rd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;剖析 DeFi 借贷产品之 Compound：合约篇&lt;/a&gt;&lt;/p&gt;
@@ -2938,10 +2938,10 @@ $$&lt;/p&gt;
         
         <guid>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Aave 就相当于去中心化交易所中的一个银行，在其中用户可以进行一系列的资金操作，下面基于行为的角度对其两个功能进行阐述：借贷、存款。&lt;/p&gt;
-&lt;h2 id=&#34;借贷&#34;&gt;借贷
-&lt;/h2&gt;&lt;p&gt;在 Aave 中借贷有两种方式：借款（有抵押物的）、闪电贷（无抵押物的）。&lt;/p&gt;
-&lt;h3 id=&#34;闪电贷&#34;&gt;闪电贷
-&lt;/h3&gt;&lt;p&gt;Aave V2 的闪电贷感觉没有什么特别的地方，就是在一个区块交易内完成借出和还入两个操作。&lt;/p&gt;
+&lt;h1 id=&#34;借贷&#34;&gt;借贷
+&lt;/h1&gt;&lt;p&gt;在 Aave 中借贷有两种方式：借款（有抵押物的）、闪电贷（无抵押物的）。&lt;/p&gt;
+&lt;h2 id=&#34;闪电贷&#34;&gt;闪电贷
+&lt;/h2&gt;&lt;p&gt;Aave V2 的闪电贷感觉没有什么特别的地方，就是在一个区块交易内完成借出和还入两个操作。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -2973,10 +2973,10 @@ $$&lt;/p&gt;
 &lt;li&gt;借款模式：执行借款的函数逻辑&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;总的来说，Aave V2 在闪电贷种添加了一个转入正常借贷的机会，可以将闪电贷、正常借贷合并在一笔交易中。&lt;/p&gt;
-&lt;h3 id=&#34;借款&#34;&gt;借款
-&lt;/h3&gt;&lt;p&gt;关于借款，就开始麻烦起来了，借款可以分为三个部分：借款（借钱这件事）、还款（还钱这件事）、清算（清算合约中不良借款这件事）&lt;/p&gt;
-&lt;h4 id=&#34;清算&#34;&gt;清算
-&lt;/h4&gt;&lt;p&gt;我们首先来看看清算这件事。由于区块链中没办法轻易的溯源到账户拥有者本人，所以对于合约中每一笔借款都不能有坏账（借出款的价值大于抵押物的价值）这件事发生合约就会不被信任了。&lt;/p&gt;
+&lt;h2 id=&#34;借款&#34;&gt;借款
+&lt;/h2&gt;&lt;p&gt;关于借款，就开始麻烦起来了，借款可以分为三个部分：借款（借钱这件事）、还款（还钱这件事）、清算（清算合约中不良借款这件事）&lt;/p&gt;
+&lt;h3 id=&#34;清算&#34;&gt;清算
+&lt;/h3&gt;&lt;p&gt;我们首先来看看清算这件事。由于区块链中没办法轻易的溯源到账户拥有者本人，所以对于合约中每一笔借款都不能有坏账（借出款的价值大于抵押物的价值）这件事发生合约就会不被信任了。&lt;/p&gt;
 &lt;p&gt;我们知道合约对于借款策略采用的是超额抵押借贷（如抵押 100$价值的抵押物，借贷的钱不能到达 100$ 那么多，可能只有 50$）,所以可以设定一个阈值（抵押物价值/所欠金额），到达一定比值后资产就会被清算（合约自动卖出抵押物，借款人就不用还款了）。&lt;/p&gt;
 &lt;p&gt;那么这个清算阈值是怎么确定的呢？Aave V2 定义了一个&lt;code&gt;健康系数(HealthFactor)&lt;/code&gt;，当其小于 1 时，该笔交易就可以清算。那么这个&lt;code&gt;HealthFactor&lt;/code&gt;如何定量呢？&lt;/p&gt;
 &lt;p&gt;$$
@@ -2987,12 +2987,12 @@ $$&lt;/p&gt;
 &lt;p&gt;清算具体会发生什么呢？当用户抵押了价值 200 $的抵押物，借出了 100 USDT，此时清算阈值是 75%，那么抵押物的价值如果下跌，最多跌倒 133.3（用 100 / 0.75 得到，并且忽略利息对健康系数分母的影响），一旦跌倒这个价格之下，那么清算开始发生。&lt;/p&gt;
 &lt;p&gt;此时有一个清算人负责清算该资产，它可以清算该笔资产的一部分（用户自己决定，但有上限，由 Aave V2 决定，其不允许一次性清算完全部抵押资产），Aave V2 将对抵押物折价卖出，清算人付出借出债务的代币（0%~Aave V2 规定的上限 50%），以当前折扣价买入被清算的抵押物（&lt;code&gt;(市场价/代还款)*(1+奖励比例)&lt;/code&gt;，其中奖励比例就是清算人比起在正常市场中购买代币，在 Aave V2 清算中能额外获得的利润）。此时借款人的健康系数受到影响，变得健康：以上清算行为相当于 Aave V2 自动帮借款人卖出一部分抵押物，来偿还借款（略低于市场价，但高于&lt;code&gt;阈值 * 市场价&lt;/code&gt;，因此可以提高健康系数）。&lt;/p&gt;
 &lt;p&gt;如何发起清算呢？合约由于不能说根据触发条件自动执行函数，所以需要外部的套利者不断的巡视整个市场，发现这些可以清算的交易，对于到达清算线的交易，所有人都可以对其进行清算。清算过后：套利者获得一定利润（通过奖励比例），合约避免了坏账的诞生，维护了市场的稳定。&lt;/p&gt;
-&lt;h4 id=&#34;借款-1&#34;&gt;借款
-&lt;/h4&gt;&lt;p&gt;Aave V2 对于借款人的债务进行了&lt;code&gt;token&lt;/code&gt;化，即债务就是一个个的代币。首先有一个问题：债务是&lt;code&gt;token&lt;/code&gt;那么转移&lt;code&gt;token&lt;/code&gt;是不是就不用还钱了。理论是这样的，但是 Aave V2 将&lt;code&gt;transfer&lt;/code&gt;函数重载了，调用后就会&lt;code&gt;revert&lt;/code&gt;，所以是没办法转移债务的。&lt;/p&gt;
+&lt;h3 id=&#34;借款-1&#34;&gt;借款
+&lt;/h3&gt;&lt;p&gt;Aave V2 对于借款人的债务进行了&lt;code&gt;token&lt;/code&gt;化，即债务就是一个个的代币。首先有一个问题：债务是&lt;code&gt;token&lt;/code&gt;那么转移&lt;code&gt;token&lt;/code&gt;是不是就不用还钱了。理论是这样的，但是 Aave V2 将&lt;code&gt;transfer&lt;/code&gt;函数重载了，调用后就会&lt;code&gt;revert&lt;/code&gt;，所以是没办法转移债务的。&lt;/p&gt;
 &lt;p&gt;然后就是如何借款了。在 Aave V2 中借款有两种：稳定利率债务、可变利率债务。前者利率固定，借钱时利率是多少，后面利滚利时利息就一直是多少（也有可能调整，如借钱时固定利率和当前利率差距过大）；后者利率不固定，随着市场波动，借钱的人多（资金池使用率高），利率就高，人少，利率就低。&lt;/p&gt;
 &lt;p&gt;当我们想统计&lt;code&gt;t&lt;/code&gt;时刻债务总量即：$D^{asset}_t = SD_t(稳定利率债务) + VD_t(浮动利率债务)$，而借款关系到存款利率问题（借款为合约赚取收入，收入分配给存款用户，实现银行的基本功能）。&lt;/p&gt;
-&lt;h5 id=&#34;浮动利率债务&#34;&gt;浮动利率债务
-&lt;/h5&gt;&lt;p&gt;浮动利率虽然浮动（会因为资金池利用率而改变，利用率高，浮动利率就该，反之变低），但是其计算实现反而更加简单。Aave V2 对于每一笔可变债务都首先放缩到&lt;code&gt;0&lt;/code&gt;时刻（创世时间）然后利用一个变量存储累计可变债务指数，从而统计出用户当前总可变债务（仅浮动利率债务部分）。&lt;/p&gt;
+&lt;h4 id=&#34;浮动利率债务&#34;&gt;浮动利率债务
+&lt;/h4&gt;&lt;p&gt;浮动利率虽然浮动（会因为资金池利用率而改变，利用率高，浮动利率就该，反之变低），但是其计算实现反而更加简单。Aave V2 对于每一笔可变债务都首先放缩到&lt;code&gt;0&lt;/code&gt;时刻（创世时间）然后利用一个变量存储累计可变债务指数，从而统计出用户当前总可变债务（仅浮动利率债务部分）。&lt;/p&gt;
 &lt;p&gt;首先理解这个放缩（&lt;code&gt;scaled&lt;/code&gt;），它将当前借出的债务换算到创世时间时（即假设你这笔债务在创世时间时借出），假设现在是 $t_1$ 时刻，从 $t_0$ 时刻（创世时间）到当前的累计可变债务 $VN_t^{asset}$ 为 200%（假设创世初借款 100，现在 $t_1$ 就需要还 200 了），那么用户借出 1000 $ 相当于创世初时借了 500 $。上述这个 1000 到 500 的过程就是放缩。&lt;/p&gt;
 &lt;p&gt;然后就是这个累计可变债务指数 $VN_t^{asset}$ 又是如何确定的呢？白皮书中的定义是：&lt;/p&gt;
 &lt;p&gt;$$
@@ -3017,8 +3017,8 @@ $$&lt;/p&gt;
 V D(x) = ScV B(x) * VN_t
 $$&lt;/p&gt;
 &lt;p&gt;对于开头的 $SD_t$ （浮动利率债务）的计算就是所有用户的 $VD(x)$ 的总和了。&lt;/p&gt;
-&lt;h5 id=&#34;稳定利率债务&#34;&gt;稳定利率债务
-&lt;/h5&gt;&lt;p&gt;对于稳定利率，其计算方法就不一样了。首先需要明确，稳定利率债务不是说借贷利率恒定不变（非硬编码在合约中），而是在计算复利（利滚利）时，利率固定下来，不会因为资金利用率（合约中资金使用程度）而改变，当然当前稳定利率还是会不断改变的。&lt;/p&gt;
+&lt;h4 id=&#34;稳定利率债务&#34;&gt;稳定利率债务
+&lt;/h4&gt;&lt;p&gt;对于稳定利率，其计算方法就不一样了。首先需要明确，稳定利率债务不是说借贷利率恒定不变（非硬编码在合约中），而是在计算复利（利滚利）时，利率固定下来，不会因为资金利用率（合约中资金使用程度）而改变，当然当前稳定利率还是会不断改变的。&lt;/p&gt;
 &lt;p&gt;那么借出一笔稳定利率的债务是怎么进行的呢？在 Aave V2 中记录的是用户的平均稳定借款利率和稳定借款债务，通过两者即可计算当前债务量。&lt;/p&gt;
 &lt;p&gt;为什么要计算平均稳定借款利率呢？如果使用平均稳定借款利率，那么统计债务的时候就需要遍历每一笔稳定利率借款，而且每一笔债务都需要单独的存储，这都会需要大量的&lt;code&gt;gas&lt;/code&gt;，而采用平均稳定利率，那么对于每个用户想要得到当前时刻的债务 $SD_t(x)$，需要存储的就变为，用户所有债务的平均稳定利率 $\overline{SR_t}$ 和稳定利率债务总量 $SB(x)$：&lt;/p&gt;
 &lt;p&gt;$$
@@ -3031,11 +3031,11 @@ $$&lt;/p&gt;
 $$&lt;/p&gt;
 &lt;p&gt;上述公式表示，当用户借出一笔新的资金 $SB_{new}$ ，在此时，资金池的稳定利率为 $SR_t$ ，而用户此前的稳定利率债务为 $SD_t$ （不包含 $SB_{new}$，并且个人觉得使用 $SD_{t-1}$更加符合含义）此前的平均稳定利率为 $\overline{SR_{t−1}} $。在初始和还清债务时，用户的 $SD_t$ 和 $\overline{SR_{t−1}} $ 均为 0 。如此，如果用户不断借钱，那么这个平均稳定利率就会不断靠近当前稳定利率。&lt;/p&gt;
 &lt;p&gt;在上面的几个公式中 $SD_t$ 和 $SB(x)$ 不断交替出现，其含义十分相似，都表示用户的稳定利率的债务，但还是有一些区别。对于 $SB(x)$ 其表示的存储于合约上的债务，即用户当前拥有的债务 token，而$SD_t(x)$ 更多的表示实际需要还给合约的欠款，从$SB(x)$ 到 $SD_t(x)$ 需要经过开头的那个公式。&lt;/p&gt;
-&lt;h4 id=&#34;还款&#34;&gt;还款
-&lt;/h4&gt;&lt;h5 id=&#34;浮动利率还款&#34;&gt;浮动利率还款
-&lt;/h5&gt;&lt;p&gt;在前面我们知道，统计用户的浮动利率债务的时候用的是放缩后的债务 token，而还款也是一样，扣除的是放缩后的债务 token，以此保持浮动利率债务的统计。那么还款后应该扣除多少放缩后的债务 token 呢？这个逻辑和借款的逻辑相反，用户还款 $m$ 根据从创世到现在的累计可变债务 $VN_t^{asset}$ 即可得到新的债务：$ScVB_t(x) = ScVB_{t-1}(x) - \frac{m}{VN_t}$。&lt;/p&gt;
-&lt;h5 id=&#34;稳定利率还款&#34;&gt;稳定利率还款
-&lt;/h5&gt;&lt;p&gt;稳定利率和浮动利率不同，没有这个放缩的过程，所以是计算当前实际欠款 $SD_t(x)$（利用借款中其定义公式），然后减去还款数额，并且重新计算平均稳定利率（分母不能为 0 所以分条件）：&lt;/p&gt;
+&lt;h3 id=&#34;还款&#34;&gt;还款
+&lt;/h3&gt;&lt;h4 id=&#34;浮动利率还款&#34;&gt;浮动利率还款
+&lt;/h4&gt;&lt;p&gt;在前面我们知道，统计用户的浮动利率债务的时候用的是放缩后的债务 token，而还款也是一样，扣除的是放缩后的债务 token，以此保持浮动利率债务的统计。那么还款后应该扣除多少放缩后的债务 token 呢？这个逻辑和借款的逻辑相反，用户还款 $m$ 根据从创世到现在的累计可变债务 $VN_t^{asset}$ 即可得到新的债务：$ScVB_t(x) = ScVB_{t-1}(x) - \frac{m}{VN_t}$。&lt;/p&gt;
+&lt;h4 id=&#34;稳定利率还款&#34;&gt;稳定利率还款
+&lt;/h4&gt;&lt;p&gt;稳定利率和浮动利率不同，没有这个放缩的过程，所以是计算当前实际欠款 $SD_t(x)$（利用借款中其定义公式），然后减去还款数额，并且重新计算平均稳定利率（分母不能为 0 所以分条件）：&lt;/p&gt;
 &lt;p&gt;$$
 \overline{SR*t} =
 \begin{cases}
@@ -3043,8 +3043,8 @@ $$&lt;/p&gt;
 \frac{SD_t * \overline{SR*{t−1}} − SB(x) * SR(x)}{SD_t−SB_x}&amp;amp;,if \space SD_t − SB_x &amp;gt; 0
 \end{cases}
 $$&lt;/p&gt;
-&lt;h2 id=&#34;存款&#34;&gt;存款
-&lt;/h2&gt;&lt;p&gt;Aave V2 中对于用户的存款也是采用放缩和 token 的方法存储用户的存款额度。首先是用户查看当前存款额度$aB_t(x)$（能取出多少钱）：&lt;/p&gt;
+&lt;h1 id=&#34;存款&#34;&gt;存款
+&lt;/h1&gt;&lt;p&gt;Aave V2 中对于用户的存款也是采用放缩和 token 的方法存储用户的存款额度。首先是用户查看当前存款额度$aB_t(x)$（能取出多少钱）：&lt;/p&gt;
 &lt;p&gt;$$
 aB_t(x) = ScB_t(x) * NI_t
 $$&lt;/p&gt;
@@ -3059,8 +3059,8 @@ $$&lt;/p&gt;
 &lt;p&gt;$$
 ScB_t(x) = ScB_{t-1}(x) + \frac{m}{NI_t}
 $$&lt;/p&gt;
-&lt;h2 id=&#34;利率变化&#34;&gt;利率变化
-&lt;/h2&gt;&lt;p&gt;在上述的各种操作，我们可以知道 Aave V2 其实挺像一个银行了，利用用户的存款进行出借，赚取借贷的利息，然后将利息作为存款的利息发放给存款用户，实现存款获得利息，借款付出利息（虽然是超额抵押借贷）。&lt;/p&gt;
+&lt;h1 id=&#34;利率变化&#34;&gt;利率变化
+&lt;/h1&gt;&lt;p&gt;在上述的各种操作，我们可以知道 Aave V2 其实挺像一个银行了，利用用户的存款进行出借，赚取借贷的利息，然后将利息作为存款的利息发放给存款用户，实现存款获得利息，借款付出利息（虽然是超额抵押借贷）。&lt;/p&gt;
 &lt;p&gt;但还有一个问题，上述的三个实时利率（当前稳定利率、当前浮动利率、当前流动性率）都是如何确定的呢？首先明确影响这些利率的因素：资金池使用率（使用率越高，借贷的利率理所当然的会更高，反之降低）。&lt;/p&gt;
 &lt;p&gt;基本上说所有的操作都会影响这个，然后影响其他：借款拉高、还款降低、存款拉低、取回拉高。同时借贷的利息越多，用户存款所得到的利息才会高（存款利息的来源就是借贷的利息）。&lt;/p&gt;
 &lt;p&gt;首先明确借款的当前利率如何确定：&lt;/p&gt;
@@ -3087,8 +3087,8 @@ $$&lt;/p&gt;
 &amp;amp;, if \space D_t &amp;gt; 0
 \end{cases}
 $$&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3099&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3099&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;AAVE v2 - white paper&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://learnblockchain.cn/article/3137&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;AAVE V2 学习笔记&lt;/a&gt;&lt;/p&gt;
@@ -3104,8 +3104,8 @@ $$&lt;/p&gt;
         <guid>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
         <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
 &lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
-&lt;h2 id=&#34;单位手续费&#34;&gt;单位手续费
-&lt;/h2&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
+&lt;h1 id=&#34;单位手续费&#34;&gt;单位手续费
+&lt;/h1&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;liquidityGross&lt;/code&gt;：当该&lt;code&gt;tick&lt;/code&gt;被设置为区间上限或下限时就会增加，当其为 0 时，表示该&lt;code&gt;tick&lt;/code&gt;没有人设置区间（计算区间流动性时忽略，当这个&lt;code&gt;tick&lt;/code&gt;不存在）。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;liquidityNet&lt;/code&gt;：记录流动性的变化量，即一个$\Delta$值，每当穿过这个&lt;code&gt;tick&lt;/code&gt;值时需要改变的当前激活流动性大小（从&lt;code&gt;tick&lt;/code&gt;右边穿过加，反之减）。&lt;/li&gt;
@@ -3132,8 +3132,8 @@ $$&lt;/p&gt;
 &lt;p&gt;把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;关于&lt;code&gt;tick&lt;/code&gt;添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。&lt;/p&gt;
-&lt;h2 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
-&lt;/h2&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
+&lt;h1 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
+&lt;/h1&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
 &lt;p&gt;首先时原本的恒定乘积公式：$x * y = k = L^2$&lt;/p&gt;
 &lt;p&gt;用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
 图片参考：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -3149,8 +3149,8 @@ $$&lt;/p&gt;
 \
 L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
 $$&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章：
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章：
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
@@ -3160,14 +3160,14 @@ $$&lt;/p&gt;
         <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
         
         <guid>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
-        <description>&lt;h2 id=&#34;主要更新点&#34;&gt;主要更新点
-&lt;/h2&gt;&lt;ol&gt;
+        <description>&lt;h1 id=&#34;主要更新点&#34;&gt;主要更新点
+&lt;/h1&gt;&lt;ol&gt;
 &lt;li&gt;分不同价格区间提供流动性&lt;/li&gt;
 &lt;li&gt;提供多个收费层级&lt;/li&gt;
 &lt;li&gt;高级预言机&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
-&lt;/h2&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
+&lt;h1 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
+&lt;/h1&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;用户选择投入流动性到 1,000-2,000 美元的价格区间，那么只有价格在此范围内进行的交易产生的手续费，用户才有资格得到。因此用户需要选择交易最经常发生的价格区间才能获得最大的收益&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -3182,8 +3182,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;其次的设计就是区间：区间的选择不能无限制，作为链上合约，实现不了这么复杂的事情。&lt;/p&gt;
 &lt;p&gt;V3 在价格这一射线上选择一系列不连续的价格点作为可以选择形成区间，这些价格点称为&lt;code&gt;tick&lt;/code&gt;，以此来减少计算关于流动性的计算，然后还设置了&lt;code&gt;tickspacing&lt;/code&gt;这一存在，要求两个&lt;code&gt;tick&lt;/code&gt;之间存在&lt;code&gt;tickspacing&lt;/code&gt;个&lt;code&gt;tick&lt;/code&gt;，而在 V3 中锁定唯一的代币对池子，需要通过：两种代币、&lt;code&gt;tickspacing&lt;/code&gt;这三个参数。&lt;code&gt;tick&lt;/code&gt;的大小是如何设置的呢？&lt;code&gt;tick&lt;/code&gt;本身是一个等幂数列 $p_i= {1.0001}^i$ ，其 i 的取值有范围&lt;code&gt;[-887272, 887272]&lt;/code&gt;。这使得在接&lt;code&gt;0-1&lt;/code&gt;的时候能提供一个很密集的&lt;code&gt;tick&lt;/code&gt;（很适合如稳定币对），远离 1 的时候能提供较分散的&lt;code&gt;tick&lt;/code&gt;给价格波动大的兑换合约（如两个山寨币对）。&lt;/p&gt;
-&lt;h2 id=&#34;多收费层级&#34;&gt;多收费层级
-&lt;/h2&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
+&lt;h1 id=&#34;多收费层级&#34;&gt;多收费层级
+&lt;/h1&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
 &lt;p&gt;不同的收费层级通过前面所讲的&lt;code&gt;tickspacing&lt;/code&gt;结合决定：手续费低，则币价相对稳定，&lt;code&gt;tickspacing&lt;/code&gt;小；反之手续费高，币价波动大，&lt;code&gt;tickspacing&lt;/code&gt;大。具体设置如下：&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -3214,8 +3214,8 @@ $$&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 V3 合约实现的时候为&lt;code&gt;tickspacing&lt;/code&gt;扩充留下了代码，可以后续添加。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;高级预言机&#34;&gt;高级预言机
-&lt;/h2&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
+&lt;h1 id=&#34;高级预言机&#34;&gt;高级预言机
+&lt;/h1&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
 &lt;p&gt;在 V3 中&lt;code&gt;tick&lt;/code&gt;的计算为$p_i= {1.0001}^i$，所以$i = \log _{1.0001} p_i$&lt;/p&gt;
 &lt;p&gt;V3 中计算的不再是价格累积值而是&lt;code&gt;tick&lt;/code&gt;累积值，所以$a_j = a_{j-1} + \Delta t * i$，其中 i 就是上面&lt;code&gt;tick&lt;/code&gt;中指代的那个 i 。当我们计算平均价格时&lt;/p&gt;
 &lt;p&gt;$$
@@ -3243,8 +3243,8 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;assert&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;对于可能出现异常抛出的地方，&lt;code&gt;solidity&lt;/code&gt;也提供了&lt;code&gt;try-catch&lt;/code&gt;方法进行异常捕获处理。&lt;/p&gt;
-&lt;h2 id=&#34;1-error&#34;&gt;1 error
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;error&lt;/code&gt;是&lt;code&gt;solidity 0.8.4&lt;/code&gt;新加的内容，方便且高效（省&lt;code&gt;gas&lt;/code&gt;）地向用户解释操作失败的原因，同时还可以在抛出异常的同时携带参数，帮助开发者更好地调试。&lt;/p&gt;
+&lt;h1 id=&#34;1-error&#34;&gt;1 error
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;error&lt;/code&gt;是&lt;code&gt;solidity 0.8.4&lt;/code&gt;新加的内容，方便且高效（省&lt;code&gt;gas&lt;/code&gt;）地向用户解释操作失败的原因，同时还可以在抛出异常的同时携带参数，帮助开发者更好地调试。&lt;/p&gt;
 &lt;p&gt;使用&lt;code&gt;error&lt;/code&gt;需要用户自己定义&lt;code&gt;error&lt;/code&gt;类型和抛出的参数，同时需要搭配&lt;code&gt;revert&lt;/code&gt;使用。例子如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3274,8 +3274,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-require&#34;&gt;2 require
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;require&lt;/code&gt;命令是&lt;code&gt;solidity 0.8&lt;/code&gt;之前抛出异常的常用方法，根据条件判断是否抛出异常&lt;code&gt;require(检查条件，&amp;quot;异常的描述&amp;quot;)&lt;/code&gt;。优点是好用，缺点是随着&lt;code&gt;require&lt;/code&gt;后返回的字符串的长度的增加，&lt;code&gt;gas&lt;/code&gt;费用也在增加，比&lt;code&gt;error&lt;/code&gt;高。例子如下：&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;2-require&#34;&gt;2 require
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;require&lt;/code&gt;命令是&lt;code&gt;solidity 0.8&lt;/code&gt;之前抛出异常的常用方法，根据条件判断是否抛出异常&lt;code&gt;require(检查条件，&amp;quot;异常的描述&amp;quot;)&lt;/code&gt;。优点是好用，缺点是随着&lt;code&gt;require&lt;/code&gt;后返回的字符串的长度的增加，&lt;code&gt;gas&lt;/code&gt;费用也在增加，比&lt;code&gt;error&lt;/code&gt;高。例子如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3290,8 +3290,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-assert&#34;&gt;3 assert
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;assert&lt;/code&gt;命令一般用于程序员写程序&lt;code&gt;debug&lt;/code&gt;，因为它不能解释抛出异常的原因（比&lt;code&gt;require&lt;/code&gt;少个字符串）&lt;code&gt;assert(检查条件)&lt;/code&gt;。最大的缺点是条件不成立后，抛出异常且&lt;code&gt;gas&lt;/code&gt;用回全部消耗掉。例子如下：&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;3-assert&#34;&gt;3 assert
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;assert&lt;/code&gt;命令一般用于程序员写程序&lt;code&gt;debug&lt;/code&gt;，因为它不能解释抛出异常的原因（比&lt;code&gt;require&lt;/code&gt;少个字符串）&lt;code&gt;assert(检查条件)&lt;/code&gt;。最大的缺点是条件不成立后，抛出异常且&lt;code&gt;gas&lt;/code&gt;用回全部消耗掉。例子如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3306,8 +3306,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-try-catch&#34;&gt;4 try-catch
-&lt;/h2&gt;&lt;p&gt;在&lt;code&gt;solidity 0.6&lt;/code&gt;版本后，&lt;code&gt;solidity&lt;/code&gt;也添加了异常处理方法，并且&lt;code&gt;try-catch&lt;/code&gt;只能被用于&lt;code&gt;external&lt;/code&gt;函数（只能由外部调用的函数）或创建合约时&lt;code&gt;constructor&lt;/code&gt;（被视为&lt;code&gt;external&lt;/code&gt;函数）的调用。基本语法如下：&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;4-try-catch&#34;&gt;4 try-catch
+&lt;/h1&gt;&lt;p&gt;在&lt;code&gt;solidity 0.6&lt;/code&gt;版本后，&lt;code&gt;solidity&lt;/code&gt;也添加了异常处理方法，并且&lt;code&gt;try-catch&lt;/code&gt;只能被用于&lt;code&gt;external&lt;/code&gt;函数（只能由外部调用的函数）或创建合约时&lt;code&gt;constructor&lt;/code&gt;（被视为&lt;code&gt;external&lt;/code&gt;函数）的调用。基本语法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -3334,8 +3334,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;5-总结&#34;&gt;5 总结
-&lt;/h2&gt;&lt;p&gt;现在真正使用的异常抛出方法有：&lt;code&gt;error&lt;/code&gt;（新兴）、&lt;code&gt;require&lt;/code&gt;，而&lt;code&gt;assert&lt;/code&gt;由于其高费用而常常不予考虑。&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;5-总结&#34;&gt;5 总结
+&lt;/h1&gt;&lt;p&gt;现在真正使用的异常抛出方法有：&lt;code&gt;error&lt;/code&gt;（新兴）、&lt;code&gt;require&lt;/code&gt;，而&lt;code&gt;assert&lt;/code&gt;由于其高费用而常常不予考虑。&lt;/p&gt;
 &lt;p&gt;对于异常捕获&lt;code&gt;tyr-catch&lt;/code&gt;只能在调用外部函数（包括生成新合约）时使用。&lt;/p&gt;
 </description>
         </item>
@@ -3357,8 +3357,8 @@ $$&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;abi.decode&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;1-abiencode&#34;&gt;1 abi.encode
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;abi.encode&lt;/code&gt;会根据给定的 ABI 规则进行编码（将每个参数填充为 32 字节的数据，并拼接在一起）。当我们与合约进行交互时，使用的就是&lt;code&gt;abi.encode&lt;/code&gt;。使用方法如下：&lt;/p&gt;
+&lt;h1 id=&#34;1-abiencode&#34;&gt;1 abi.encode
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;abi.encode&lt;/code&gt;会根据给定的 ABI 规则进行编码（将每个参数填充为 32 字节的数据，并拼接在一起）。当我们与合约进行交互时，使用的就是&lt;code&gt;abi.encode&lt;/code&gt;。使用方法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3374,11 +3374,11 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;返回值为&lt;code&gt;bytes&lt;/code&gt;类型。&lt;/p&gt;
-&lt;h2 id=&#34;2-abiencodepacked&#34;&gt;2 abi.encodePacked
-&lt;/h2&gt;&lt;p&gt;由&lt;code&gt;abi.encode&lt;/code&gt;的编码规则可以看出，其中很容易浪费的空间。当我们想节省空间，并不与合约进行交互时，就可以使用&lt;code&gt;abi.encodePacked&lt;/code&gt;。&lt;code&gt;abi.encodePacked&lt;/code&gt;会使用参数所需的最低空间编码（如&lt;code&gt;uint8&lt;/code&gt;参数就不会占用 32 字节那么大的空间了），使用方法同&lt;code&gt;abi.encode&lt;/code&gt;。&lt;/p&gt;
+&lt;h1 id=&#34;2-abiencodepacked&#34;&gt;2 abi.encodePacked
+&lt;/h1&gt;&lt;p&gt;由&lt;code&gt;abi.encode&lt;/code&gt;的编码规则可以看出，其中很容易浪费的空间。当我们想节省空间，并不与合约进行交互时，就可以使用&lt;code&gt;abi.encodePacked&lt;/code&gt;。&lt;code&gt;abi.encodePacked&lt;/code&gt;会使用参数所需的最低空间编码（如&lt;code&gt;uint8&lt;/code&gt;参数就不会占用 32 字节那么大的空间了），使用方法同&lt;code&gt;abi.encode&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;返回值为&lt;code&gt;bytes&lt;/code&gt;类型。&lt;/p&gt;
-&lt;h2 id=&#34;3-abiencodewithsignature&#34;&gt;3 abi.encodeWithSignature
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;的规则和&lt;code&gt;abi.encode&lt;/code&gt;类似（每个参数都时 32 字节），但区别在于&lt;code&gt;Signature&lt;/code&gt;（函数签名）这个上。&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;的第一个参数要求是函数签名，调用其他合约时可以使用，例子如下：&lt;/p&gt;
+&lt;h1 id=&#34;3-abiencodewithsignature&#34;&gt;3 abi.encodeWithSignature
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;的规则和&lt;code&gt;abi.encode&lt;/code&gt;类似（每个参数都时 32 字节），但区别在于&lt;code&gt;Signature&lt;/code&gt;（函数签名）这个上。&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;的第一个参数要求是函数签名，调用其他合约时可以使用，例子如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3392,8 +3392,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;返回值为&lt;code&gt;bytes&lt;/code&gt;类型。返回结果相当于原本&lt;code&gt;abi.encode&lt;/code&gt;例子中的结果加上函数选择器 32 字节化结果。&lt;/p&gt;
-&lt;h2 id=&#34;4-abiencodewithselector&#34;&gt;4 abi.encodeWithSelector
-&lt;/h2&gt;&lt;p&gt;与&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;功能类似，只不过第一个参数为函数选择器，为函数签名&lt;code&gt;Keccak&lt;/code&gt;哈希结果的前 4 个字节。&lt;/p&gt;
+&lt;h1 id=&#34;4-abiencodewithselector&#34;&gt;4 abi.encodeWithSelector
+&lt;/h1&gt;&lt;p&gt;与&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;功能类似，只不过第一个参数为函数选择器，为函数签名&lt;code&gt;Keccak&lt;/code&gt;哈希结果的前 4 个字节。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3407,8 +3407,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;返回值为&lt;code&gt;bytes&lt;/code&gt;类型。返回的结果与&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;中一致（对于相同的函数）。&lt;/p&gt;
-&lt;h2 id=&#34;5-abidecode&#34;&gt;5 abi.decode
-&lt;/h2&gt;&lt;p&gt;&lt;code&gt;abi.decode&lt;/code&gt;用于解码&lt;code&gt;abi.encode&lt;/code&gt;生成的二进制编码，将它还原成原本的参数。使用方法如下：&lt;/p&gt;
+&lt;h1 id=&#34;5-abidecode&#34;&gt;5 abi.decode
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;abi.decode&lt;/code&gt;用于解码&lt;code&gt;abi.encode&lt;/code&gt;生成的二进制编码，将它还原成原本的参数。使用方法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3421,8 +3421,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;6-总结&#34;&gt;6 总结
-&lt;/h2&gt;&lt;p&gt;最基本的&lt;code&gt;ABI&lt;/code&gt;编码方法就是&lt;code&gt;abi.decode&lt;/code&gt;，但为了节省空间（在不与合约交互时）设计了&lt;code&gt;abi.encodePacked&lt;/code&gt;。&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;6-总结&#34;&gt;6 总结
+&lt;/h1&gt;&lt;p&gt;最基本的&lt;code&gt;ABI&lt;/code&gt;编码方法就是&lt;code&gt;abi.decode&lt;/code&gt;，但为了节省空间（在不与合约交互时）设计了&lt;code&gt;abi.encodePacked&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;为了快捷计算所需要的合约交互编码结果，设计了&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;和&lt;code&gt;abi.encodeWithSignature&lt;/code&gt;，其中前者填入的是函数签名字符串参数，后者使用的是函数选择器，但输出结果一致。&lt;/p&gt;
 </description>
         </item>
@@ -3437,8 +3437,8 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;creat&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;creat2&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;1-creat&#34;&gt;1 creat
-&lt;/h2&gt;&lt;p&gt;使用&lt;code&gt;creat&lt;/code&gt;就是直接&lt;code&gt;new&lt;/code&gt;一个合约即可，使用&lt;code&gt;create&lt;/code&gt;创建的地址的计算方法是对：部署者地址和&lt;code&gt;nonce&lt;/code&gt;（部署者发送交易的总数）进行哈希计算。使用方法如下：&lt;/p&gt;
+&lt;h1 id=&#34;1-creat&#34;&gt;1 creat
+&lt;/h1&gt;&lt;p&gt;使用&lt;code&gt;creat&lt;/code&gt;就是直接&lt;code&gt;new&lt;/code&gt;一个合约即可，使用&lt;code&gt;create&lt;/code&gt;创建的地址的计算方法是对：部署者地址和&lt;code&gt;nonce&lt;/code&gt;（部署者发送交易的总数）进行哈希计算。使用方法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3462,8 +3462,8 @@ $$&lt;/p&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;使用&lt;code&gt;creat&lt;/code&gt;同样也需要知道需要创建合约的代码&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;2-creat2&#34;&gt;2 creat2
-&lt;/h2&gt;&lt;p&gt;使用&lt;code&gt;creat2&lt;/code&gt;的目的是为了让合约地址独立于未来的事件（不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上）。地址计算方法如下：&lt;/p&gt;
+&lt;h1 id=&#34;2-creat2&#34;&gt;2 creat2
+&lt;/h1&gt;&lt;p&gt;使用&lt;code&gt;creat2&lt;/code&gt;的目的是为了让合约地址独立于未来的事件（不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上）。地址计算方法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -3537,8 +3537,8 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-总结&#34;&gt;3 总结
-&lt;/h2&gt;&lt;p&gt;对于&lt;code&gt;creat&lt;/code&gt;和&lt;code&gt;creat2&lt;/code&gt;来说，两者间除了&lt;code&gt;creat2&lt;/code&gt;可以提前计算出将要部署的合约的地址外，没有什么区别。&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;3-总结&#34;&gt;3 总结
+&lt;/h1&gt;&lt;p&gt;对于&lt;code&gt;creat&lt;/code&gt;和&lt;code&gt;creat2&lt;/code&gt;来说，两者间除了&lt;code&gt;creat2&lt;/code&gt;可以提前计算出将要部署的合约的地址外，没有什么区别。&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -3547,8 +3547,8 @@ $$&lt;/p&gt;
         <pubDate>Thu, 08 Aug 2024 14:53:55 +0800</pubDate>
         
         <guid>http://localhost:1313/p/%E5%90%88%E7%BA%A6%E5%86%85%E7%9A%84%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8/</guid>
-        <description>&lt;h2 id=&#34;1-合约变量&#34;&gt;1 合约变量
-&lt;/h2&gt;&lt;p&gt;​ 通过创建或调用合约变量即可使用其他合约中的变量&lt;/p&gt;
+        <description>&lt;h1 id=&#34;1-合约变量&#34;&gt;1 合约变量
+&lt;/h1&gt;&lt;p&gt;​ 通过创建或调用合约变量即可使用其他合约中的变量&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3568,8 +3568,8 @@ $$&lt;/p&gt;
 &lt;p&gt;这种方法要求：已知目标合约的代码（或接口）和地址。&lt;/p&gt;
 &lt;p&gt;调用者修改了，执行环境被修改&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;2-call&#34;&gt;2 call
-&lt;/h2&gt;&lt;p&gt;​ address 类型低级成员函数，返回(bool, data)，分别对应 call 是否成功以及目标函数的返回值。&lt;/p&gt;
+&lt;h1 id=&#34;2-call&#34;&gt;2 call
+&lt;/h1&gt;&lt;p&gt;​ address 类型低级成员函数，返回(bool, data)，分别对应 call 是否成功以及目标函数的返回值。&lt;/p&gt;
 &lt;p&gt;​ call 使用后调用者（msg.sender）被修改，执行环境也修改为目标合约的执行环境。可以指定发送给目标合约的 value 和 gas。&lt;/p&gt;
 &lt;p&gt;​ 不推荐使用它来调用其他合约，因为不安全（因为这回将函数调用的主动权交给它），但其可以帮助我们在不知道目标合约代码（或接口）的情况下调用其函数。使用方法如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -3588,8 +3588,8 @@ $$&lt;/p&gt;
 &lt;p&gt;其中的 data 是使用 abi.encodeWithSignature 获得的，其值为对调用函数和函数参数内容的编码。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;​ 当调用了不存在的函数时，会触发目标合约（address）的 fallback 函数，这存在安全风险。&lt;/p&gt;
-&lt;h2 id=&#34;3-delegatecall&#34;&gt;3 delegatecall
-&lt;/h2&gt;&lt;p&gt;​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，但其只能指定 gas，不能指定 value。&lt;/p&gt;
+&lt;h1 id=&#34;3-delegatecall&#34;&gt;3 delegatecall
+&lt;/h1&gt;&lt;p&gt;​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，但其只能指定 gas，不能指定 value。&lt;/p&gt;
 &lt;p&gt;​ delegatecall 使用后调用者（msg.sender）和执行环境均不变。&lt;/p&gt;
 &lt;p&gt;​ 使用 delegatecall 一定要保证当前合约和目标合约的状态变量存储结构相同，并且目标合约安全，不然会造成资产损失。&lt;/p&gt;
 &lt;p&gt;​ 使用其场景主要有代理合约和 EIP-2535 Diamonds。使用方法如下：&lt;/p&gt;
@@ -3605,18 +3605,18 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// address 是目标合约地址，即想调用这个合约的函数
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-callcode&#34;&gt;4 callcode
-&lt;/h2&gt;&lt;p&gt;​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，使用后调用者（msg.sender）会修改，执行环境不会改变。&lt;/p&gt;
+&lt;/div&gt;&lt;h1 id=&#34;4-callcode&#34;&gt;4 callcode
+&lt;/h1&gt;&lt;p&gt;​ 与 call 类似，为 address 类型低级成员函数，返回值也和 call 类似，使用后调用者（msg.sender）会修改，执行环境不会改变。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 solidity 0.5.0 后禁用了。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;5-staticcall&#34;&gt;5 staticcall
-&lt;/h2&gt;&lt;p&gt;​ 它允许合约调用目标合约的函数和数据，但不能修改（即只能调用 view、pure 函数）。&lt;/p&gt;
+&lt;h1 id=&#34;5-staticcall&#34;&gt;5 staticcall
+&lt;/h1&gt;&lt;p&gt;​ 它允许合约调用目标合约的函数和数据，但不能修改（即只能调用 view、pure 函数）。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;目前 solidity 中没有 API 能够直接调用它，仅仅是计划将来在编译器层面把调用 view 和 pure 类型的函数编译成 STATICCALL 指令。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;6-总结&#34;&gt;6 总结
-&lt;/h2&gt;&lt;p&gt;​ 主要能够使用的有三种（call、delegatecall、合约变量），有一种废弃（callcode），一种未来计划用在编译器层面中（staticcall）。&lt;/p&gt;
+&lt;h1 id=&#34;6-总结&#34;&gt;6 总结
+&lt;/h1&gt;&lt;p&gt;​ 主要能够使用的有三种（call、delegatecall、合约变量），有一种废弃（callcode），一种未来计划用在编译器层面中（staticcall）。&lt;/p&gt;
 &lt;p&gt;​ 几种方法可以这样记：call 方法属于‘极端改变’的方法，调用者和执行环境均改变；delegatecall 方法属于‘极端不改变’的方法，调用者和执行环境均不变；callcode 方法改变调用者，但执行环境不变；合约变量方法要求高（多了个目标合约代码或接口的要求），但安全。&lt;/p&gt;
 </description>
         </item>

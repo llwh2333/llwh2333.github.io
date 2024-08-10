@@ -14,8 +14,8 @@
         
         <guid>http://localhost:1313/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
         <description>&lt;p&gt;&lt;code&gt;Solana&lt;/code&gt;中原生代币的交互即为对&lt;code&gt;Solana&lt;/code&gt;的代币&lt;code&gt;Sol&lt;/code&gt;代币的代币进行交易，实际上就是对于&lt;code&gt;Sol&lt;/code&gt;代币进行查看，转账这两个操作。&lt;/p&gt;
-&lt;h2 id=&#34;js-交互&#34;&gt;JS 交互
-&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;以下为通过 JS 代码，查看某个特定账户的余额和从某个账户（持有该账户的私钥）向另一个账户（只需要直到公钥地址）进行转账。
+&lt;h1 id=&#34;js-交互&#34;&gt;JS 交互
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;以下为通过 JS 代码，查看某个特定账户的余额和从某个账户（持有该账户的私钥）向另一个账户（只需要直到公钥地址）进行转账。
 &lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -153,8 +153,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;python-交互&#34;&gt;Python 交互
-&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;通过`python`的`seahorse`框架进行转账（假设该程序需要对用户收取`sol`）
+&lt;/div&gt;&lt;h1 id=&#34;python-交互&#34;&gt;Python 交互
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;通过`python`的`seahorse`框架进行转账（假设该程序需要对用户收取`sol`）
 &lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -296,8 +296,8 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://solanacookbook.com/zh/core-concepts/accounts.html#%E7%BB%BC%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://solanacookbook.com/zh/core-concepts/accounts.html#%E7%BB%BC%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Solana 秘籍&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>

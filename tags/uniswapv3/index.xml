@@ -15,8 +15,8 @@
         <guid>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
         <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
 &lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
-&lt;h2 id=&#34;单位手续费&#34;&gt;单位手续费
-&lt;/h2&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
+&lt;h1 id=&#34;单位手续费&#34;&gt;单位手续费
+&lt;/h1&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;liquidityGross&lt;/code&gt;：当该&lt;code&gt;tick&lt;/code&gt;被设置为区间上限或下限时就会增加，当其为 0 时，表示该&lt;code&gt;tick&lt;/code&gt;没有人设置区间（计算区间流动性时忽略，当这个&lt;code&gt;tick&lt;/code&gt;不存在）。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;liquidityNet&lt;/code&gt;：记录流动性的变化量，即一个$\Delta$值，每当穿过这个&lt;code&gt;tick&lt;/code&gt;值时需要改变的当前激活流动性大小（从&lt;code&gt;tick&lt;/code&gt;右边穿过加，反之减）。&lt;/li&gt;
@@ -43,8 +43,8 @@
 &lt;p&gt;把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;关于&lt;code&gt;tick&lt;/code&gt;添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。&lt;/p&gt;
-&lt;h2 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
-&lt;/h2&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
+&lt;h1 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
+&lt;/h1&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
 &lt;p&gt;首先时原本的恒定乘积公式：$x * y = k = L^2$&lt;/p&gt;
 &lt;p&gt;用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
 图片参考：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -60,8 +60,8 @@
 \
 L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
 $$&lt;/p&gt;
-&lt;h2 id=&#34;参考文章&#34;&gt;参考文章：
-&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;参考文章&#34;&gt;参考文章：
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
@@ -71,14 +71,14 @@ $$&lt;/p&gt;
         <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
         
         <guid>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
-        <description>&lt;h2 id=&#34;主要更新点&#34;&gt;主要更新点
-&lt;/h2&gt;&lt;ol&gt;
+        <description>&lt;h1 id=&#34;主要更新点&#34;&gt;主要更新点
+&lt;/h1&gt;&lt;ol&gt;
 &lt;li&gt;分不同价格区间提供流动性&lt;/li&gt;
 &lt;li&gt;提供多个收费层级&lt;/li&gt;
 &lt;li&gt;高级预言机&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
-&lt;/h2&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
+&lt;h1 id=&#34;价格区间提供流动性&#34;&gt;价格区间提供流动性
+&lt;/h1&gt;&lt;p&gt;V3 采用了一种新的方式给用户进行流动性的区间选择提供：对于&lt;code&gt;ETH/DAI&lt;/code&gt;池可以选择将 100 美元价值的代币分配给 1,000-2,000 美元的价格区间，并将另外 50 美元价值的代币分配给 1,500-1,750 美元的区间。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;用户选择投入流动性到 1,000-2,000 美元的价格区间，那么只有价格在此范围内进行的交易产生的手续费，用户才有资格得到。因此用户需要选择交易最经常发生的价格区间才能获得最大的收益&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -93,8 +93,8 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;其次的设计就是区间：区间的选择不能无限制，作为链上合约，实现不了这么复杂的事情。&lt;/p&gt;
 &lt;p&gt;V3 在价格这一射线上选择一系列不连续的价格点作为可以选择形成区间，这些价格点称为&lt;code&gt;tick&lt;/code&gt;，以此来减少计算关于流动性的计算，然后还设置了&lt;code&gt;tickspacing&lt;/code&gt;这一存在，要求两个&lt;code&gt;tick&lt;/code&gt;之间存在&lt;code&gt;tickspacing&lt;/code&gt;个&lt;code&gt;tick&lt;/code&gt;，而在 V3 中锁定唯一的代币对池子，需要通过：两种代币、&lt;code&gt;tickspacing&lt;/code&gt;这三个参数。&lt;code&gt;tick&lt;/code&gt;的大小是如何设置的呢？&lt;code&gt;tick&lt;/code&gt;本身是一个等幂数列 $p_i= {1.0001}^i$ ，其 i 的取值有范围&lt;code&gt;[-887272, 887272]&lt;/code&gt;。这使得在接&lt;code&gt;0-1&lt;/code&gt;的时候能提供一个很密集的&lt;code&gt;tick&lt;/code&gt;（很适合如稳定币对），远离 1 的时候能提供较分散的&lt;code&gt;tick&lt;/code&gt;给价格波动大的兑换合约（如两个山寨币对）。&lt;/p&gt;
-&lt;h2 id=&#34;多收费层级&#34;&gt;多收费层级
-&lt;/h2&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
+&lt;h1 id=&#34;多收费层级&#34;&gt;多收费层级
+&lt;/h1&gt;&lt;p&gt;V3 新增的多收费层级就是指不同档次的手续费，V2 中所有代币对合约的手续费统一&lt;code&gt;0.3%&lt;/code&gt;，这对于某些合约（稳定币对合约）收费太高，某些合约（山寨币对合约）收费低了些（币价波动大，很容易贬值）。V3 就因此设置了不同的手续费档次。&lt;/p&gt;
 &lt;p&gt;不同的收费层级通过前面所讲的&lt;code&gt;tickspacing&lt;/code&gt;结合决定：手续费低，则币价相对稳定，&lt;code&gt;tickspacing&lt;/code&gt;小；反之手续费高，币价波动大，&lt;code&gt;tickspacing&lt;/code&gt;大。具体设置如下：&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -125,8 +125,8 @@ $$&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 V3 合约实现的时候为&lt;code&gt;tickspacing&lt;/code&gt;扩充留下了代码，可以后续添加。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;高级预言机&#34;&gt;高级预言机
-&lt;/h2&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
+&lt;h1 id=&#34;高级预言机&#34;&gt;高级预言机
+&lt;/h1&gt;&lt;p&gt;V3 中提出一个新的计算平均价格的方法，与 V2 的预言机有所不同，但总体思路还是相近的。&lt;/p&gt;
 &lt;p&gt;在 V3 中&lt;code&gt;tick&lt;/code&gt;的计算为$p_i= {1.0001}^i$，所以$i = \log _{1.0001} p_i$&lt;/p&gt;
 &lt;p&gt;V3 中计算的不再是价格累积值而是&lt;code&gt;tick&lt;/code&gt;累积值，所以$a_j = a_{j-1} + \Delta t * i$，其中 i 就是上面&lt;code&gt;tick&lt;/code&gt;中指代的那个 i 。当我们计算平均价格时&lt;/p&gt;
 &lt;p&gt;$$

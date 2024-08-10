@@ -307,8 +307,8 @@
     
     <p>zksync Era 在 L1 有部署智能合约，以实现 L1 上的修改。部署的合约有：DiamondInit、DiamondProxy、DiamondUpgrade、ExecutorFacet、GettersFacet、MailboxFacet、Verifier、ValidatorTimelock、AllowList。</p>
 <p>通过上述合约，可以看的出来 zksync Era 的链上合约部分采用的是钻石代理方法，同时也有一些其他的合约辅助。</p>
-<h2 id="diamond-部分">Diamond 部分
-</h2><p>这部分主要是直接贴近<code>Diamond</code>的部分，充当起了 L1（以太坊）与 L2 （ZK Chain）之间的连接器，负责检查提交的有效性证明（零知识证明）与数据可用性，处理 L1 &lt;-&gt; L2 的通信（存取款等），完成 L2 上的状态转换（zksync 的状态更替）。</p>
+<h1 id="diamond-部分">Diamond 部分
+</h1><p>这部分主要是直接贴近<code>Diamond</code>的部分，充当起了 L1（以太坊）与 L2 （ZK Chain）之间的连接器，负责检查提交的有效性证明（零知识证明）与数据可用性，处理 L1 &lt;-&gt; L2 的通信（存取款等），完成 L2 上的状态转换（zksync 的状态更替）。</p>
 <blockquote>
 <p>L2 部分也部署了一些重要的合约执行一些逻辑行为，这些合约被称为系统合约。</p>
 </blockquote>
@@ -316,14 +316,14 @@
 <blockquote>
 <p>需要注意的是，钻石代理的升级系统可以被冻结，从而永久冻结该钻石代理（我的理解是解冻需要升级，升级被冻结就死循环了）</p>
 </blockquote>
-<h3 id="gettersfacet">GettersFacet
-</h3><p>单独的<code>Facet</code>，唯一功能是提供了<code>view</code>和<code>pure</code>方法，同时实现了<code>loupe</code>功能，方便了 Facet 的管理，<a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Getters.sol"  target="_blank" rel="noopener"
+<h2 id="gettersfacet">GettersFacet
+</h2><p>单独的<code>Facet</code>，唯一功能是提供了<code>view</code>和<code>pure</code>方法，同时实现了<code>loupe</code>功能，方便了 Facet 的管理，<a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Getters.sol"  target="_blank" rel="noopener"
     >该 Facet </a>绝对不能冻结。</p>
 <blockquote>
 <p><code>loupe</code>功能就是指获取<code>Diamond</code>的有关信息（各个<code>Facet</code>的地址信息、函数选择器信息），进入到合约代码中发现函数的返回值大多数都是<code>address</code>类型。</p>
 </blockquote>
-<h3 id="mailboxfacet">MailboxFacet
-</h3><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Mailbox.sol"  target="_blank" rel="noopener"
+<h2 id="mailboxfacet">MailboxFacet
+</h2><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Mailbox.sol"  target="_blank" rel="noopener"
     >该 Facet </a>处理 L1 &lt;-&gt; L2 通信 ，具有三个功能：</p>
 <ul>
 <li>
@@ -350,8 +350,8 @@
 <p>L1 上 user 发起的<code>Deposit</code>和<code>FullExit</code>交易都可以独立于 L2 的交易，优先完成。</p>
 <p>用户在发起从 L1 到 L2 的交易时，需要以原生代币支付交易执行费用。在 L2 上的交易，由于 zksync 支持 AA 账户，所以可以用 ERC20 代币支付交易执行费用</p>
 </blockquote>
-<h3 id="executorfacet">ExecutorFacet
-</h3><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Executor.sol"  target="_blank" rel="noopener"
+<h2 id="executorfacet">ExecutorFacet
+</h2><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Executor.sol"  target="_blank" rel="noopener"
     >该 Facet </a>接收来自 L2 的 Batches，强制执行数据的可用性，检查零知识证明（zk-proof）的有效性。状态转换分三个阶段：</p>
 <ul>
 <li>
@@ -455,8 +455,8 @@
 <li><code>NUMBER_OF_LAYER_1_TXS_KEY</code></li>
 <li><code>EXPECTED_SYSTEM_CONTRACT_UPGRADE_TX_HASH_KEY</code></li>
 </ul>
-<h3 id="adminfacet">AdminFacet
-</h3><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Admin.sol"  target="_blank" rel="noopener"
+<h2 id="adminfacet">AdminFacet
+</h2><p><a class="link" href="https://github.com/matter-labs/era-contracts/blob/f4ae6a1b90e2c269542848ada44de669a5009290/l1-contracts/contracts/state-transition/chain-deps/facets/Admin.sol"  target="_blank" rel="noopener"
     >该 Facet </a>负责配置的设置和升级能力，可以处理一下任务：</p>
 <ul>
 <li>
@@ -491,8 +491,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="diamondinit">DiamondInit
-</h3><p>一个单独功能的合约，是钻石代理的初始化逻辑。仅在钻石代理的构造函数中调用以此，不会作为 Facet 保存在钻石中。</p>
+<h2 id="diamondinit">DiamondInit
+</h2><p>一个单独功能的合约，是钻石代理的初始化逻辑。仅在钻石代理的构造函数中调用以此，不会作为 Facet 保存在钻石中。</p>
 <blockquote>
 <p>函数会返回一个魔术值，如<code>EIP 1271</code>的设计，大小为 32 字节</p>
 <div class="highlight"><div class="chroma">
@@ -534,19 +534,19 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div></blockquote>
-<h2 id="validatortimelock">ValidatorTimelock
-</h2><p>介于 Validator 的 EOA 账户和 zksync 智能合约之间的智能合约，提供了无需信任的方法来延迟 batch 的执行，而无需修改主要的 zksync 合约。</p>
+<h1 id="validatortimelock">ValidatorTimelock
+</h1><p>介于 Validator 的 EOA 账户和 zksync 智能合约之间的智能合约，提供了无需信任的方法来延迟 batch 的执行，而无需修改主要的 zksync 合约。</p>
 <p>zksync 主动监控链的活动，并通过冻结链来对任何可疑活动做出应对，使得在恢复正常运营之前有时间进行调查和缓解措施。这种临时方案是为了防止网络处于 Alpha 阶段时验证器的热密钥泄露造成任何重大影响。</p>
 <p>该合约包含了四个主要函数：<code>commitBatches</code> 、 <code>proveBatches</code> 、 <code>executeBatches</code> 和 <code>revertBatches</code> 组成，只能由验证者调用。</p>
 <p>当 Validator 调用<code>commitBatches</code>时，相同的<code>calldata</code>传播到 zksync 合约（<code>DiamondProxy</code>通过<code>call</code>，在<code>ExecutorFacet</code>调用<code>delegatecall</code>），并且为这些 Batches 分配了一个时间戳，来跟踪 Batches 的提交时间，来强制实行提交与执行 Batches 之间的延迟。然后 Validator 可以证明早已提交的 Bacthes 无论写到的时间戳，并且再次将相同的<code>calldata</code>（与<code>proveBatches</code>函数相关）传播到 zksync 合约。在这个延迟过去后，验证者可以调用<code>executeBatches</code>将相同的<code>calldata</code>传播到 zksync 合约。</p>
 <p>ValidatorTimelock 合约的所有者与管理合约的所有者都是 Matter Labs 多签。</p>
-<h2 id="一些其他合约">一些其他合约
-</h2><h3 id="verifier">Verifier
-</h3><p>知识异序非交互式论证（PLONK）验证器拉格朗日基置换的修改版本（大概是链上进行零知识证明的验证的合约吧）。</p>
-<h3 id="allowlist">AllowList
-</h3><p>存储在不同合约上调用函数的权限的智能合约。</p>
-<h2 id="参考文章">参考文章
-</h2><p><a class="link" href="https://community.dorahacks.io/t/zksync-2023-01-31/294"  target="_blank" rel="noopener"
+<h1 id="一些其他合约">一些其他合约
+</h1><h2 id="verifier">Verifier
+</h2><p>知识异序非交互式论证（PLONK）验证器拉格朗日基置换的修改版本（大概是链上进行零知识证明的验证的合约吧）。</p>
+<h2 id="allowlist">AllowList
+</h2><p>存储在不同合约上调用函数的权限的智能合约。</p>
+<h1 id="参考文章">参考文章
+</h1><p><a class="link" href="https://community.dorahacks.io/t/zksync-2023-01-31/294"  target="_blank" rel="noopener"
     >zkSync 学习记录 2023.01.31</a></p>
 <p><a class="link" href="https://docs.zksync.io/build/developer-reference/protocol"  target="_blank" rel="noopener"
     >ZKsync Era Protocol</a></p>
