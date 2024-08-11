@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代">
-<title>Uniswap V3 手续费收取</title>
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name='description' content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代"> <title>Uniswap V3 手续费收取</title>
 
-<link rel='canonical' href='http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/'>
+<link rel="canonical" href="http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/" />
 
 <link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Uniswap V3 手续费收取">
 <meta property='og:description' content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代">
@@ -13,15 +12,14 @@
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='UniswapV3' /><meta property='article:tag' content='Defi' /><meta property='article:tag' content='Fee' /><meta property='article:published_time' content='2024-08-08T16:22:18&#43;08:00'/><meta property='article:modified_time' content='2024-08-08T16:22:18&#43;08:00'/>
 <meta name="twitter:title" content="Uniswap V3 手续费收取">
 <meta name="twitter:description" content="V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代">
-    <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="shortcut icon" href="/favicon.ico" />
 
   
 
-
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="referrer" content="no-referrer-when-downgrade" />
     </head>
-    <body class="
-    article-page
-    ">
+    <body class=" article-page ">
     <script>
         (function() {
             const colorSchemeKey = 'StackColorScheme';
@@ -189,8 +187,7 @@
         </li>
     </ol>
 </aside>
-
-    <aside class="sidebar right-sidebar sticky">
+ <aside class="sidebar right-sidebar sticky">
         
             
                 
@@ -220,23 +217,29 @@
             
         
     </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
+ 
+            <main class="main full-width"> <article class="main-article">
     <header class="article-header">
 
     <div class="article-details">
     
     <header class="article-category">
         
-            <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="background-color: #2a9d8f; color: #fff;">
-                区块链
-            </a>
+        <a
+            href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"
+            style="background-color: #2a9d8f; color: #fff;"
+            
+        >
+            区块链
+        </a>
         
-            <a href="/categories/defi/" style="background-color: #2a9d8f; color: #fff;">
-                Defi
-            </a>
+        <a
+            href="/categories/defi/"
+            style="background-color: #2a9d8f; color: #fff;"
+            
+        >
+            Defi
+        </a>
         
     </header>
     
@@ -245,18 +248,15 @@
         <h2 class="article-title">
             <a href="/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/">Uniswap V3 手续费收取</a>
         </h2>
-    
+
         
     </div>
 
-    
-    
-    
-    
+       
     <footer class="article-time">
         
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
   <circle cx="18" cy="18" r="4" />
@@ -265,13 +265,11 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Aug 08,  2024</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <time class="article-time--published">Aug 08,  2024</time>
+        </div>
+         
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -279,15 +277,20 @@
 
 
 
-                <time class="article-time--reading">
-                    阅读时长: 4 分钟
-                </time>
-            </div>
-        
+            <time class="article-time--reading"> 阅读时长: 4 分钟 </time>
+        </div>
+         <div class="article-analysic">
+            &nbsp
+            
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-words">
+                <span id="busuanzi_container_page_pv"
+                    ><span id="busuanzi_value_page_pv"></span> &nbsp阅读</span
+                >
+            </time>
+        </div>
     </footer>
-    
-
-    
+     
 </div>
 
 </header>
@@ -390,11 +393,7 @@ $$</p>
         });})
 </script>
     
-</article>
-
-    
-
-    
+</article>  
 
 <aside class="related-content--wrapper">
     <h2 class="section-title">相关文章</h2>
@@ -469,27 +468,39 @@ $$</p>
         </div>
     </div>
 </aside>
-
-     
-    
-        
-    
-
     <footer class="site-footer">
     <section class="copyright">
-        &copy; 
-        
-        2024 Nillnum
-    </section>
-    
+        &copy;  2024 Nillnum <div class="busuanzi-footer">
+            <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+            <span id="busuanzi_container_site_uv">
+                本站访客数<span id="busuanzi_value_site_uv"></span>人次
+            </span>
+        </div></section>
+
     <section class="powerby">
-        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener"
+            >Hugo</a
+        > 构建 <br />
+        主题 <b
+            ><a
+                href="https://github.com/CaiJimmy/hugo-theme-stack"
+                target="_blank"
+                rel="noopener"
+                data-version="3.26.0"
+                >Stack</a
+            ></b
+        > 由 <a
+            href="https://jimmycai.com"
+            target="_blank"
+            rel="noopener"
+            >Jimmy</a
+        > 设计
+        
     </section>
 </footer>
-
-
-    
+ 
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
     
@@ -565,8 +576,7 @@ $$</p>
             ><link 
                 rel="stylesheet" 
                 href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
+            > 
             </main>
         </div>
         <script 
