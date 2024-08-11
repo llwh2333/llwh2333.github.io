@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Sat, 10 Aug 2024 23:07:57 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 12 Aug 2024 00:50:27 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Rust_install</title>
+        <link>http://localhost:1313/p/rust_install/</link>
+        <pubDate>Mon, 12 Aug 2024 00:50:27 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/rust_install/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Solana 中的程序的交互</title>
         <link>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
         <pubDate>Sat, 10 Aug 2024 23:07:57 +0800</pubDate>
