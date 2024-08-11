@@ -7,7 +7,23 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Sat, 10 Aug 2024 23:07:57 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 12 Aug 2024 00:50:27 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Enviroment</title>
+        <link>http://localhost:1313/tags/enviroment/</link>
+        <pubDate>Mon, 12 Aug 2024 00:50:27 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/enviroment/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Rust</title>
+        <link>http://localhost:1313/tags/rust/</link>
+        <pubDate>Mon, 12 Aug 2024 00:50:27 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/rust/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>JS</title>
         <link>http://localhost:1313/tags/js/</link>
         <pubDate>Sat, 10 Aug 2024 23:07:57 +0800</pubDate>
@@ -45,14 +61,6 @@
         <pubDate>Sat, 10 Aug 2024 17:58:02 +0800</pubDate>
         
         <guid>http://localhost:1313/tags/spl/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Rust</title>
-        <link>http://localhost:1313/tags/rust/</link>
-        <pubDate>Fri, 09 Aug 2024 01:41:57 +0800</pubDate>
-        
-        <guid>http://localhost:1313/tags/rust/</guid>
         <description></description>
         </item>
         <item>
