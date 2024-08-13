@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Account on Nillnum</title>
-        <link>http://localhost:1313/tags/account/</link>
+        <link>https://llwh2333.github.io/tags/account/</link>
         <description>Recent content in Account on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 17:57:49 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/account/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 17:57:49 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/account/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Solana 中的账户类型</title>
-        <link>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</link>
+        <link>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</link>
         <pubDate>Thu, 08 Aug 2024 17:57:49 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</guid>
+        <guid>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</guid>
         <description>&lt;p&gt;总的来说 Solana 的账户类型可以分为三种类型：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;

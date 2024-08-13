@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Rollup on Nillnum</title>
-        <link>http://localhost:1313/tags/rollup/</link>
+        <link>https://llwh2333.github.io/tags/rollup/</link>
         <description>Recent content in Rollup on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 17:51:01 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/rollup/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 17:51:01 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/rollup/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Rollup 介绍</title>
-        <link>http://localhost:1313/p/rollup-%E4%BB%8B%E7%BB%8D/</link>
+        <link>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</link>
         <pubDate>Thu, 08 Aug 2024 17:51:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/rollup-%E4%BB%8B%E7%BB%8D/</guid>
+        <guid>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</guid>
         <description>&lt;p&gt;Rollup 可以说是根据 Plasma 的方案升级而来：在主链上部署 Rollup 合约记录链下状态并且负责验证提交的链下状态，Rollup 链上的运营商则是负责维护好链下的状态。&lt;/p&gt;
 &lt;p&gt;对于 Rollup 用户而言，其与主链的交互在两个时候：进入（将 L1 的资产存入 L2）与退出（从 L2 中取出资产到 L1 中），其余时候是在 Rollup 上进行的，而在 Rollup 上进行交易的花费小于直接在主链上进行交易的花费，同时也能减轻主链的负担（Rollup 会将多个 Rollup 的交易打包一起交给主链，相当于 N 个交易合并为 1 个交易）。&lt;/p&gt;
 &lt;p&gt;其总体流程就是：用户在 Rollup 上产生交易（这会修改账户的状态，例如余额减少），Rollup 上的运营商将交易纳入区块，最终生成对应的默克尔树，并将汇总交易（batch，压缩后的交易集合）与交易后的状态（state root，默克尔树根）记录在链上（即主链上预先部署好的智能合约），并由链上负责验证。&lt;/p&gt;

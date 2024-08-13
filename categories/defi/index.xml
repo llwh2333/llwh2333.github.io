@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Defi on Nillnum</title>
-        <link>http://localhost:1313/categories/defi/</link>
+        <link>https://llwh2333.github.io/categories/defi/</link>
         <description>Recent content in Defi on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 19:44:44 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/defi/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 19:44:44 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/categories/defi/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Uniswap V2 主要合约</title>
-        <link>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</link>
+        <link>https://llwh2333.github.io/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</link>
         <pubDate>Thu, 08 Aug 2024 19:44:44 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</guid>
+        <guid>https://llwh2333.github.io/p/uniswap-v2-%E4%B8%BB%E8%A6%81%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;Uniswap V2 可以分为两个部分：&lt;code&gt;core&lt;/code&gt;部分、&lt;code&gt;periphery&lt;/code&gt;部分。&lt;code&gt;core&lt;/code&gt;部分提供实际的逻辑实现，&lt;code&gt;periphery&lt;/code&gt;部分提供和&lt;code&gt;core&lt;/code&gt;的交互（感觉就是对其的封装）。&lt;/p&gt;
 &lt;h1 id=&#34;core-部分&#34;&gt;core 部分
 &lt;/h1&gt;&lt;p&gt;主要有&lt;/p&gt;
@@ -645,10 +645,10 @@
         </item>
         <item>
         <title>Uniswap V2 预言机</title>
-        <link>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</link>
+        <link>https://llwh2333.github.io/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</link>
         <pubDate>Thu, 08 Aug 2024 19:39:32 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
+        <guid>https://llwh2333.github.io/p/uniswap-v2-%E9%A2%84%E8%A8%80%E6%9C%BA/</guid>
         <description>&lt;p&gt;V2 的预言机主要是通过计算时间加权平均价（TWAP, Time Weighted Average Price）来得到价格的。&lt;/p&gt;
 &lt;p&gt;称为时间加权是因为，计算价格时考虑了时间因素，价格的每次更新包含了上次价格时间累积值，本次价格时间累积值，中间间隔时间三个元素。&lt;/p&gt;
 &lt;h1 id=&#34;时间累积值&#34;&gt;时间累积值
@@ -668,10 +668,10 @@ $$&lt;/p&gt;
         </item>
         <item>
         <title>Compound V2 逻辑整理</title>
-        <link>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <link>https://llwh2333.github.io/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
         <pubDate>Thu, 08 Aug 2024 17:41:45 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <guid>https://llwh2333.github.io/p/compound-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Compound V2 也和 Aave V2 很相似，有部分区别，但感觉是很多地方相似的，采用的设计逻辑都是由很多相似的地方的。下面依旧从行为的方面进行介绍。&lt;/p&gt;
 &lt;h1 id=&#34;借贷&#34;&gt;借贷
 &lt;/h1&gt;&lt;p&gt;Compound 的借贷没有像 Aave V2 那样有闪电贷、浮动利率借贷、稳定利率借贷那么多种，只有一个浮动利率借贷。&lt;/p&gt;
@@ -754,10 +754,10 @@ $$&lt;/p&gt;
         </item>
         <item>
         <title>Aave V2 逻辑整理</title>
-        <link>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
+        <link>https://llwh2333.github.io/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</link>
         <pubDate>Thu, 08 Aug 2024 16:25:27 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
+        <guid>https://llwh2333.github.io/p/aave-v2-%E9%80%BB%E8%BE%91%E6%95%B4%E7%90%86/</guid>
         <description>&lt;p&gt;Aave 就相当于去中心化交易所中的一个银行，在其中用户可以进行一系列的资金操作，下面基于行为的角度对其两个功能进行阐述：借贷、存款。&lt;/p&gt;
 &lt;h1 id=&#34;借贷&#34;&gt;借贷
 &lt;/h1&gt;&lt;p&gt;在 Aave 中借贷有两种方式：借款（有抵押物的）、闪电贷（无抵押物的）。&lt;/p&gt;
@@ -919,10 +919,10 @@ $$&lt;/p&gt;
         </item>
         <item>
         <title>Uniswap V3 手续费收取</title>
-        <link>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</link>
+        <link>https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</link>
         <pubDate>Thu, 08 Aug 2024 16:22:18 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
+        <guid>https://llwh2333.github.io/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
         <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
 &lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
 &lt;h1 id=&#34;单位手续费&#34;&gt;单位手续费
@@ -977,10 +977,10 @@ $$&lt;/p&gt;
         </item>
         <item>
         <title>Uniswap V3 升级概述</title>
-        <link>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</link>
+        <link>https://llwh2333.github.io/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</link>
         <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
+        <guid>https://llwh2333.github.io/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</guid>
         <description>&lt;h1 id=&#34;主要更新点&#34;&gt;主要更新点
 &lt;/h1&gt;&lt;ol&gt;
 &lt;li&gt;分不同价格区间提供流动性&lt;/li&gt;

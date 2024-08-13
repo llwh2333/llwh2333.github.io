@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Layer2 on Nillnum</title>
-        <link>http://localhost:1313/tags/layer2/</link>
+        <link>https://llwh2333.github.io/tags/layer2/</link>
         <description>Recent content in Layer2 on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 17:56:25 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/layer2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 17:56:25 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/layer2/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>对 zksync 官方 Paymaster 示例代码的理解</title>
-        <link>http://localhost:1313/p/%E5%AF%B9-zksync-%E5%AE%98%E6%96%B9-paymaster-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+        <link>https://llwh2333.github.io/p/%E5%AF%B9-zksync-%E5%AE%98%E6%96%B9-paymaster-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%90%86%E8%A7%A3/</link>
         <pubDate>Thu, 08 Aug 2024 17:56:25 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/%E5%AF%B9-zksync-%E5%AE%98%E6%96%B9-paymaster-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+        <guid>https://llwh2333.github.io/p/%E5%AF%B9-zksync-%E5%AE%98%E6%96%B9-paymaster-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
         <description>&lt;p&gt;官方的 Paymaster.sol 部分&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -539,10 +539,10 @@
         </item>
         <item>
         <title>zksync Era 官方文档抽象账户部分中文翻译</title>
-        <link>http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</link>
+        <link>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</link>
         <pubDate>Thu, 08 Aug 2024 17:54:47 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
+        <guid>https://llwh2333.github.io/p/zksync-era-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E6%8A%BD%E8%B1%A1%E8%B4%A6%E6%88%B7%E9%83%A8%E5%88%86%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/</guid>
         <description>&lt;h1 id=&#34;zksync-era-中的抽象账户与-eip-4337-的抽象账户&#34;&gt;zksync Era 中的抽象账户与 EIP-4337 的抽象账户
 &lt;/h1&gt;&lt;p&gt;ZKsync 和以太坊 EIP 4337 的原生账户抽象旨在增强账户的灵活性和用户体验，但它们在以下关键方面有所不同：&lt;/p&gt;
 &lt;ol&gt;
@@ -1015,10 +1015,10 @@
         </item>
         <item>
         <title>zksync Era L1合约</title>
-        <link>http://localhost:1313/p/zksync-era-l1%E5%90%88%E7%BA%A6/</link>
+        <link>https://llwh2333.github.io/p/zksync-era-l1%E5%90%88%E7%BA%A6/</link>
         <pubDate>Thu, 08 Aug 2024 17:53:30 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/zksync-era-l1%E5%90%88%E7%BA%A6/</guid>
+        <guid>https://llwh2333.github.io/p/zksync-era-l1%E5%90%88%E7%BA%A6/</guid>
         <description>&lt;p&gt;zksync Era 在 L1 有部署智能合约，以实现 L1 上的修改。部署的合约有：DiamondInit、DiamondProxy、DiamondUpgrade、ExecutorFacet、GettersFacet、MailboxFacet、Verifier、ValidatorTimelock、AllowList。&lt;/p&gt;
 &lt;p&gt;通过上述合约，可以看的出来 zksync Era 的链上合约部分采用的是钻石代理方法，同时也有一些其他的合约辅助。&lt;/p&gt;
 &lt;h1 id=&#34;diamond-部分&#34;&gt;Diamond 部分
@@ -1268,10 +1268,10 @@
         </item>
         <item>
         <title>zksync 介绍</title>
-        <link>http://localhost:1313/p/zksync-%E4%BB%8B%E7%BB%8D/</link>
+        <link>https://llwh2333.github.io/p/zksync-%E4%BB%8B%E7%BB%8D/</link>
         <pubDate>Thu, 08 Aug 2024 17:52:10 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/zksync-%E4%BB%8B%E7%BB%8D/</guid>
+        <guid>https://llwh2333.github.io/p/zksync-%E4%BB%8B%E7%BB%8D/</guid>
         <description>&lt;p&gt;zksync 2.0 （后面简称 zksync）简单而言具体的，实现了 ZK Rollup 的项目，其采用了 ZK-SNARK 的零知识证明算法（经过 Boojum 升级后变为 ZK-STARK 的算法）。根据其官方所讲，其具有以下特点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;可靠的安全性（继承自以太坊的安全性），对第三方零依赖（这个没看懂）&lt;/li&gt;
@@ -1340,10 +1340,10 @@
         </item>
         <item>
         <title>Rollup 介绍</title>
-        <link>http://localhost:1313/p/rollup-%E4%BB%8B%E7%BB%8D/</link>
+        <link>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</link>
         <pubDate>Thu, 08 Aug 2024 17:51:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/rollup-%E4%BB%8B%E7%BB%8D/</guid>
+        <guid>https://llwh2333.github.io/p/rollup-%E4%BB%8B%E7%BB%8D/</guid>
         <description>&lt;p&gt;Rollup 可以说是根据 Plasma 的方案升级而来：在主链上部署 Rollup 合约记录链下状态并且负责验证提交的链下状态，Rollup 链上的运营商则是负责维护好链下的状态。&lt;/p&gt;
 &lt;p&gt;对于 Rollup 用户而言，其与主链的交互在两个时候：进入（将 L1 的资产存入 L2）与退出（从 L2 中取出资产到 L1 中），其余时候是在 Rollup 上进行的，而在 Rollup 上进行交易的花费小于直接在主链上进行交易的花费，同时也能减轻主链的负担（Rollup 会将多个 Rollup 的交易打包一起交给主链，相当于 N 个交易合并为 1 个交易）。&lt;/p&gt;
 &lt;p&gt;其总体流程就是：用户在 Rollup 上产生交易（这会修改账户的状态，例如余额减少），Rollup 上的运营商将交易纳入区块，最终生成对应的默克尔树，并将汇总交易（batch，压缩后的交易集合）与交易后的状态（state root，默克尔树根）记录在链上（即主链上预先部署好的智能合约），并由链上负责验证。&lt;/p&gt;
@@ -1455,10 +1455,10 @@
         </item>
         <item>
         <title>Layer 2 拓展简单认识</title>
-        <link>http://localhost:1313/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</link>
+        <link>https://llwh2333.github.io/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</link>
         <pubDate>Thu, 08 Aug 2024 17:48:46 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</guid>
+        <guid>https://llwh2333.github.io/p/layer-2-%E6%8B%93%E5%B1%95%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</guid>
         <description>&lt;p&gt;区块链中存在的这样一个不可能三角：去中心化、安全性、可拓展性。在区块链刚诞生的时候，去中心化和安全性得到了很好的实现，但随着发展区块链交易成交的速度开始跟不上了，其中 &lt;code&gt;Crypto Kitties&lt;/code&gt;一度让以太坊不堪重负，交易拥堵。对于不修改区块链本身代码，而在现有的链本身上面搭建东西从而达成拓展的方法就是 Layer2 拓展。这种思路目的就是为了在尽可能保证去中心化和安全性的情况下提高可拓展性。&lt;/p&gt;
 &lt;p&gt;根据实现的设计方向出现了一些分支：侧链、状态通道（&lt;code&gt;State Channel&lt;/code&gt;）、&lt;code&gt;Plasma&lt;/code&gt;、&lt;code&gt;Rollup&lt;/code&gt;。&lt;/p&gt;
 &lt;h1 id=&#34;侧链&#34;&gt;侧链

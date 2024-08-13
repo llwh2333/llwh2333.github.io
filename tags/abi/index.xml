@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>ABI on Nillnum</title>
-        <link>http://localhost:1313/tags/abi/</link>
+        <link>https://llwh2333.github.io/tags/abi/</link>
         <description>Recent content in ABI on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 16:09:24 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/abi/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 08 Aug 2024 16:09:24 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/abi/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>ABI 编码</title>
-        <link>http://localhost:1313/p/abi-%E7%BC%96%E7%A0%81/</link>
+        <link>https://llwh2333.github.io/p/abi-%E7%BC%96%E7%A0%81/</link>
         <pubDate>Thu, 08 Aug 2024 16:09:24 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/abi-%E7%BC%96%E7%A0%81/</guid>
+        <guid>https://llwh2333.github.io/p/abi-%E7%BC%96%E7%A0%81/</guid>
         <description>&lt;p&gt;&lt;code&gt;ABI&lt;/code&gt; (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。说人话就是：给智能合约阅读的编码标准。&lt;/p&gt;
 &lt;p&gt;为了应对智能合约中不同的情况，就有了不同的编码方法（合约要求的输入不一，还有省空间的问题）。关于编码方法如下：&lt;/p&gt;
 &lt;ul&gt;

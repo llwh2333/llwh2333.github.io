@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Enviroment on Nillnum</title>
-        <link>http://localhost:1313/tags/enviroment/</link>
+        <link>https://llwh2333.github.io/tags/enviroment/</link>
         <description>Recent content in Enviroment on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Mon, 12 Aug 2024 00:50:27 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/enviroment/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 12 Aug 2024 00:50:27 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/enviroment/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Rust 安装</title>
-        <link>http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/</link>
+        <link>https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/</link>
         <pubDate>Mon, 12 Aug 2024 00:50:27 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/</guid>
+        <guid>https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/</guid>
         <description>&lt;h1 id=&#34;windows-下安装&#34;&gt;Windows 下安装
 &lt;/h1&gt;&lt;p&gt;在 &lt;a class=&#34;link&#34; href=&#34;https://www.rust-lang.org/learn/get-started&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RUSTUP-INIT&lt;/a&gt; 下载系统相对应的 Rust 安装程序&lt;/p&gt;
 &lt;p&gt;直接执行 exe 程序（windows 尽量用 proxychain 这些代理跑，不然下载会很慢，还有可能断开），会弹出选择（这里我选择 3 ，因为并不想安装 VS 这玩意）&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v.png&#34;
 	width=&#34;628&#34;
 	height=&#34;355&#34;
-	srcset=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v_hu15036147752421619852.png 480w, http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v_hu9306458211547244794.png 1024w&#34;
+	srcset=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v_hu15036147752421619852.png 480w, https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811200903-muqmi5v_hu9306458211547244794.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -30,10 +30,10 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;选择 3 后，我们继续选择 2，进行自定义安装，然后如图输入&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc.png&#34;
 	width=&#34;700&#34;
 	height=&#34;481&#34;
-	srcset=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc_hu14142110346827273320.png 480w, http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc_hu1620103786135007797.png 1024w&#34;
+	srcset=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc_hu14142110346827273320.png 480w, https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201046-zfv2qnc_hu1620103786135007797.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -43,10 +43,10 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后重新回到选择界面，选择 1 ，进行安装，然后就安装好了&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl.png&#34;
 	width=&#34;506&#34;
 	height=&#34;222&#34;
-	srcset=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl_hu10958209374640771535.png 480w, http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl_hu11639667834303684461.png 1024w&#34;
+	srcset=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl_hu10958209374640771535.png 480w, https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201231-dvllozl_hu11639667834303684461.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -56,10 +56,10 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后就是配置环境变量，主要有：&lt;code&gt;cargo&lt;/code&gt;和&lt;code&gt;rustup&lt;/code&gt;这两个，具体位置在程序运行的开头部分有展示&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r.png&#34;
 	width=&#34;727&#34;
 	height=&#34;350&#34;
-	srcset=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r_hu2674572603128593182.png 480w, http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r_hu2049495949030038499.png 1024w&#34;
+	srcset=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r_hu2674572603128593182.png 480w, https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811202016-9wucl4r_hu2049495949030038499.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	
@@ -69,10 +69,10 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;最后就安装好了&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs.png&#34;
 	width=&#34;547&#34;
 	height=&#34;113&#34;
-	srcset=&#34;http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs_hu373620481360288062.png 480w, http://localhost:1313/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs_hu1344245501425498228.png 1024w&#34;
+	srcset=&#34;https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs_hu373620481360288062.png 480w, https://llwh2333.github.io/p/rust-%E5%AE%89%E8%A3%85/pic/image-20240811201648-70jsvvs_hu1344245501425498228.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 	

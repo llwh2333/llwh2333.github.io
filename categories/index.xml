@@ -2,42 +2,42 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on Nillnum</title>
-        <link>http://localhost:1313/categories/</link>
+        <link>https://llwh2333.github.io/categories/</link>
         <description>Recent content in Categories on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Mon, 12 Aug 2024 04:23:59 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 12 Aug 2024 04:23:59 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Rust</title>
-        <link>http://localhost:1313/categories/rust/</link>
+        <link>https://llwh2333.github.io/categories/rust/</link>
         <pubDate>Mon, 12 Aug 2024 04:23:59 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/rust/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/rust/rust_lang_logo_icon_169776.png" alt="Featured image of post Rust" /&gt;</description>
+        <guid>https://llwh2333.github.io/categories/rust/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/rust/rust_lang_logo_icon_169776.png" alt="Featured image of post Rust" /&gt;</description>
         </item>
         <item>
         <title>区块链</title>
-        <link>http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
+        <link>https://llwh2333.github.io/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</link>
         <pubDate>Sat, 10 Aug 2024 23:07:57 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin_94576.png" alt="Featured image of post 区块链" /&gt;</description>
+        <guid>https://llwh2333.github.io/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/bitcoin_94576.png" alt="Featured image of post 区块链" /&gt;</description>
         </item>
         <item>
         <title>Defi</title>
-        <link>http://localhost:1313/categories/defi/</link>
+        <link>https://llwh2333.github.io/categories/defi/</link>
         <pubDate>Thu, 08 Aug 2024 19:44:44 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/defi/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/defi/512px-Uniswap_Logo.png" alt="Featured image of post Defi" /&gt;</description>
+        <guid>https://llwh2333.github.io/categories/defi/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/defi/512px-Uniswap_Logo.png" alt="Featured image of post Defi" /&gt;</description>
         </item>
         <item>
         <title>网络</title>
-        <link>http://localhost:1313/categories/%E7%BD%91%E7%BB%9C/</link>
+        <link>https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/</link>
         <pubDate>Fri, 04 Mar 2022 15:17:06 +0800</pubDate>
         
-        <guid>http://localhost:1313/categories/%E7%BD%91%E7%BB%9C/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/%E7%BD%91%E7%BB%9C/iconfinder-connectedglobe-4417105_116615.png" alt="Featured image of post 网络" /&gt;</description>
+        <guid>https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/iconfinder-connectedglobe-4417105_116615.png" alt="Featured image of post 网络" /&gt;</description>
         </item>
         
     </channel>

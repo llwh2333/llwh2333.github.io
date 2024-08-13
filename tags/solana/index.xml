@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Solana on Nillnum</title>
-        <link>http://localhost:1313/tags/solana/</link>
+        <link>https://llwh2333.github.io/tags/solana/</link>
         <description>Recent content in Solana on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Sat, 10 Aug 2024 23:07:57 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/solana/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 10 Aug 2024 23:07:57 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/solana/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Solana 中的程序的交互</title>
-        <link>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
+        <link>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
         <pubDate>Sat, 10 Aug 2024 23:07:57 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
+        <guid>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
         <description>&lt;h1 id=&#34;程序合约的交互&#34;&gt;程序（合约）的交互
 &lt;/h1&gt;&lt;h2 id=&#34;js-交互&#34;&gt;JS 交互
 &lt;/h2&gt;&lt;p&gt;通过&lt;code&gt;anchor&lt;/code&gt;库，可以实现调用其他程序中的方法，与查看程序中定义的&lt;code&gt;PDA&lt;/code&gt;账户中的数据&lt;/p&gt;
@@ -173,10 +173,10 @@
         </item>
         <item>
         <title>Solana 中代币的交互</title>
-        <link>http://localhost:1313/p/solana-%E4%B8%AD%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
+        <link>https://llwh2333.github.io/p/solana-%E4%B8%AD%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
         <pubDate>Sat, 10 Aug 2024 17:58:02 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/solana-%E4%B8%AD%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
+        <guid>https://llwh2333.github.io/p/solana-%E4%B8%AD%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
         <description>&lt;p&gt;这里主要就是通过程序发行的代币相关的交互。&lt;/p&gt;
 &lt;h1 id=&#34;splerc20代币的交互&#34;&gt;SPL（ERC20）代币的交互
 &lt;/h1&gt;&lt;p&gt;在&lt;code&gt;Solana&lt;/code&gt;中，可以官方提供了模板进行山寨币的创建，可以通过调用系统程序进行代币的创建。&lt;/p&gt;
@@ -785,10 +785,10 @@
         </item>
         <item>
         <title>Solana 原生代币的交互</title>
-        <link>http://localhost:1313/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
+        <link>https://llwh2333.github.io/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</link>
         <pubDate>Fri, 09 Aug 2024 01:29:33 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
+        <guid>https://llwh2333.github.io/p/solana-%E5%8E%9F%E7%94%9F%E4%BB%A3%E5%B8%81%E7%9A%84%E4%BA%A4%E4%BA%92/</guid>
         <description>&lt;p&gt;&lt;code&gt;Solana&lt;/code&gt;中原生代币的交互即为对&lt;code&gt;Solana&lt;/code&gt;的代币&lt;code&gt;Sol&lt;/code&gt;代币的代币进行交易，实际上就是对于&lt;code&gt;Sol&lt;/code&gt;代币进行查看，转账这两个操作。&lt;/p&gt;
 &lt;h1 id=&#34;js-交互&#34;&gt;JS 交互
 &lt;/h1&gt;&lt;pre&gt;&lt;code&gt;以下为通过 JS 代码，查看某个特定账户的余额和从某个账户（持有该账户的私钥）向另一个账户（只需要直到公钥地址）进行转账。
@@ -1016,10 +1016,10 @@
         </item>
         <item>
         <title>Solana 中的账户类型</title>
-        <link>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</link>
+        <link>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</link>
         <pubDate>Thu, 08 Aug 2024 17:57:49 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</guid>
+        <guid>https://llwh2333.github.io/p/solana-%E4%B8%AD%E7%9A%84%E8%B4%A6%E6%88%B7%E7%B1%BB%E5%9E%8B/</guid>
         <description>&lt;p&gt;总的来说 Solana 的账户类型可以分为三种类型：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
