@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>网络 on Nillnum</title>
-        <link>https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/</link>
+        <link>http://localhost:1313/categories/%E7%BD%91%E7%BB%9C/</link>
         <description>Recent content in 网络 on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>Nillnum</copyright><atom:link href="https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+        <copyright>Nillnum</copyright><atom:link href="http://localhost:1313/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>

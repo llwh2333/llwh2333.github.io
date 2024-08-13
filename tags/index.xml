@@ -2,10 +2,43 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tags on Nillnum</title>
-        <link>https://llwh2333.github.io/tags/</link>
+        <link>http://localhost:1313/tags/</link>
         <description>Recent content in Tags on Nillnum</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>Nillnum</copyright><atom:link href="https://llwh2333.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+        <copyright>Nillnum</copyright>
+        <lastBuildDate>Thu, 08 Aug 2024 17:56:25 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Layer2</title>
+        <link>http://localhost:1313/tags/layer2/</link>
+        <pubDate>Thu, 08 Aug 2024 17:56:25 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/layer2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Paymaster</title>
+        <link>http://localhost:1313/tags/paymaster/</link>
+        <pubDate>Thu, 08 Aug 2024 17:56:25 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/paymaster/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ZK</title>
+        <link>http://localhost:1313/tags/zk/</link>
+        <pubDate>Thu, 08 Aug 2024 17:56:25 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/zk/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ZKsync</title>
+        <link>http://localhost:1313/tags/zksync/</link>
+        <pubDate>Thu, 08 Aug 2024 17:56:25 +0800</pubDate>
+        
+        <guid>http://localhost:1313/tags/zksync/</guid>
+        <description></description>
+        </item>
+        
     </channel>
 </rss>

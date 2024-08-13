@@ -7,65 +7,7 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Thu, 08 Aug 2024 16:22:18 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/uniswapv3/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Uniswap V3 手续费收取</title>
-        <link>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</link>
-        <pubDate>Thu, 08 Aug 2024 16:22:18 +0800</pubDate>
-        
-        <guid>http://localhost:1313/p/uniswap-v3-%E6%89%8B%E7%BB%AD%E8%B4%B9%E6%94%B6%E5%8F%96/</guid>
-        <description>&lt;p&gt;V2 中手续费的提取很直接：根据 LP 提供者手中的 LP token 在总量的占比，提取出池子中对应比例的两种代币，这时候获得代币总量中包含了手续费和开始时投入的代币（忽略无常损失）。&lt;/p&gt;
-&lt;p&gt;在 V3 中采用了自选区间，通过头寸进行记录流动性，通过计算区间内每单位流动性获得手续费和用户流动性得到应该获得的手续费。&lt;/p&gt;
-&lt;h1 id=&#34;单位手续费&#34;&gt;单位手续费
-&lt;/h1&gt;&lt;p&gt;想要计算区间内单位手续费，首先需要知道的是当前区间有多少流动性，因此 V3 在&lt;code&gt;tick&lt;/code&gt;上设置了两个变量&lt;code&gt;liquidityGross&lt;/code&gt;、&lt;code&gt;liquidityNet&lt;/code&gt;（计算区间内流动性就是计算两个&lt;code&gt;tick&lt;/code&gt;间的流动性）。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;liquidityGross&lt;/code&gt;：当该&lt;code&gt;tick&lt;/code&gt;被设置为区间上限或下限时就会增加，当其为 0 时，表示该&lt;code&gt;tick&lt;/code&gt;没有人设置区间（计算区间流动性时忽略，当这个&lt;code&gt;tick&lt;/code&gt;不存在）。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;liquidityNet&lt;/code&gt;：记录流动性的变化量，即一个$\Delta$值，每当穿过这个&lt;code&gt;tick&lt;/code&gt;值时需要改变的当前激活流动性大小（从&lt;code&gt;tick&lt;/code&gt;右边穿过加，反之减）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;liquidityNet&lt;/code&gt;计算方法：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;注入流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;注入流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;移除流动性，tick 是价格下限，&lt;code&gt;liquidityNet&lt;/code&gt; 增加 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;移除流动性，tick 是价格上限，&lt;code&gt;liquidityNet&lt;/code&gt; 减少 &lt;code&gt;l&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;通过上述变量，我们便获得了当前区间的激活流动性，根据交易中产生的手续费，我们可以得到因为这笔交易产生的&lt;strong&gt;每单位流动性手的续费收益&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;那么后续如何做呢？如果直接记录到各个提供者账上，那么需要遍历该区间所有提供者（可想而知这会产生多少&lt;code&gt;gas&lt;/code&gt;，没人会想承担这个成本的），这个思路没了。&lt;/p&gt;
-&lt;p&gt;无需遍历的方法便是：新产生的手续费收益会修改的只有全局总收益（所有区间相加的手续费收益总和），而想计算当前交易区间内收益：全局收益 - 区间外收益（每次交易不会影响这个值）。&lt;/p&gt;
-&lt;p&gt;当然上述只是一个思路，那么具体一点如何设计呢？&lt;/p&gt;
-&lt;p&gt;V3 中设置了一个变量&lt;code&gt;feeGrowthGlobal&lt;/code&gt;记录全局单位手续费收益，利用每个&lt;code&gt;tick&lt;/code&gt;记录该&lt;code&gt;tick&lt;/code&gt;外的手续费&lt;code&gt;feeGrowthOutside&lt;/code&gt;。这样一来我们就能得到范围内的手续费：&lt;code&gt;feeGrowthInside = feeGrowthGlobal - feeGrowthOutside&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;这里又有两个问题：如何为不同时间投入流动性的用户计算各自的收益？&lt;code&gt;tick&lt;/code&gt;如何记录外部手续费收益（怎么定义外部）？&lt;/p&gt;
-&lt;p&gt;首先是时间问题，投入流动性时，头寸记录当前区块手续费收益&lt;code&gt;feeGrowthInside&lt;/code&gt;，因为这是一个累加值，当取出时和当时的&lt;code&gt;feeGrowthInside&lt;/code&gt;比较增量，就知道该段时间内的收益了。&lt;/p&gt;
-&lt;p&gt;其次是外部收益记录问题，这里抛去了绝对的外部的定义（不再区分点的左边是外部还是右边是外部），而是通过当前价格点来调整这个外部值。假设当前价格点在&lt;code&gt;tick&lt;/code&gt;左边，&lt;code&gt;tick&lt;/code&gt;中记录了一个外部值，此时外部就是&lt;code&gt;tick&lt;/code&gt;的右边，里面的值就是&lt;code&gt;tick&lt;/code&gt;右边的收益。&lt;/p&gt;
-&lt;p&gt;当价格点穿过&lt;code&gt;tick&lt;/code&gt;时，&lt;code&gt;tick&lt;/code&gt;的左边就变为外部，&lt;code&gt;tick&lt;/code&gt;所记录的外部收益怎么算呢？&lt;code&gt;feeGrowthOutside(新的) = feeGrowthGlobal - feeGrowthOutside(旧的)&lt;/code&gt;。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;把手续费收益看作图形面积，全局就是总面积，原本的就是点右边的图形总面积，相减后就是左边的总面积，而这左面积就包含了这期间交易产生的新的手续费收益。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;关于&lt;code&gt;tick&lt;/code&gt;添加流动性时初始化，没找到相关资料，等以后看看白皮书再补充。&lt;/p&gt;
-&lt;h1 id=&#34;lp-提供者的流动性&#34;&gt;LP 提供者的流动性
-&lt;/h1&gt;&lt;p&gt;对于 LP 提供者提供的流动性是怎么定量计算的呢？&lt;/p&gt;
-&lt;p&gt;首先时原本的恒定乘积公式：$x * y = k = L^2$&lt;/p&gt;
-&lt;p&gt;用户指定区间，实际相当于讲这条曲线向左下方移动，使得 $x_1、y_1$ 作为与坐标轴相交的一段曲线
-图片参考：&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;的图二图三&lt;/p&gt;
-&lt;p&gt;这就变成了一个新的公式（根据左加右减，上加下减）：$(x + x1) * (y + y1) = L^2$&lt;/p&gt;
-&lt;p&gt;我们根据公式 $y = p * x(p 为价格)$联合 $x * y =  L^2$ 得到 $x = L / \sqrt{p}\space;\space y = L *\sqrt{p}$，所以 $x_1 = L / \sqrt{p_{upper}}\space;\space y_1 = L *\sqrt{p_{lower}}$，所以我们可以得到&lt;/p&gt;
-&lt;p&gt;$$
-(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}}) = L^2
-\
-\space
-\
-\space
-\
-L = \sqrt{(x + \frac{L} {\sqrt{p_{upper}}}) * (y + \frac{L} * \sqrt{p_{lower}})}
-$$&lt;/p&gt;
-&lt;h1 id=&#34;参考文章&#34;&gt;参考文章：
-&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dapp-Learning-DAO/Dapp-Learning/blob/main/defi/Uniswap-V3/whitepaperGuide/understandV3Witepaper.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Understand UniswapV3 whitepaper&lt;/a&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
+        <lastBuildDate>Thu, 08 Aug 2024 16:18:10 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/uniswapv3/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Uniswap V3 升级概述</title>
         <link>http://localhost:1313/p/uniswap-v3-%E5%8D%87%E7%BA%A7%E6%A6%82%E8%BF%B0/</link>
         <pubDate>Thu, 08 Aug 2024 16:18:10 +0800</pubDate>
