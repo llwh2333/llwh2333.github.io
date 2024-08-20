@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Django on Nillnum</title>
+        <link>https://llwh2333.github.io/categories/django/</link>
+        <description>Recent content in Django on Nillnum</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Nillnum</copyright><atom:link href="https://llwh2333.github.io/categories/django/index.xml" rel="self" type="application/rss+xml" />
+    </channel>
+</rss>

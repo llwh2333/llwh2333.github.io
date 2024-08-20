@@ -7,7 +7,55 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Mon, 12 Aug 2024 04:23:59 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 16 Aug 2024 11:57:52 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Template</title>
+        <link>https://llwh2333.github.io/tags/template/</link>
+        <pubDate>Fri, 16 Aug 2024 11:57:52 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/template/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vue</title>
+        <link>https://llwh2333.github.io/tags/vue/</link>
+        <pubDate>Fri, 16 Aug 2024 11:57:52 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/vue/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Reactive</title>
+        <link>https://llwh2333.github.io/tags/reactive/</link>
+        <pubDate>Fri, 16 Aug 2024 01:03:19 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/reactive/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ref</title>
+        <link>https://llwh2333.github.io/tags/ref/</link>
+        <pubDate>Fri, 16 Aug 2024 01:03:19 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/ref/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Composition API</title>
+        <link>https://llwh2333.github.io/tags/composition-api/</link>
+        <pubDate>Thu, 15 Aug 2024 15:58:59 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/composition-api/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Options API</title>
+        <link>https://llwh2333.github.io/tags/options-api/</link>
+        <pubDate>Thu, 15 Aug 2024 15:58:59 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/tags/options-api/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Rust</title>
         <link>https://llwh2333.github.io/tags/rust/</link>
         <pubDate>Mon, 12 Aug 2024 04:23:59 +0800</pubDate>

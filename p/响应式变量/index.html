@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name='description' content="什么是响应式变量 所谓的响应式变量就是指变量的值发生改变的时候，依靠这个变量所渲染的视图也会发生改变。具体一点讲就是： 1 2 3 4 5 const count = ref(0); function Upcount() {"> <title>响应式变量</title>
+
+<link rel="canonical" href="https://llwh2333.github.io/p/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8F%98%E9%87%8F/" />
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="响应式变量">
+<meta property='og:description' content="什么是响应式变量 所谓的响应式变量就是指变量的值发生改变的时候，依靠这个变量所渲染的视图也会发生改变。具体一点讲就是： 1 2 3 4 5 const count = ref(0); function Upcount() {">
+<meta property='og:url' content='https://llwh2333.github.io/p/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8F%98%E9%87%8F/'>
+<meta property='og:site_name' content='Nillnum'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Vue' /><meta property='article:tag' content='ref' /><meta property='article:tag' content='reactive' /><meta property='article:published_time' content='2024-08-16T01:03:19&#43;08:00'/><meta property='article:modified_time' content='2024-08-16T01:03:19&#43;08:00'/>
+<meta name="twitter:title" content="响应式变量">
+<meta name="twitter:description" content="什么是响应式变量 所谓的响应式变量就是指变量的值发生改变的时候，依靠这个变量所渲染的视图也会发生改变。具体一点讲就是： 1 2 3 4 5 const count = ref(0); function Upcount() {">
+<link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="referrer" content="no-referrer-when-downgrade" />
+    </head>
+    <body class=" article-page ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15415685995576500094.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Nillnum</a></h1>
+            <h2 class="site-description">永远热情，永远年轻</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/llwh2333'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+ <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+<section class="widget archives">
+    <div class="widget-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+</div>
+    <h2 class="widget-title section-title">目录</h2>
+
+    <div class="widget--toc"><nav id="TableOfContents">
+  <ol>
+    <li><a href="#什么是响应式变量">什么是响应式变量</a></li>
+    <li><a href="#声明的响应式变量">声明的响应式变量</a></li>
+    <li><a href="#ref-声明">ref 声明</a></li>
+    <li><a href="#reactive-声明">reactive 声明</a></li>
+    <li><a href="#深入一些理解两者">深入一些理解两者</a>
+      <ol>
+        <li><a href="#reactive">reactive</a></li>
+        <li><a href="#ref">ref</a></li>
+      </ol>
+    </li>
+    <li><a href="#响应式原理">响应式原理</a>
+      <ol>
+        <li><a href="#vue2">Vue2</a></li>
+        <li><a href="#vue3">Vue3</a></li>
+      </ol>
+    </li>
+    <li><a href="#参考文章">参考文章</a></li>
+  </ol>
+</nav></div>
+</section>
+
+
+            
+        
+    </aside>
+ 
+            <main class="main full-width"> <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+        <a
+            href="/categories/vue/"
+            style="background-color: #2a9d8f; color: #fff;"
+            
+        >
+            Vue
+        </a>
+        
+        <a
+            href="/categories/%E5%89%8D%E7%AB%AF/"
+            style="background-color: #2a9d8f; color: #fff;"
+            
+        >
+            前端
+        </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8F%98%E9%87%8F/">响应式变量</a>
+        </h2>
+
+        
+    </div>
+
+       
+    <footer class="article-time">
+        
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+            <time class="article-time--published">Aug 16,  2024</time>
+        </div>
+         
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+            <time class="article-time--reading"> 阅读时长: 4 分钟 </time>
+        </div>
+        
+    </footer>
+     
+</div>
+
+</header> <section class="article-content">
+    
+    
+    <h1 id="什么是响应式变量">什么是响应式变量
+</h1><p>所谓的响应式变量就是指变量的值发生改变的时候，依靠这个变量所渲染的视图也会发生改变。具体一点讲就是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">Upcount</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;Upcount&#34;</span><span class="p">&gt;</span>Count：{{ count }}<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>按照上面这段代码，当<code>count</code>变量被函数<code>Upcount</code>修改时，展示的页面并不需要刷新，<code>count</code>变量自然会被修改，并不需要重新加载一遍<code>count</code>这个变量展示页面才会修改具体的<code>count</code>。</p>
+<h1 id="声明的响应式变量">声明的响应式变量
+</h1><p>声明响应式变量在<code>Vue3</code>中有两种方法：<code>ref()</code>函数和<code>reactive()</code>函数，前者可以定义基本类型变量（数值型、字符串等）和复合型变量（字典类型等），后者只能定义复合型变量。</p>
+<p>具体讲：</p>
+<ul>
+<li>定义基本数据类型，必须使用<code>ref()</code></li>
+<li>定义层级不深的复合数据类型，可以使用<code>ref()</code>和<code>reactive()</code></li>
+<li>定义层级很深的符合数据类 ing，推荐使用<code>reactive()</code></li>
+</ul>
+<h1 id="ref-声明">ref 声明
+</h1><p>可以通过<code>let varname = ref(初始值)</code>声明一个响应式变量，同时其使用如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!-- 在模板中直接访问变量的名称即可 --&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;Upcount&#34;</span><span class="p">&gt;</span>Composition Count：{{ count }}<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">setup</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;Compositionname&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">import</span> <span class="p">{</span> <span class="nx">ref</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nx">Upcount</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 在 script 中，需要使用 变量名.value 进行访问，如果是复合型使用 变量名.value.字段名 访问
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="reactive-声明">reactive 声明
+</h1><p>可以通过<code>let varname = reactive(初始值)</code>声明一个响应式变量，同时其使用如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;Update&#34;</span><span class="p">&gt;</span>Var content: {{ count.name }}<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;UpdataAll&#34;</span><span class="p">&gt;</span>All filed change:{{ count.name }}<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">setup</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;ReactiveVar&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">import</span> <span class="p">{</span> <span class="nx">reactive</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 声明一个复合类型响应式变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">reactive</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;reactive var&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">age</span><span class="o">:</span> <span class="mi">1888</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nx">Update</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 更新其中一个字段
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">count</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&#34;update reactive var&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">UpdataAll</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 更新整个变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 不使用 Object.assign 而是直接赋值，如：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// count = { name: &#34;all updata reactive&#34;, age: 12222} 会失去响应式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">count</span><span class="p">,</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;all updata reactive&#34;</span><span class="p">,</span> <span class="nx">age</span><span class="o">:</span> <span class="mi">12222</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="深入一些理解两者">深入一些理解两者
+</h1><h2 id="reactive">reactive
+</h2><p>对于<code>ractive()</code>返回的其实是原始对象的<code>Proxy</code>，两者并不是相等的（对于<code>===</code>比较返回的是<code>false</code>）。</p>
+<p>为了保证访问<code>Proxy</code>的一致性，对于同一个原始对象调用<code>reactive()</code>返回的<code>Proxy</code>是已存在的本身，对于多层级的对象依旧是同一个。</p>
+<p>对于<code>reactive</code>的响应式变量的属性赋值或者解构到本地变量，将会失去响应性的连接：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">varname</span> <span class="o">=</span> <span class="nx">reactive</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span><span class="s2">&#34;aaa&#34;</span><span class="p">,</span><span class="nx">age</span><span class="o">=</span><span class="mi">18</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">varname</span><span class="p">.</span><span class="nx">age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// varname.age 不会受到影响
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 且 n 不是响应式变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">n</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="p">{</span><span class="nx">count</span><span class="p">}</span> <span class="o">=</span> <span class="nx">state</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// varname.age 不会受到影响
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 且 count 不是响应式变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">count</span> <span class="o">++</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">ChangeLocalVar</span><span class="p">(</span><span class="nx">localage</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 不会影响 varname.age
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">localage</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="ref">ref
+</h2><p>对于一个<code>ref</code>的的响应式变量，当传入的参数为基本数据类型时，返回一个基本类型的<code>ref</code>对象，而对于一个复合类型参数，会使用<code>reactive()</code>处理。</p>
+<p>对于复合类型的<code>ref</code>对象，可以整个的替换，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">Person</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&#34;aaa&#34;</span><span class="p">,</span><span class="nx">age</span><span class="o">=</span><span class="mi">18</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Person</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&#34;bbb&#34;</span><span class="p">,</span><span class="nx">age</span><span class="o">=</span><span class="mi">1</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在<code>Vue</code>中提供两种方法读取<code>ref</code>对象：<code>.value</code>和<code>unref()</code>。前者不用讲了，后者对于输入的参数，如果是<code>ref</code>对象，则返回<code>.value</code>的值，否则返回参数本身。</p>
+<p>当<code>ref</code>对象在模板中作为顶层（如<code>let person = ref({ age:22 });</code>）被访问时，会自动解包访问值，同时可以进行计算如：<code>{{Person.age + 1}}</code>，但对于非顶层的<code>ref</code>（如<code>let person = { age: ref(22) };</code>），可以自动解包展示，但不能进行计算（如<code>{{Person.age + 1}}</code>），计算会显示为<code>[object Object]1</code>。</p>
+<h1 id="响应式原理">响应式原理
+</h1><h2 id="vue2">Vue2
+</h2><p>在<code>Vue2</code>中，响应式是通过<code>Object.defineProperty()</code>方法实现，其本身会对输入的<code>data</code>进行遍历，将其中的所有属性转换为<code>getter/setter</code>，当数据发生变化，就会自动触发相应的<code>getter/setter</code>函数，来更新视图。</p>
+<p>其缺点在于：</p>
+<ul>
+<li>只会对初始化时存在的对象属性进行监听，如果新增属性，则不具有响应式，即监听不到。</li>
+<li>对于数组，是通过覆盖原型对象上的 7 个方法（<code>push</code>、<code>pop</code>、<code>shift</code>、<code>unshift</code>、<code>splice</code>、<code>sort</code>、<code>reverse</code>）实现的，直接修改下标进行修改数据同样是监听不到</li>
+<li>无法处理<code>Map</code>、<code>Set</code>这种集合类型数据</li>
+</ul>
+<h2 id="vue3">Vue3
+</h2><p><code>Vue3</code>的响应式是基于<code>SE6</code>的<code>proxy</code>的方法实现的。在其中的<code>track()</code>函数，会追踪所有依赖了该属性的，收集起来放在一个<code>Set()</code>中，如果后续属性有变化，就通过<code>trigger()</code>通过对应<code>Set()</code>函数中对应视图更新一遍。对于基本数据类型，放在<code>Set()</code>中，而复合类型，通过将基本类型的<code>Set()</code>放在<code>Map()</code>中。此外，还有其他的一些，但确实不是很明白，就留待补充了。</p>
+<h1 id="参考文章">参考文章
+</h1><p><a class="link" href="https://segmentfault.com/a/1190000043023603#item-3"  target="_blank" rel="noopener"
+    >前端 - 全方位带你掌握 ref、reactive，开启 Vue3 响应式的大门！ - 个人文章 - SegmentFault 思否</a></p>
+<p><a class="link" href="https://segmentfault.com/a/1190000041207010#item-3"  target="_blank" rel="noopener"
+    >javascript - 林三心画了 8 张图，最通俗易懂的 Vue3 响应式核心原理解析 - 个人文章 - SegmentFault 思否</a></p>
+
+</section>
+ <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vue/">Vue</a>
+        
+            <a href="/tags/ref/">Ref</a>
+        
+            <a href="/tags/reactive/">Reactive</a>
+        
+    </section>
+
+
+    </footer>
+  <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script> 
+</article>
+  
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E6%A8%A1%E6%9D%BF%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">模板常用语法</h2>
+        </div>
+    
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E9%80%89%E9%A1%B9%E5%BC%8F-api-%E5%92%8C%E7%BB%84%E5%90%88%E5%BC%8F-api/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title"> 选项式 API 和组合式 API</h2>
+        </div>
+    
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+  
+    <script
+    src="https://utteranc.es/client.js"
+    repo="llwh2333/nillnumblogtalk"
+    issue-term="title"
+    
+    crossorigin="anonymous"
+    async
+></script>
+
+<style>
+    .utterances {
+        max-width: unset;
+    }
+</style>
+
+<script>
+    let utterancesLoaded = false;
+
+    function setUtterancesTheme(theme) {
+        let utterances = document.querySelector(".utterances iframe");
+        if (utterances) {
+            utterances.contentWindow.postMessage(
+                {
+                    type: "set-theme",
+                    theme: `github-${theme}`,
+                },
+                "https://utteranc.es"
+            );
+        }
+    }
+
+    addEventListener("message", (event) => {
+        if (event.origin !== "https://utteranc.es") return;
+
+        
+        utterancesLoaded = true;
+        setUtterancesTheme(document.documentElement.dataset.scheme);
+    });
+
+    window.addEventListener("onColorSchemeChange", (e) => {
+        if (!utterancesLoaded) return;
+        setUtterancesTheme(e.detail);
+    });
+</script>
+
+  <footer class="site-footer">
+    <section class="copyright">
+        &copy;  2024 Nillnum <div class="busuanzi-footer">
+            <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+            <span id="busuanzi_container_site_uv">
+                本站访客数<span id="busuanzi_value_site_uv"></span>人次
+            </span>
+        </div></section>
+
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener"
+            >Hugo</a
+        > 构建 <br />
+        主题 <b
+            ><a
+                href="https://github.com/CaiJimmy/hugo-theme-stack"
+                target="_blank"
+                rel="noopener"
+                data-version="3.26.0"
+                >Stack</a
+            ></b
+        > 由 <a
+            href="https://jimmycai.com"
+            target="_blank"
+            rel="noopener"
+            >Jimmy</a
+        > 设计
+        
+    </section>
+</footer>
+ 
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            > 
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -7,7 +7,23 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Nillnum</copyright>
-        <lastBuildDate>Mon, 12 Aug 2024 04:23:59 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 16 Aug 2024 11:57:52 +0800</lastBuildDate><atom:link href="https://llwh2333.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Vue</title>
+        <link>https://llwh2333.github.io/categories/vue/</link>
+        <pubDate>Fri, 16 Aug 2024 11:57:52 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/categories/vue/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/vue/file_type_vue_icon_130078.png" alt="Featured image of post Vue" /&gt;</description>
+        </item>
+        <item>
+        <title>前端</title>
+        <link>https://llwh2333.github.io/categories/%E5%89%8D%E7%AB%AF/</link>
+        <pubDate>Fri, 16 Aug 2024 11:57:52 +0800</pubDate>
+        
+        <guid>https://llwh2333.github.io/categories/%E5%89%8D%E7%AB%AF/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/%E5%89%8D%E7%AB%AF/1485481300-38_78657.png" alt="Featured image of post 前端" /&gt;</description>
+        </item>
+        <item>
         <title>Rust</title>
         <link>https://llwh2333.github.io/categories/rust/</link>
         <pubDate>Mon, 12 Aug 2024 04:23:59 +0800</pubDate>
@@ -38,6 +54,22 @@
         
         <guid>https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/</guid>
         <description>&lt;img src="https://llwh2333.github.io/categories/%E7%BD%91%E7%BB%9C/iconfinder-connectedglobe-4417105_116615.png" alt="Featured image of post 网络" /&gt;</description>
+        </item>
+        <item>
+        <title>Django</title>
+        <link>https://llwh2333.github.io/categories/django/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://llwh2333.github.io/categories/django/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/django/django_line_logo_icon_146560.png" alt="Featured image of post Django" /&gt;</description>
+        </item>
+        <item>
+        <title>后端</title>
+        <link>https://llwh2333.github.io/categories/%E5%90%8E%E7%AB%AF/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://llwh2333.github.io/categories/%E5%90%8E%E7%AB%AF/</guid>
+        <description>&lt;img src="https://llwh2333.github.io/categories/%E5%90%8E%E7%AB%AF/4124798-app-development-mobile-mobile-development-mobile-software-mobile-ui_113893.png" alt="Featured image of post 后端" /&gt;</description>
         </item>
         
     </channel>
